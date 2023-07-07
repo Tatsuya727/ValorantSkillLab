@@ -10,10 +10,10 @@ class MapController extends Controller
 {
     public function index()
     {
-        $map = Map::all();
+        $maps = Map::all();
 
         return Inertia::render('Maps/Index', [
-            'map' => $map
+            'maps' => $maps
         ]);
     }
 }
