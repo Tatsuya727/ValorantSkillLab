@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\MapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,10 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::resource("maps", MapController::class);
+
+Route::get("/characters", [App\Http\Controllers\CharacterController::class, "index"]);
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
