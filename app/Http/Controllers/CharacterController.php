@@ -8,12 +8,15 @@ use App\Models\Character;
 
 class CharacterController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $characters = Character::all();
+        $mapName = $request->query('mapName');
 
         return Inertia::render('Characters/Index', [
-            'characters' => $characters
+            'characters' => $characters,
+            'mapName' => $mapName,
         ]);
     }
+
 }

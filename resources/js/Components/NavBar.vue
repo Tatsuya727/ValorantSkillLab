@@ -11,8 +11,8 @@ const drawer = ref(null);
 
         <v-toolbar-title>ValorantSkillLab</v-toolbar-title>
 
-        <Link :href="route('maps.index')" class="m-4">Map</Link>
-        <Link :href="route('characters.index')">Character</Link>
+        <Link :href="route('maps.index')" class="mr-4">Map</Link>
+        <Link :href="route('characters.index')" class="mr-4">Character</Link>
         <Link href="/">Home</Link>
 
         <v-spacer></v-spacer>

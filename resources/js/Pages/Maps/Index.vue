@@ -22,7 +22,9 @@ const props = defineProps({
             <div class="flex flex-wrap justify-center mx-auto p-10 gap-4">
                 <ul v-for="map in maps" :key="map.id" class="w-1/4">
                     <li>
-                        <img :src="map.image_path" :alt="map.name" class="w-full h-auto" />
+                        <Link :href="route('characters.index', { mapName: map.name })">
+                            <img :src="map.image_path" :alt="map.name" class="w-full h-auto" />
+                        </Link>
                     </li>
                 </ul>
             </div>
