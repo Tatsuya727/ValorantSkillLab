@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSpotRequest;
 use App\Http\Requests\UpdateSpotRequest;
 use App\Models\Spot;
+use Inertia\Inertia;
 
 class SpotController extends Controller
 {
@@ -13,7 +14,7 @@ class SpotController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Spots/Index');
     }
 
     /**
@@ -21,7 +22,7 @@ class SpotController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Spots/Create');
     }
 
     /**
@@ -29,7 +30,16 @@ class SpotController extends Controller
      */
     public function store(StoreSpotRequest $request)
     {
-        //
+        Spot::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'user_id' => $request->user_id,
+            'map_id' => $request->map_id,
+            'character_id' => $request->character_id,
+            'category_id' => $request->category_id,
+        ]);
+
+        return to_route('spots.index');
     }
 
     /**

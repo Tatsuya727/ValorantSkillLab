@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\CharacterController;
+use App\Http\Controllers\SpotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,8 @@ use App\Http\Controllers\CharacterController;
 Route::resource("maps", MapController::class);
 
 Route::resource("characters", CharacterController::class);
+
+Route::resource("spots", SpotController::class);
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
