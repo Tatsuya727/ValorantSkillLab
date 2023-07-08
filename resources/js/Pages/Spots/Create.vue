@@ -28,13 +28,24 @@ const form = ref({
 const storeSpot = () => {
     Inertia.post('/spots', form);
 };
+
+const onFileChange = (e, image) => {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            image.image_path = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+};
 </script>
 
 <template>
     <v-app id="inspire">
         <NavBar />
         <v-main class="bg-grey-lighten-2 flex justify-center min-h-screen mt-15">
-            <v-form @submit.prevent="storeSpot" class="w-full max-w-5xl">
+            <v-form @submit.prevent="storeSpot" class="w-full max-w-6xl">
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
                         <label for="title" class="block text-sm font-medium text-gray-700">タイトル</label>
@@ -49,11 +60,11 @@ const storeSpot = () => {
 
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label for="map_id" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">マップ</label>
+                        <label for="map_id" class="block text-sm font-medium text-gray-700">マップ</label>
                         <select
                             name="map_id"
                             v-model="form.map_id"
-                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                         >
                             <option v-for="map in maps" :value="map.id">{{ map.name }}</option>
                         </select>
@@ -64,39 +75,45 @@ const storeSpot = () => {
                         <select
                             name="character_id"
                             v-model="form.character_id"
-                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                         >
                             <option v-for="character in characters" :value="character.id">{{ character.name }}</option>
                         </select>
                     </div>
                 </div>
 
-                <label for="description" class="block text-sm font-medium text-gray-700">説明</label>
-                <input
-                    type="text"
-                    name="description"
-                    v-model="form.description"
-                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3">
+                        <label for="description" class="block text-sm font-medium text-gray-700">説明</label>
+                        <input
+                            type="text"
+                            name="description"
+                            v-model="form.description"
+                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                </div>
 
-                <div div class="flex flex-wrap -mx-3 mb-6">
-                    <div v-for="(image, index) in form.images" :key="index">
-                        <div div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label for="image_path" class="block text-sm font-medium text-gray-700">image_path</label>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div v-for="(image, index) in form.images" :key="index" class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <div class="my-5">
+                            <label class="mb-2 inline-block text-neutral-700 dark:text-neutral-200" for="image_path">{{ index === 0 ? 'ポジション' : '結果' }}</label>
                             <input
+                                class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
                                 type="file"
                                 name="image_path"
-                                :v-model="image.image_path"
-                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                @change="(e) => onFileChange(e, image)"
                             />
-                            <label for="description" class="block text-sm font-medium text-gray-700">description</label>
-                            <input
-                                type="text"
-                                name="description"
-                                v-model="image.description"
-                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            />
+                            <img :src="image.image_path" v-if="image.image_path" class="mt-2 w-full h-auto" />
                         </div>
+
+                        <label for="description" class="block text-sm font-medium text-gray-700">説明</label>
+                        <textarea
+                            name="description"
+                            v-model="image.description"
+                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            rows="4"
+                        ></textarea>
                     </div>
                 </div>
 
