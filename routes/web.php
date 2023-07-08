@@ -23,7 +23,8 @@ Route::resource("maps", MapController::class);
 
 Route::resource("characters", CharacterController::class);
 
-Route::resource("spots", SpotController::class);
+Route::resource("spots", SpotController::class)
+->middleware('auth');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

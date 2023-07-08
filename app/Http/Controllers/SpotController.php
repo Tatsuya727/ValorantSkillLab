@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSpotRequest;
 use App\Http\Requests\UpdateSpotRequest;
 use App\Models\Spot;
+use App\Models\User;
+use App\Models\Map;
+use App\Models\Character;
+use App\Models\Category;
+use App\Models\Image;
 use Inertia\Inertia;
 
 class SpotController extends Controller
@@ -22,7 +27,12 @@ class SpotController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Spots/Create');
+        $maps = Map::all();
+        $characters = Character::all();
+        return Inertia::render('Spots/Create', [
+            'maps' => $maps,
+            'characters' => $characters,
+        ]);
     }
 
     /**
@@ -30,14 +40,30 @@ class SpotController extends Controller
      */
     public function store(StoreSpotRequest $request)
     {
-        Spot::create([
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'map_id' => 'required',
+            'character_id' => 'required',
+            'images.*.image_path' => 'required',
+            'images.*.description' => 'required',
+        ]);
+        
+        $spot = Spot::create([
             'title' => $request->title,
             'description' => $request->description,
-            'user_id' => $request->user_id,
+            'user_id' => auth()->id(),
             'map_id' => $request->map_id,
             'character_id' => $request->character_id,
-            'category_id' => $request->category_id,
         ]);
+
+        foreach ($request->images as $image) {
+            $spot->images()->create([
+                'image_path' => $image['image_path'],
+                'description' => $image['description'],
+            ]);
+        }
+    
 
         return to_route('spots.index');
     }
