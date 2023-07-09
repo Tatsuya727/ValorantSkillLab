@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Database\Factories\MapFactory;
+use Database\Factories\CharacterFactory;
 
 class SpotControllerTest extends TestCase
 {
@@ -19,6 +21,10 @@ class SpotControllerTest extends TestCase
         // テスト用のユーザーを作成
         $user = User::factory()->create();
 
+        // テスト用のMapとCharacterを作成
+        $map = MapFactory::new()->create();
+        $character = CharacterFactory::new()->create();
+
         // ログイン
         $this->actingAs($user);
 
@@ -26,8 +32,8 @@ class SpotControllerTest extends TestCase
         $data = [
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
-            'map_id' => $this->faker->randomDigitNotNull,
-            'character_id' => $this->faker->randomDigitNotNull,
+            'map_id' => $map->id,
+            'character_id' => $character->id,
             'images' => [
                 ['image_path' => $this->faker->imageUrl(), 'description' => $this->faker->sentence],
                 ['image_path' => $this->faker->imageUrl(), 'description' => $this->faker->sentence],
@@ -48,4 +54,5 @@ class SpotControllerTest extends TestCase
             'character_id' => $data['character_id'],
         ]);
     }
+
 }
