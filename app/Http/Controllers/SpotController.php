@@ -11,6 +11,8 @@ use App\Models\Character;
 use App\Models\Category;
 use App\Models\Image;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SpotController extends Controller
 {
@@ -51,8 +53,18 @@ class SpotController extends Controller
         ]);
 
         foreach ($request->images as $image) {
+            // Base64エンコードされた画像データをデコード
+            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image['image_path']));
+
+            // ランダムなファイル名を生成
+            $fileName = Str::random(10).'.png';
+
+            // デコードした画像データをストレージに保存
+            Storage::disk('public')->put('images/'.$fileName, $imageData);
+
             $spot->images()->create([
-                'image_path' => $image['image_path'],
+                'spot_id' => $spot->id,
+                'image_path' => 'images/'.$fileName,
                 'description' => $image['description'],
             ]);
         }

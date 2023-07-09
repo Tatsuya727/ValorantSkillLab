@@ -17,4 +17,11 @@ class Spot extends Model
         'character_id',
         'category_id',
     ];
+
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
+
+    
 }
