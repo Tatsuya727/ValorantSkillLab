@@ -5,6 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSpotRequest;
 use App\Http\Requests\UpdateSpotRequest;
 use App\Models\Spot;
+use App\Models\User;
+use App\Models\Map;
+use App\Models\Character;
+use App\Models\Category;
+use App\Models\Image;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SpotController extends Controller
 {
@@ -13,7 +21,11 @@ class SpotController extends Controller
      */
     public function index()
     {
-        //
+        $spots = Spot::with('images')->get();
+
+        return Inertia::render('Spots/Index', [
+            'spots' => $spots,
+        ]);
     }
 
     /**
@@ -21,7 +33,12 @@ class SpotController extends Controller
      */
     public function create()
     {
-        //
+        $maps = Map::all();
+        $characters = Character::all();
+        return Inertia::render('Spots/Create', [
+            'maps' => $maps,
+            'characters' => $characters,
+        ]);
     }
 
     /**
@@ -29,7 +46,34 @@ class SpotController extends Controller
      */
     public function store(StoreSpotRequest $request)
     {
-        //
+        
+        
+        $spot = Spot::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'user_id' => auth()->id(),
+            'map_id' => $request->map_id,
+            'character_id' => $request->character_id,
+        ]);
+
+        foreach ($request->images as $image) {
+            // Base64エンコードされた画像データをデコード
+            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image['image_path']));
+
+            // ランダムなファイル名を生成
+            $fileName = Str::random(10).'.png';
+
+            // デコードした画像データをストレージに保存
+            Storage::disk('public')->put('images/'.$fileName, $imageData);
+
+            $spot->images()->create([
+                'spot_id' => $spot->id,
+                'image_path' => 'images/'.$fileName,
+                'description' => $image['description'],
+            ]);
+        }
+
+        return to_route('spots.index');
     }
 
     /**

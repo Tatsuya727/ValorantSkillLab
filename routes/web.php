@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\MapController;
+use App\Http\Controllers\CharacterController;
+use App\Http\Controllers\SpotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +18,13 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::resource("maps", MapController::class);
+
+Route::resource("characters", CharacterController::class);
+
+Route::resource("spots", SpotController::class)
+->middleware('auth');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

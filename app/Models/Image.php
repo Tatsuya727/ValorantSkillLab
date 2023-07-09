@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['image_path', 'description'];
+
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
 }
