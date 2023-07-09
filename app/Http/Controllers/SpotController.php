@@ -21,7 +21,11 @@ class SpotController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Spots/Index');
+        $spots = Spot::with('images')->get();
+
+        return Inertia::render('Spots/Index', [
+            'spots' => $spots,
+        ]);
     }
 
     /**
