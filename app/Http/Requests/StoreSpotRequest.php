@@ -11,7 +11,7 @@ class StoreSpotRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class StoreSpotRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' =>        ['required', 'max:150'],
+            'description' =>  [ 'max:255'],
+            'map_id' =>       ['required', 'exists:maps,id', 'integer'],
+            'character_id' => ['required', 'exists:characters,id', 'integer'],
+            'images.*.image_path' =>  ['required'],
+            'images.*.description' => ['max:255'],
         ];
     }
 }

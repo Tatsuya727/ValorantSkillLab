@@ -40,14 +40,7 @@ class SpotController extends Controller
      */
     public function store(StoreSpotRequest $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'map_id' => 'required',
-            'character_id' => 'required',
-            'images.*.image_path' => 'required',
-            'images.*.description' => 'required',
-        ]);
+        
         
         $spot = Spot::create([
             'title' => $request->title,
@@ -63,7 +56,6 @@ class SpotController extends Controller
                 'description' => $image['description'],
             ]);
         }
-    
 
         return to_route('spots.index');
     }
