@@ -2,11 +2,6 @@
 import NavBar from '@/Components/NavBar.vue';
 import { defineProps, onMounted } from 'vue';
 
-onMounted(() => {
-    // console.log(props.spots);
-    console.log(spot.images[1]);
-});
-
 const props = defineProps({
     spots: {
         type: Array,
@@ -14,8 +9,10 @@ const props = defineProps({
     },
 });
 
-// idが17のspotを取得
-const spot = props.spots.find((spot) => spot.id === 17);
+console.log(props.spots);
+
+// idが43のスポットの画像パスを取得
+const spot = props.spots.find((spot) => spot.id === 46);
 </script>
 
 <template>
@@ -24,15 +21,22 @@ const spot = props.spots.find((spot) => spot.id === 17);
         <v-main class="bg-grey-lighten-2">
             <v-container>
                 <v-row>
-                    <template v-for="n in 4" :key="n">
+                    <strong>Category 1</strong>
+                    <img :src="spot.images[1].image_path" alt="" />
+                    <!-- <div v-for="spot in props.spots" :key="spot.id">
+                        <img v-if="spot.images[1]" src="spot.images[1].image_path" alt="" />
+                    </div> -->
+                    <!-- <template v-for="n in 4" :key="n">
                         <v-col class="mt-2" cols="12">
                             <strong>Category {{ n }}</strong>
                         </v-col>
 
                         <v-col v-for="j in 6" :key="`${n}${j}`" cols="6" md="2">
-                            <img :src="spot.images[1].image_path" alt="" />
+                            <img :src="'/' + spot.images[1].image_path" alt="" />
+
+                            <img src="images/KP5EJozwLB.png" alt="" />
                         </v-col>
-                    </template>
+                    </template> -->
                 </v-row>
             </v-container>
         </v-main>

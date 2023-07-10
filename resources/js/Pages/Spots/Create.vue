@@ -41,15 +41,18 @@ const onFileChange = (e, image) => {
             image.image_path = e.target.result;
         };
         reader.readAsDataURL(file);
+
+        let extension = file.name.split('.').pop();
+        image.extension = extension;
     }
 };
 
 const addImageForm = () => {
-    form.value.images.push({ image_path: null, description: null });
+    form.images.push({ image_path: null, description: null });
 };
 
 const removeImageForm = (index) => {
-    form.value.images.splice(index, 1);
+    form.images.splice(index, 1);
 };
 </script>
 
@@ -99,7 +102,7 @@ const removeImageForm = (index) => {
 
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
-                        <label for="description" class="block text-sm font-medium text-gray-700">説明</label>
+                        <label for="description" class="block text-sm font-medium text-gray-700">説明<span class="text-red-500">*</span></label>
                         <input
                             type="text"
                             name="description"
@@ -124,6 +127,7 @@ const removeImageForm = (index) => {
                                 @change="(e) => onFileChange(e, image)"
                             />
                             <div v-if="errors.images && errors.images[index]" class="text-red-500">{{ errors.images[index].image_path }}</div>
+                            <!-- 画像を選択するとプレビューを表示 -->
                             <img :src="image.image_path" v-if="image.image_path" class="mt-2 w-full h-auto" />
                             <button v-if="index >= 2" type="button" @click="removeImageForm(index)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">削除</button>
                         </div>

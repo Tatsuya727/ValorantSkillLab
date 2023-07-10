@@ -57,23 +57,21 @@ class SpotController extends Controller
         ]);
 
         foreach ($request->images as $image) {
-            // Base64エンコードされた画像データをデコード
-            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image['image_path']));
 
-            // ランダムなファイル名を生成
-            $fileName = Str::random(10).'.png';
+            // $imageData = base64_decode($image['image_path']);
 
-            // デコードした画像データをストレージに保存
-            Storage::disk('public')->put('images/'.$fileName, $imageData);
+            // $fileName = Str::random(10).'.'.$image['extension'];
+
+            // Storage::disk('public')->put('images/'.$fileName, $image['image_path']);
 
             $spot->images()->create([
                 'spot_id' => $spot->id,
-                'image_path' => 'images/'.$fileName,
+                'image_path' => $image['image_path'],
                 'description' => $image['description'],
             ]);
         }
 
-        return to_route('spots.index');
+        return redirect()->route('spots.index');
     }
 
     /**
