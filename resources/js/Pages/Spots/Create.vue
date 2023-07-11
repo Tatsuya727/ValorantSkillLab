@@ -24,27 +24,39 @@ const form = reactive({
     map_id: null,
     character_id: null,
     images: [
-        { image_path: null, description: null },
-        { image_path: null, description: null },
+        { file: null, description: null },
+        { file: null, description: null },
     ],
 });
 
 const storeSpot = () => {
-    Inertia.post('/spots', form);
+    const formData = new FormData();
+    formData.append('title', form.title);
+    formData.append('description', form.description);
+    formData.append('map_id', form.map_id);
+    formData.append('character_id', form.character_id);
+
+    form.images.forEach((image, index) => {
+        if (image.file) {
+            formData.append(`images[${index}][image_path]`, image.file);
+        }
+        if (image.description) {
+            formData.append(`images[${index}][description]`, image.description);
+        }
+    });
+
+    Inertia.post('/spots', formData, {
+        onBefore: () => console.log('Starting...'),
+        onStart: () => console.log('Started...'),
+        onProgress: (event) => console.log('Progress...', event),
+        onCancel: () => console.log('Cancelled...'),
+        onFinish: () => console.log('Finished...'),
+        onSuccess: () => console.log('Success!'),
+    });
 };
 
 const onFileChange = (e, image) => {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            image.image_path = e.target.result;
-        };
-        reader.readAsDataURL(file);
-
-        let extension = file.name.split('.').pop();
-        image.extension = extension;
-    }
+    image.file = e.target.files[0];
 };
 
 const addImageForm = () => {
