@@ -18,15 +18,13 @@ console.log(props.spots);
         <v-main class="bg-grey-lighten-2">
             <v-container>
                 <v-row v-if="props.spots">
-                    <template v-for="n in 4" :key="n">
+                    <template v-for="(spot, index) in props.spots" :key="spot.id">
                         <v-col class="mt-2" cols="12">
-                            <strong>Category {{ n }}</strong>
+                            <strong>Category {{ index + 1 }}</strong>
                         </v-col>
-
-                        <div v-for="spot in props.spots" :key="spot.id">
-                            <v-col v-for="(image, index) in spot.images" :key="index">
-                                <img class="w-50" :src="image.image_path" alt="" />
-                            </v-col>
+                        <div class="flex-auto" v-for="(image, index) in spot.images" :key="index">
+                            <p v-if="index === 0">{{ spot.title }}</p>
+                            <img class="w-1/5" :src="image.image_path" alt="" v-if="index === 0" />
                         </div>
                     </template>
                 </v-row>
