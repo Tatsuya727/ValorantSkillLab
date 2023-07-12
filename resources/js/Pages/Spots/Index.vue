@@ -10,9 +10,6 @@ const props = defineProps({
 });
 
 console.log(props.spots);
-
-// idが43のスポットの画像パスを取得
-const spot = props.spots.find((spot) => spot.id === 46);
 </script>
 
 <template>
@@ -20,23 +17,18 @@ const spot = props.spots.find((spot) => spot.id === 46);
         <NavBar />
         <v-main class="bg-grey-lighten-2">
             <v-container>
-                <v-row>
-                    <strong>Category 1</strong>
-                    <img :src="spot.images[1].image_path" alt="" />
-                    <!-- <div v-for="spot in props.spots" :key="spot.id">
-                        <img v-if="spot.images[1]" src="spot.images[1].image_path" alt="" />
-                    </div> -->
-                    <!-- <template v-for="n in 4" :key="n">
+                <v-row v-if="props.spots">
+                    <template v-for="n in 4" :key="n">
                         <v-col class="mt-2" cols="12">
                             <strong>Category {{ n }}</strong>
                         </v-col>
 
-                        <v-col v-for="j in 6" :key="`${n}${j}`" cols="6" md="2">
-                            <img :src="'/' + spot.images[1].image_path" alt="" />
-
-                            <img src="images/KP5EJozwLB.png" alt="" />
-                        </v-col>
-                    </template> -->
+                        <div v-for="spot in props.spots" :key="spot.id">
+                            <v-col v-for="(image, index) in spot.images" :key="index">
+                                <img class="w-50" :src="image.image_path" alt="" />
+                            </v-col>
+                        </div>
+                    </template>
                 </v-row>
             </v-container>
         </v-main>

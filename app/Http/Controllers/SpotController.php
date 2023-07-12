@@ -58,15 +58,20 @@ class SpotController extends Controller
 
         foreach ($request->images as $image) {
 
-            // $imageData = base64_decode($image['image_path']);
+            // 画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
+            $image_path = Storage::putFileAs(
+                'public/images',
+                $image['image_path'],
+                Str::random(20) . '.' . $image['image_path']->extension()
+            );
 
-            // $fileName = Str::random(10).'.'.$image['extension'];
-
-            // Storage::disk('public')->put('images/'.$fileName, $image['image_path']);
-
+            // $image_pathの先頭のpublicをstorageに変更
+            $image_path = str_replace('public/', '', $image_path);
+            $image_path = "storage/" . $image_path;
+            
             $spot->images()->create([
                 'spot_id' => $spot->id,
-                'image_path' => $image['image_path'],
+                'image_path' => $image_path,
                 'description' => $image['description'],
             ]);
         }
