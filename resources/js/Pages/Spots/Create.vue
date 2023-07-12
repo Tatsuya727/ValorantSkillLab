@@ -46,12 +46,12 @@ const storeSpot = () => {
     });
 
     Inertia.post('/spots', formData, {
-        onBefore: () => console.log('Starting...'),
-        onStart: () => console.log('Started...'),
-        onProgress: (event) => console.log('Progress...', event),
-        onCancel: () => console.log('Cancelled...'),
-        onFinish: () => console.log('Finished...'),
-        onSuccess: () => console.log('Success!'),
+        // onBefore: () => console.log('Starting...'),
+        // onStart: () => console.log('Started...'),
+        // onProgress: (event) => console.log('Progress...', event),
+        // onCancel: () => console.log('Cancelled...'),
+        // onFinish: () => console.log('Finished...'),
+        // onSuccess: () => console.log('Success!'),
     });
 };
 
