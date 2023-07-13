@@ -23,10 +23,16 @@ class SpotController extends Controller
     {
         $spots = Spot::with('images')->get();
 
+        // 各spotにshow_urlプロパティを追加
+        foreach ($spots as $spot) {
+            $spot->show_url = route('spots.show', ['spot' => $spot->id]);
+        }
+
         return Inertia::render('Spots/Index', [
             'spots' => $spots,
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -67,7 +73,7 @@ class SpotController extends Controller
 
             // $image_pathの先頭のpublicをstorageに変更
             $image_path = str_replace('public/', '', $image_path);
-            $image_path = "storage/" . $image_path;
+            $image_path = "/storage/" . $image_path;
             
             $spot->images()->create([
                 'spot_id' => $spot->id,
@@ -84,7 +90,11 @@ class SpotController extends Controller
      */
     public function show(Spot $spot)
     {
-        //
+        $spot = Spot::with('images')->find($spot->id);
+        
+        return Inertia::render('Spots/Show', [
+            'spot' => $spot,
+        ]);
     }
 
     /**

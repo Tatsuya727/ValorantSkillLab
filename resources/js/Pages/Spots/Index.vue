@@ -1,6 +1,7 @@
 <script setup>
 import NavBar from '@/Components/NavBar.vue';
-import { defineProps, onMounted } from 'vue';
+import { defineProps } from 'vue';
+import { Link } from '@inertiajs/inertia-vue3';
 
 const props = defineProps({
     spots: {
@@ -23,8 +24,11 @@ console.log(props.spots);
                             <strong>Category {{ index + 1 }}</strong>
                         </v-col>
                         <div class="flex-auto" v-for="(image, index) in spot.images" :key="index">
-                            <p v-if="index === 0">{{ spot.title }}</p>
-                            <img class="w-1/5" :src="image.image_path" alt="" v-if="index === 0" />
+                            <h1>{{ spot.id }}</h1>
+                            <p v-if="index === 0">{{ spot.description }}</p>
+                            <Link :href="spot.show_url">
+                                <img class="w-1/5" :src="image.image_path" alt="" v-if="index === 0" />
+                            </Link>
                         </div>
                     </template>
                 </v-row>
