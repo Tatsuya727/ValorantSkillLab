@@ -19,7 +19,23 @@ console.log(props.spots);
         <v-main class="bg-grey-lighten-2">
             <v-container>
                 <v-row v-if="props.spots">
-                    <template v-for="(spot, index) in props.spots" :key="spot.id">
+                    <strong>Category 1</strong>
+                    <v-col class="mt-2" cols="12">
+                        <div class="flex mx-auto p-10 gap-4">
+                            <div v-for="(spot, index) in props.spots" :key="spot.id" class="w-1/6 bg-cyan-400">
+                                <div v-for="(image, index) in spot.images" :key="index" class="bg-green-300">
+                                    <div v-if="index === 0">
+                                        <h1>{{ spot.id }}</h1>
+                                        <p>{{ spot.description }}</p>
+                                        <Link :href="spot.show_url">
+                                            <img class="w-full h-auto" :src="image.image_path" alt="" />
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </v-col>
+                    <!-- <template v-for="(spot, index) in props.spots" :key="spot.id">
                         <v-col class="mt-2" cols="12">
                             <strong>Category {{ index + 1 }}</strong>
                         </v-col>
@@ -27,10 +43,10 @@ console.log(props.spots);
                             <h1>{{ spot.id }}</h1>
                             <p v-if="index === 0">{{ spot.description }}</p>
                             <Link :href="spot.show_url">
-                                <img class="w-1/5" :src="image.image_path" alt="" v-if="index === 0" />
+                                <img class="w-1/4" :src="image.image_path" alt="" v-if="index === 0" />
                             </Link>
                         </div>
-                    </template>
+                    </template> -->
                 </v-row>
             </v-container>
         </v-main>

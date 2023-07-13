@@ -16,8 +16,12 @@ const props = defineProps({
             <div>
                 <h1 class="font-bold">{{ spot.title }}</h1>
                 <h2>{{ spot.description }}</h2>
-                <!-- 画像を表示 -->
-                <img :src="spot.images[0].image_path" alt="" />
+                <!-- すべての画像を表示 -->
+                <div class="flex space-x-4">
+                    <div v-for="(image, index) in spot.images" :key="index">
+                        <img class="object-cover" :src="image.image_path" alt="" />
+                    </div>
+                </div>
             </div>
         </v-main>
     </v-app>
