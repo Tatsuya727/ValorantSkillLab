@@ -13,6 +13,7 @@ use App\Models\Image;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class SpotController extends Controller
 {
@@ -23,10 +24,16 @@ class SpotController extends Controller
     {
         $spots = Spot::with('images')->get();
 
+        // 各spotにshow_urlプロパティを追加
+        foreach ($spots as $spot) {
+            $spot->show_url = route('spots.show', ['spot' => $spot->id]);
+        }
+
         return Inertia::render('Spots/Index', [
             'spots' => $spots,
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -46,45 +53,49 @@ class SpotController extends Controller
      */
     public function store(StoreSpotRequest $request)
     {
-        
-        
-        $spot = Spot::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'user_id' => auth()->id(),
-            'map_id' => $request->map_id,
-            'character_id' => $request->character_id,
-        ]);
-
-        foreach ($request->images as $image) {
-
-            // 画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
-            $image_path = Storage::putFileAs(
-                'public/images',
-                $image['image_path'],
-                Str::random(20) . '.' . $image['image_path']->extension()
-            );
-
-            // $image_pathの先頭のpublicをstorageに変更
-            $image_path = str_replace('public/', '', $image_path);
-            $image_path = "storage/" . $image_path;
-            
-            $spot->images()->create([
-                'spot_id' => $spot->id,
-                'image_path' => $image_path,
-                'description' => $image['description'],
+        DB::transaction(function () use ($request) {
+            $spot = Spot::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'user_id' => auth()->id(),
+                'map_id' => $request->map_id,
+                'character_id' => $request->character_id,
             ]);
-        }
+
+            foreach ($request->images as $image) {
+                // 画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
+                $image_path = Storage::putFileAs(
+                    'public/images',
+                    $image['image_path'],
+                    Str::random(20) . '.' . $image['image_path']->extension()
+                );
+
+                // $image_pathの先頭のpublicをstorageに変更
+                $image_path = str_replace('public/', '', $image_path);
+                $image_path = "/storage/" . $image_path;
+                
+                $spot->images()->create([
+                    'spot_id' => $spot->id,
+                    'image_path' => $image_path,
+                    'description' => $image['description'] ?? null,
+                ]);
+            }
+        });
 
         return redirect()->route('spots.index');
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show(Spot $spot)
     {
-        //
+        $spot = Spot::with('images')->find($spot->id);
+        
+        return Inertia::render('Spots/Show', [
+            'spot' => $spot,
+        ]);
     }
 
     /**
