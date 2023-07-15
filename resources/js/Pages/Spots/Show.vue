@@ -29,12 +29,13 @@ const closeImageModal = () => {
     <v-app id="inspire">
         <NavBar />
         <v-main class="bg-grey-lighten-2">
-            <div>
-                <h1 class="font-bold">{{ spot.title }}</h1>
-                <h2>{{ spot.description }}</h2>
+            <div class="text-center">
+                <h1 class="font-bold text-4xl">{{ spot.title }}</h1>
+                <h2 class="text-xl">{{ spot.description }}</h2>
                 <div class="flex flex-wrap space-4">
                     <div v-for="(image, index) in spot.images" :key="index" class="w-1/4">
-                        <img class="object-cover cursor-pointer" :src="image.image_path" alt="" @click="openImageModal(image.image_path)" />
+                        <img class="object-cover cursor-pointer" :src="image.image_path" alt="" @click="openImageModal(image)" />
+                        <div class="border p-2 text-gray-500">{{ image.description }}</div>
                     </div>
                 </div>
             </div>
