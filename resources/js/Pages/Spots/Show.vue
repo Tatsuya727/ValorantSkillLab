@@ -2,6 +2,7 @@
 import NavBar from '@/Components/NavBar.vue';
 import ImageModal from '@/Components/ImageModal.vue';
 import { defineProps, ref } from 'vue';
+import draggable from 'vuedraggable';
 
 const props = defineProps({
     spot: {
