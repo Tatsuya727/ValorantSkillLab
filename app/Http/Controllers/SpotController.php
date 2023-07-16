@@ -103,7 +103,15 @@ class SpotController extends Controller
      */
     public function edit(Spot $spot)
     {
-        //
+        $spot = Spot::with('images')->find($spot->id);
+        $maps = Map::all();
+        $characters = Character::all();
+
+        return Inertia::render('Spots/Edit', [
+            'spot' => $spot,
+            'maps' => $maps,
+            'characters' => $characters,
+        ]);
     }
 
     /**
