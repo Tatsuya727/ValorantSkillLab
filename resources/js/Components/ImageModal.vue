@@ -13,8 +13,6 @@ const props = defineProps({
         required: true,
     },
 });
-
-console.log(props.desc);
 </script>
 
 <template>
