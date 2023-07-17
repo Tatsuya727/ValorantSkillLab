@@ -41,7 +41,7 @@ const items = [{ title: '編集する' }, { title: '削除する' }];
 
                     <v-list>
                         <v-list-item v-for="(item, i) in items" :key="i">
-                            <Link>
+                            <Link :href="item.title === '編集する' ? `/spots/${spot.id}/edit` : `/spots/${spot.id}/delete`">
                                 <v-list-item-title>{{ item.title }}</v-list-item-title>
                             </Link>
                         </v-list-item>

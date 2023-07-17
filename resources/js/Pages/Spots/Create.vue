@@ -24,8 +24,8 @@ const form = reactive({
     map_id: null,
     character_id: null,
     images: [
-        { file: null, description: null },
-        { file: null, description: null },
+        { file: null, description: null, preview: null },
+        { file: null, description: null, preview: null },
     ],
 });
 
@@ -50,6 +50,12 @@ const storeSpot = () => {
 
 const onFileChange = (e, image) => {
     image.file = e.target.files[0];
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        image.preview = e.target.result;
+    };
+    reader.readAsDataURL(image.file);
 };
 
 const addImageForm = () => {
@@ -133,7 +139,7 @@ const removeImageForm = (index) => {
                             />
                             <div v-if="errors.images && errors.images[index]" class="text-red-500">{{ errors.images[index].image_path }}</div>
                             <!-- 画像を選択するとプレビューを表示 -->
-                            <img :src="image.image_path" v-if="image.image_path" class="mt-2 w-full h-auto" />
+                            <img :src="image.preview" v-if="image.preview" class="mt-2 w-full h-auto" />
                             <button v-if="index >= 2" type="button" @click="removeImageForm(index)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">削除</button>
                         </div>
 
