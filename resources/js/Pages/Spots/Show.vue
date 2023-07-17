@@ -27,7 +27,11 @@ const closeImageModal = () => {
     imageModal.value.image = null;
 };
 
-const items = [{ title: '編集する' }, { title: '削除する' }];
+const deleteSpot = (id) => {
+    if (confirm('本当に削除しますか？')) {
+        Inertia.delete(`/spots/${id}`);
+    }
+};
 </script>
 <template>
     <v-app id="inspire">
@@ -40,10 +44,13 @@ const items = [{ title: '編集する' }, { title: '削除する' }];
                     </template>
 
                     <v-list>
-                        <v-list-item v-for="(item, i) in items" :key="i">
-                            <Link :href="item.title === '編集する' ? `/spots/${spot.id}/edit` : `/spots/${spot.id}/delete`">
-                                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        <v-list-item>
+                            <Link :href="`/spots/${spot.id}/edit`">
+                                <v-list-item-title>編集する(作成中)</v-list-item-title>
                             </Link>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title @click="deleteSpot(spot.id)" class="cursor-pointer">削除する</v-list-item-title>
                         </v-list-item>
                     </v-list>
                 </v-menu>

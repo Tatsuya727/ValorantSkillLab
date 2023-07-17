@@ -175,6 +175,8 @@ class SpotController extends Controller
      */
     public function destroy(Spot $spot)
     {
-        //
+        $spot->delete();
+
+        return redirect()->route('spots.index');
     }
 }
