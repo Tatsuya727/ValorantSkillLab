@@ -23,6 +23,7 @@ const props = defineProps({
 });
 
 const form = reactive({
+    id: props.spot.id,
     title: props.spot.title,
     description: props.spot.description,
     map_id: props.spot.map_id,
@@ -30,7 +31,7 @@ const form = reactive({
     images: props.spot.images,
 });
 
-const updateSpot = () => {
+const updateSpot = (id) => {
     const formData = new FormData();
     formData.append('title', form.title);
     formData.append('description', form.description);
@@ -40,8 +41,6 @@ const updateSpot = () => {
     form.images.forEach((image, index) => {
         if (image.file) {
             formData.append(`images[${index}][image_path]`, image.file);
-        }
-        if (image.description) {
             formData.append(`images[${index}][description]`, image.description);
         }
     });
@@ -51,11 +50,12 @@ const updateSpot = () => {
         console.log(key, value);
     }
 
-    Inertia.put(`/spots/${props.spot.id}`, formData);
+    Inertia.put(`/spots/${id}`, formData);
 };
 
 const onFileChange = (e, image) => {
     image.file = e.target.files[0];
+    image.image_path = URL.createObjectURL(e.target.files[0]);
 };
 
 const addImageForm = () => {
@@ -71,7 +71,7 @@ const removeImageForm = (index) => {
     <v-app id="inspire">
         <NavBar />
         <v-main class="bg-grey-lighten-2 flex justify-center min-h-screen mt-15">
-            <v-form @submit.prevent="updateSpot" class="w-full max-w-6xl">
+            <v-form @submit.prevent="updateSpot(form.id)" class="w-full max-w-6xl">
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
                         <label for="title" class="block text-sm font-medium text-gray-700">タイトル<span class="text-red-500">*</span></label>

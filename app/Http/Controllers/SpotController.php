@@ -121,52 +121,53 @@ class SpotController extends Controller
      */
     public function update(UpdateSpotRequest $request, Spot $spot)
     {
-        // dd($request->all());
+        dd($request->title);
         
-        DB::transaction(function () use ($request, $spot) {
-            $spot->update([
-                'title' => $request->title,
-                'description' => $request->description,
-                'map_id' => $request->map_id,
-                'character_id' => $request->character_id,
-            ]);
+        // DB::transaction(function () use ($request, $spot) {
+        //     $spot->update([
+        //         'title' => $request->title,
+        //         'description' => $request->description,
+        //         'map_id' => $request->map_id,
+        //         'character_id' => $request->character_id,
+        //     ]);
     
-            foreach ($request->images as $index => $image) {
-                if (isset($image['image_path'])) {
-                    // 画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
-                    $image_path = Storage::putFileAs(
-                        'public/images',
-                        $image['image_path'],
-                        Str::random(20) . '.' . $image['image_path']->extension()
-                    );
+        //     foreach ($request->images as $index => $image) {
+        //         // 新しい画像があれば更新、なければ既存の画像をそのまま使う
+        //         if (isset($image['image_path'])) {
+        //             // 新しい画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
+        //             $image_path = Storage::putFileAs(
+        //                 'public/images',
+        //                 $image['image_path'],
+        //                 Str::random(20) . '.' . $image['image_path']->extension()
+        //             );
     
-                    // $image_pathの先頭のpublicをstorageに変更
-                    $image_path = str_replace('public/', '', $image_path);
-                    $image_path = "/storage/" . $image_path;
+        //             // $image_pathの先頭のpublicをstorageに変更
+        //             $image_path = str_replace('public/', '', $image_path);
+        //             $image_path = "/storage/" . $image_path;
     
-                    // 既存の画像があれば更新、なければ新規作成
-                    if (isset($spot->images[$index])) {
-                        $spot->images[$index]->update([
-                            'image_path' => $image_path,
-                            'description' => $image['description'] ?? null,
-                        ]);
-                    } else {
-                        $spot->images()->create([
-                            'spot_id' => $spot->id,
-                            'image_path' => $image_path,
-                            'description' => $image['description'] ?? null,
-                        ]);
-                    }
-                } else if (isset($spot->images[$index])) {
-                    // 画像がアップロードされていない場合でも、説明があれば更新
-                    $spot->images[$index]->update([
-                        'description' => $image['description'] ?? null,
-                    ]);
-                }
-            }
-        });
+        //             // 既存の画像があれば更新、なければ新規作成
+        //             if (isset($spot->images[$index])) {
+        //                 $spot->images[$index]->update([
+        //                     'image_path' => $image_path,
+        //                     'description' => $image['description'] ?? null,
+        //                 ]);
+        //             } else {
+        //                 $spot->images()->create([
+        //                     'spot_id' => $spot->id,
+        //                     'image_path' => $image_path,
+        //                     'description' => $image['description'] ?? null,
+        //                 ]);
+        //             }
+        //         } else if (isset($spot->images[$index])) {
+        //             // 画像がアップロードされていない場合でも、説明があれば更新
+        //             $spot->images[$index]->update([
+        //                 'description' => $image['description'] ?? null,
+        //             ]);
+        //         }
+        //     }
+        // });
     
-        return redirect()->route('spots.show', ['spot' => $spot->id]);
+        // return redirect()->route('spots.show', ['spot' => $spot->id]);
     }
 
     /**
