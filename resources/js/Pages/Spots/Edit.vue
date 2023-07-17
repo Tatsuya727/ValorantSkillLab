@@ -4,6 +4,10 @@ import { Inertia } from '@inertiajs/inertia';
 import NavBar from '@/Components/NavBar.vue';
 
 const props = defineProps({
+    spot: {
+        type: Object,
+        required: true,
+    },
     maps: {
         type: Array,
         required: true,
@@ -19,17 +23,15 @@ const props = defineProps({
 });
 
 const form = reactive({
-    title: null,
-    description: null,
-    map_id: null,
-    character_id: null,
-    images: [
-        { file: null, description: null, preview: null },
-        { file: null, description: null, preview: null },
-    ],
+    id: props.spot.id,
+    title: props.spot.title,
+    description: props.spot.description,
+    map_id: props.spot.map_id,
+    character_id: props.spot.character_id,
+    images: props.spot.images,
 });
 
-const storeSpot = () => {
+const updateSpot = (id) => {
     const formData = new FormData();
     formData.append('title', form.title);
     formData.append('description', form.description);
@@ -39,23 +41,21 @@ const storeSpot = () => {
     form.images.forEach((image, index) => {
         if (image.file) {
             formData.append(`images[${index}][image_path]`, image.file);
-        }
-        if (image.description) {
             formData.append(`images[${index}][description]`, image.description);
         }
     });
 
-    Inertia.post('/spots', formData);
+    // formDataの内容を確認
+    for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+    }
+
+    Inertia.put(`/spots/${id}`, formData);
 };
 
 const onFileChange = (e, image) => {
     image.file = e.target.files[0];
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        image.preview = e.target.result;
-    };
-    reader.readAsDataURL(image.file);
+    image.image_path = URL.createObjectURL(e.target.files[0]);
 };
 
 const addImageForm = () => {
@@ -71,7 +71,7 @@ const removeImageForm = (index) => {
     <v-app id="inspire">
         <NavBar />
         <v-main class="bg-grey-lighten-2 flex justify-center min-h-screen mt-15">
-            <v-form @submit.prevent="storeSpot" class="w-full max-w-6xl">
+            <v-form @submit.prevent="updateSpot(form.id)" class="w-full max-w-6xl">
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
                         <label for="title" class="block text-sm font-medium text-gray-700">タイトル<span class="text-red-500">*</span></label>
@@ -139,7 +139,7 @@ const removeImageForm = (index) => {
                             />
                             <div v-if="errors.images && errors.images[index]" class="text-red-500">{{ errors.images[index].image_path }}</div>
                             <!-- 画像を選択するとプレビューを表示 -->
-                            <img :src="image.preview" v-if="image.preview" class="mt-2 w-full h-auto" />
+                            <img :src="image.image_path" v-if="image.image_path" class="mt-2 w-full h-auto" />
                             <button v-if="index >= 2" type="button" @click="removeImageForm(index)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">削除</button>
                         </div>
 
@@ -157,7 +157,7 @@ const removeImageForm = (index) => {
                     type="submit"
                     class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    作成
+                    編集
                 </button>
             </v-form>
         </v-main>
