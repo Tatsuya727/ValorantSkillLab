@@ -12,6 +12,10 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    categories: {
+        type: Array,
+        required: true,
+    },
     errors: {
         type: Object,
         required: true,
@@ -23,6 +27,7 @@ const form = reactive({
     description: null,
     map_id: null,
     character_id: null,
+    category_id: null,
     images: [
         { file: null, description: null, preview: null },
         { file: null, description: null, preview: null },
@@ -86,7 +91,7 @@ const removeImageForm = (index) => {
                 </div>
 
                 <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                         <label for="map_id" class="block text-sm font-medium text-gray-700">マップ<span class="text-red-500">*</span></label>
                         <select
                             name="map_id"
@@ -98,7 +103,7 @@ const removeImageForm = (index) => {
                         <div v-if="errors.map_id" class="text-red-500">{{ errors.map_id }}</div>
                     </div>
 
-                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                         <label for="character_id" class="block text-sm font-medium text-gray-700">キャラクター<span class="text-red-500">*</span></label>
                         <select
                             name="character_id"
@@ -108,6 +113,18 @@ const removeImageForm = (index) => {
                             <option v-for="character in characters" :value="character.id">{{ character.name }}</option>
                         </select>
                         <div v-if="errors.character_id" class="text-red-500">{{ errors.character_id }}</div>
+                    </div>
+
+                    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                        <label for="category_id" class="block text-sm font-medium text-gray-700">サイト<span class="text-red-500">*</span></label>
+                        <select
+                            name="category_id"
+                            v-model="form.category_id"
+                            class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                        >
+                            <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
+                        </select>
+                        <div v-if="errors.category_id" class="text-red-500">{{ errors.category_id }}</div>
                     </div>
                 </div>
 

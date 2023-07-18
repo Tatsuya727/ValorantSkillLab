@@ -23,7 +23,6 @@ const props = defineProps({
                             <div v-for="(spot, index) in props.spots" :key="spot.id" class="w-1/6 bg-cyan-400">
                                 <div v-for="(image, index) in spot.images" :key="index" class="bg-green-300">
                                     <div v-if="index === 0">
-                                        <h1>{{ spot.id }}</h1>
                                         <p>{{ spot.description }}</p>
                                         <Link :href="spot.show_url">
                                             <img class="w-full h-auto" :src="image.image_path" alt="" />

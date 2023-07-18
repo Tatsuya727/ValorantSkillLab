@@ -42,9 +42,12 @@ class SpotController extends Controller
     {
         $maps = Map::all();
         $characters = Character::all();
+        $categories = Category::all();
+
         return Inertia::render('Spots/Create', [
             'maps' => $maps,
             'characters' => $characters,
+            'categories' => $categories,
         ]);
     }
 
@@ -60,6 +63,7 @@ class SpotController extends Controller
                 'user_id' => auth()->id(),
                 'map_id' => $request->map_id,
                 'character_id' => $request->character_id,
+                'category_id' => $request->category_id,
             ]);
 
             foreach ($request->images as $image) {

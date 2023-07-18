@@ -22,7 +22,8 @@ const props = defineProps({
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div class="sm:flex sm:items-start">
                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <div class="border p-2 text-gray-500">{{ image.description }}</div>
+                        <div v-if="image.description" class="border p-2 text-gray-500">{{ image.description }}</div>
+                        <div v-else class="border p-2 text-gray-500">説明なし</div>
                         <img :src="image.image_path" alt="" class="w-full" />
                     </div>
                 </div>
