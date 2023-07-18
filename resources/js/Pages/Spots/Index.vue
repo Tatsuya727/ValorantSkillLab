@@ -26,17 +26,20 @@ const props = defineProps({
                             <h4 class="text-2xl font-bold">{{ category.name }}</h4>
                         </v-col>
                         <v-col cols="12">
-                            <div class="flex flex-wrap mx-auto p-10 gap-4">
-                                <template v-for="spot in props.spots" :key="spot.id">
-                                    <div v-if="spot.category_id === category.id" class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-3/12 mb-4 bg-white rounded shadow">
-                                        <Link :href="spot.show_url">
-                                            <img class="w-full h-auto rounded-t" :src="spot.images[0].image_path" alt="" />
-                                        </Link>
-                                        <div class="p-4">
-                                            <p class="text-sm text-gray-700">{{ spot.description }}</p>
+                            <div class="flex flex-wrap mx-auto gap-4">
+                                <v-slide-group v-model="model" class="" selected-class="bg-success" show-arrows>
+                                    <v-slide-group-item v-for="spot in props.spots" :key="spot.id">
+                                        <div v-if="spot.category_id === category.id" class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-2/12 mb-4 bg-white rounded shadow mr-5">
+                                            <!-- <div v-if="spot.category_id === category.id" class="min-w-full sm:min-w-1/2 md:min-w-1/3 lg:min-w-1/4 xl:min-w-2/12 mb-4 bg-white rounded shadow mr-5"> -->
+                                            <Link :href="spot.show_url">
+                                                <img class="w-full h-auto rounded-t" :src="spot.images[0].image_path" alt="" />
+                                            </Link>
+                                            <div class="p-4">
+                                                <p class="text-sm text-gray-700">{{ spot.description }}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </template>
+                                    </v-slide-group-item>
+                                </v-slide-group>
                             </div>
                         </v-col>
                     </template>
