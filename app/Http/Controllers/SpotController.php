@@ -23,6 +23,7 @@ class SpotController extends Controller
     public function index()
     {
         $spots = Spot::with('images')->get();
+        $categories = Category::all();
 
         // 各spotにshow_urlプロパティを追加
         foreach ($spots as $spot) {
@@ -31,6 +32,7 @@ class SpotController extends Controller
 
         return Inertia::render('Spots/Index', [
             'spots' => $spots,
+            'categories' => $categories,
         ]);
     }
 

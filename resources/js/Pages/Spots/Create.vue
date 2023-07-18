@@ -40,6 +40,7 @@ const storeSpot = () => {
     formData.append('description', form.description);
     formData.append('map_id', form.map_id);
     formData.append('character_id', form.character_id);
+    formData.append('category_id', form.category_id);
 
     form.images.forEach((image, index) => {
         if (image.file) {
