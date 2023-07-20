@@ -37,9 +37,10 @@ const toggleCategory = (categoryId) => {
                     <template v-for="(category, index) in props.categories" :key="category.id">
                         <v-col class="mt-4" cols="12">
                             <h4 class="text-2xl font-bold cursor-pointer" @click="toggleCategory(category.id)">
-                                <v-icon icon="mdi-chevron-down" v-if="showCategory[category.id]"></v-icon>
-                                <v-icon icon="mdi-chevron-right" v-else></v-icon>
+                                <v-icon v-if="showCategory[category.id]">mdi-chevron-down</v-icon>
+                                <v-icon v-else>mdi-chevron-right</v-icon>
                                 {{ category.name }}
+                                <v-icon>mdi-dots-vertical</v-icon>
                             </h4>
                         </v-col>
                         <v-expand-transition>
@@ -47,9 +48,12 @@ const toggleCategory = (categoryId) => {
                                 <div class="flex flex-wrap mx-auto gap-4">
                                     <v-slide-group v-model="model" class="" selected-class="bg-success" show-arrows>
                                         <v-slide-group-item v-for="spot in props.spots" :key="spot.id">
-                                            <div v-if="spot.category_id === category.id" class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-2/12 mb-4 bg-white rounded shadow mr-5">
+                                            <div
+                                                v-if="spot.category_id === category.id"
+                                                class="flex flex-col items-center w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-2/12 mb-4 bg-white rounded shadow mr-5"
+                                            >
                                                 <Link :href="spot.show_url">
-                                                    <img class="w-full h-auto rounded-t" :src="spot.images[0].image_path" alt="" />
+                                                    <img :width="431" cover class="rounded-t" :src="spot.images[0].image_path" alt="" />
                                                 </Link>
                                                 <div class="p-4">
                                                     <p class="text-sm text-gray-700">{{ spot.description }}</p>
