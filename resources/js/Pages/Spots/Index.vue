@@ -1,5 +1,6 @@
 <script setup>
 import NavBar from '@/Components/NavBar.vue';
+import CategoryModal from '@/Components/CategoryModal.vue';
 import { defineProps, reactive } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 
@@ -32,6 +33,7 @@ const toggleCategory = (categoryId) => {
     <v-app id="inspire">
         <NavBar />
         <v-main class="bg-grey-lighten-2">
+            <CategoryModal />
             <v-container>
                 <v-row v-if="props.spots">
                     <template v-for="(category, index) in props.categories" :key="category.id">
@@ -46,7 +48,7 @@ const toggleCategory = (categoryId) => {
                         <v-expand-transition>
                             <v-col cols="12" v-if="showCategory[category.id]">
                                 <div class="flex flex-wrap mx-auto gap-4">
-                                    <v-slide-group v-model="model" class="" selected-class="bg-success" show-arrows>
+                                    <v-slide-group selected-class="bg-success" show-arrows>
                                         <v-slide-group-item v-for="spot in props.spots" :key="spot.id">
                                             <div v-if="spot.category_id === category.id" class="flex flex-col items-center mb-4 bg-white rounded shadow mr-5">
                                                 <Link :href="spot.show_url">
