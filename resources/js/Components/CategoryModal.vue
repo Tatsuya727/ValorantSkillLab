@@ -16,7 +16,11 @@ const form = reactive({
 });
 
 const storeCategory = () => {
-    Inertia.post('/categories', form);
+    Inertia.post('/categories', form, {
+        onSuccess: () => {
+            dialog.value = false;
+        },
+    });
 };
 </script>
 
@@ -38,7 +42,7 @@ const storeCategory = () => {
                             class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
                         <!-- <div v-if="errors.name" class="text-red-500">{{ errors.name }}</div> -->
-                        <v-btn color="success" block class="mt-5">追加</v-btn>
+                        <v-btn type="submit" color="success" block class="mt-5">追加</v-btn>
                     </div>
                 </v-card-text>
                 <v-card-actions>

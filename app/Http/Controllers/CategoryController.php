@@ -9,10 +9,17 @@ class CategoryController extends Controller
 {
     public function store(Request $request)
     {
-        $category = new Category();
-        $category->name = $request->name;
-        $category->user_id = $request->user_id;
-        $category->save();
+        Category::create([
+            'name' => $request->name,
+            'user_id' => $request->user()->id,
+        ]);
+
+        return redirect()->route('spots.index');
+    }
+
+    public function destroy(Category $category)
+    {
+        $category->delete();
 
         return redirect()->route('spots.index');
     }

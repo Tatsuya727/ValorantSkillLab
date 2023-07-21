@@ -1,8 +1,9 @@
 <script setup>
 import NavBar from '@/Components/NavBar.vue';
 import CategoryModal from '@/Components/CategoryModal.vue';
-import { defineProps, reactive } from 'vue';
+import { defineProps, reactive, ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
+import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
     spots: {
@@ -27,6 +28,16 @@ props.categories.forEach((category) => {
 const toggleCategory = (categoryId) => {
     showCategory[categoryId] = !showCategory[categoryId];
 };
+
+const deleteCategory = (id) => {
+    Inertia.delete(route('categories.destroy', { category: id }), {
+        onSuccess: () => {
+            dialog.value = false;
+        },
+    });
+};
+
+const dialog = ref(false);
 </script>
 
 <template>
@@ -38,11 +49,40 @@ const toggleCategory = (categoryId) => {
                 <v-row v-if="props.spots">
                     <template v-for="(category, index) in props.categories" :key="category.id">
                         <v-col class="mt-4 bg-gray-50 rounded" cols="12">
-                            <h4 class="text-2xl font-bold cursor-pointer" @click="toggleCategory(category.id)">
-                                <v-icon v-if="showCategory[category.id]">mdi-chevron-down</v-icon>
-                                <v-icon v-else>mdi-chevron-right</v-icon>
-                                {{ category.name }}
-                                <v-icon>mdi-dots-vertical</v-icon>
+                            <h4 class="flex justify-between text-2xl font-bold cursor-pointer" @click="toggleCategory(category.id)">
+                                <div>
+                                    <v-icon v-if="showCategory[category.id]">mdi-chevron-down</v-icon>
+                                    <v-icon v-else>mdi-chevron-right</v-icon>
+                                    {{ category.name }}
+                                </div>
+                                <v-menu>
+                                    <template v-slot:activator="{ props }">
+                                        <v-icon v-bind="props">mdi-dots-vertical</v-icon>
+                                    </template>
+
+                                    <v-list>
+                                        <!-- <v-list-item>
+                                            <Link :href="`/categories/${category.id}/edit`">
+                                                <v-list-item-title><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
+                                            </Link>
+                                        </v-list-item> -->
+                                        <v-list-item>
+                                            <v-list-item-title @click="dialog = true" class="cursor-pointer"><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-menu>
+                                <!-- 削除ボタンの確認ダイアログ -->
+                                <v-dialog v-model="dialog" width="auto">
+                                    <v-card>
+                                        <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
+                                        <v-card-actions>
+                                            <v-btn variant="outlined" color="error" block @click="deleteCategory(category.id)">削除する</v-btn>
+                                        </v-card-actions>
+                                        <v-card-actions>
+                                            <v-btn variant="outlined" color="primary" block @click="dialog = false">キャンセル</v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-dialog>
                             </h4>
                         </v-col>
                         <v-expand-transition>
