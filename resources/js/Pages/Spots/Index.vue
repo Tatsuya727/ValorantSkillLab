@@ -35,7 +35,7 @@ const toggleCategory = (categoryId) => {
             <v-container>
                 <v-row v-if="props.spots">
                     <template v-for="(category, index) in props.categories" :key="category.id">
-                        <v-col class="mt-4" cols="12">
+                        <v-col class="mt-4 bg-gray-50 rounded" cols="12">
                             <h4 class="text-2xl font-bold cursor-pointer" @click="toggleCategory(category.id)">
                                 <v-icon v-if="showCategory[category.id]">mdi-chevron-down</v-icon>
                                 <v-icon v-else>mdi-chevron-right</v-icon>
@@ -48,12 +48,9 @@ const toggleCategory = (categoryId) => {
                                 <div class="flex flex-wrap mx-auto gap-4">
                                     <v-slide-group v-model="model" class="" selected-class="bg-success" show-arrows>
                                         <v-slide-group-item v-for="spot in props.spots" :key="spot.id">
-                                            <div
-                                                v-if="spot.category_id === category.id"
-                                                class="flex flex-col items-center w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-2/12 mb-4 bg-white rounded shadow mr-5"
-                                            >
+                                            <div v-if="spot.category_id === category.id" class="flex flex-col items-center mb-4 bg-white rounded shadow mr-5">
                                                 <Link :href="spot.show_url">
-                                                    <img :width="431" cover class="rounded-t" :src="spot.images[0].image_path" alt="" />
+                                                    <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="" />
                                                 </Link>
                                                 <div class="p-4">
                                                     <p class="text-sm text-gray-700">{{ spot.description }}</p>
