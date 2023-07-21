@@ -17,6 +17,15 @@ class CategoryController extends Controller
         return redirect()->route('spots.index');
     }
 
+    public function update(Request $request, Category $category)
+    {
+        $category->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('spots.index');
+    }
+
     public function destroy(Category $category)
     {
         $category->delete();
