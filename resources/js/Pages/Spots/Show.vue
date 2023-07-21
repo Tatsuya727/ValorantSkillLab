@@ -48,11 +48,11 @@ const dialog = ref(false);
                     <v-list>
                         <v-list-item>
                             <Link :href="`/spots/${spot.id}/edit`">
-                                <v-list-item-title>編集する(作成中)</v-list-item-title>
+                                <v-list-item-title><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
                             </Link>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title @click="dialog = true" class="cursor-pointer">削除する</v-list-item-title>
+                            <v-list-item-title @click="dialog = true" class="cursor-pointer"><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title>
                             <!-- <v-list-item-title @click="deleteSpot(spot.id)" class="cursor-pointer">削除する</v-list-item-title> -->
                         </v-list-item>
                     </v-list>
@@ -77,7 +77,8 @@ const dialog = ref(false);
             <div class="flex flex-wrap space-4 mx-4">
                 <div v-for="(image, index) in spot.images" :key="index" class="justify-center">
                     <v-img :width="465" cover class="object-cover cursor-pointer" :src="image.image_path" alt="" @click="openImageModal(image)"></v-img>
-                    <div class="border p-2 text-gray-500">{{ image.description }}</div>
+                    <div v-if="image.description" class="border p-2 text-gray-500">{{ image.description }}</div>
+                    <div v-else class="border p-2 text-gray-500">説明なし</div>
                 </div>
             </div>
             <ImageModal :isOpen="imageModal.isOpen" :image="imageModal.image" :closeModal="closeImageModal" />
