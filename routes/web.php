@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\SpotController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,9 @@ Route::resource("maps", MapController::class);
 Route::resource("characters", CharacterController::class);
 
 Route::resource("spots", SpotController::class)
+->middleware('auth');
+
+Route::resource('/categories', CategoryController::class)
 ->middleware('auth');
 
 Route::get('/', function () {
