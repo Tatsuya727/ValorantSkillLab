@@ -17,7 +17,11 @@ class SpotFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->paragraph,
+            'map_id' => MapFactory::new(),
+            'character_id' => CharacterFactory::new(),
+            'user_id' => UserFactory::new(),
         ];
     }
 }
