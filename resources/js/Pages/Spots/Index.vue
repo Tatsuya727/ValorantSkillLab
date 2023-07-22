@@ -32,9 +32,15 @@ const toggleCategory = (categoryId) => {
     showCategory[categoryId] = !showCategory[categoryId];
 };
 
+const openUpdateDialog = (category) => {
+    form.id = category.id;
+    form.name = category.name;
+    updateDialog.value = true;
+};
+
 // カテゴリーの更新
 const updateCategory = () => {
-    Inertia.put('/categories/${form.id}', form);
+    Inertia.put(`/categories/${form.id}`, form);
 };
 
 // カテゴリーの削除
@@ -47,10 +53,6 @@ const deleteCategory = (id) => {
 };
 
 const updateDialog = ref(false);
-
-// const closeDialog = () => {
-//     emit('update:modelValue', false);
-// };
 
 const deleteDialog = ref(false);
 </script>
@@ -82,8 +84,9 @@ const deleteDialog = ref(false);
                                             </Link>
                                         </v-list-item> -->
                                         <v-list-item>
-                                            <v-list-item-title @click="updateDialog = true" class="cursor-pointer"><v-icon>mdi-pencil</v-icon>名前を変更</v-list-item-title>
+                                            <v-list-item-title @click="openUpdateDialog(category)" class="cursor-pointer"><v-icon>mdi-pencil</v-icon>名前を変更</v-list-item-title>
                                         </v-list-item>
+
                                         <v-list-item>
                                             <v-list-item-title @click="deleteDialog = true" class="cursor-pointer"><v-icon>mdi-trash-can-outline</v-icon>削除</v-list-item-title>
                                         </v-list-item>
