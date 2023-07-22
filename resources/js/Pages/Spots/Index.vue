@@ -1,7 +1,6 @@
 <script setup>
 import NavBar from '@/Components/NavBar.vue';
 import StoreCategory from '@/Components/StoreCategory.vue';
-import UpdateCategory from '@/Components/UpdateCategory.vue';
 import { defineProps, reactive, ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
@@ -17,6 +16,11 @@ const props = defineProps({
     },
 });
 
+const form = reactive({
+    id: null,
+    name: null,
+});
+
 const showCategory = reactive({});
 
 props.categories.forEach((category) => {
@@ -28,6 +32,12 @@ const toggleCategory = (categoryId) => {
     showCategory[categoryId] = !showCategory[categoryId];
 };
 
+// カテゴリーの更新
+const updateCategory = () => {
+    Inertia.put('/categories/${form.id}', form);
+};
+
+// カテゴリーの削除
 const deleteCategory = (id) => {
     Inertia.delete(route('categories.destroy', { category: id }), {
         onSuccess: () => {
@@ -37,6 +47,10 @@ const deleteCategory = (id) => {
 };
 
 const updateDialog = ref(false);
+
+// const closeDialog = () => {
+//     emit('update:modelValue', false);
+// };
 
 const deleteDialog = ref(false);
 </script>
@@ -75,9 +89,32 @@ const deleteDialog = ref(false);
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
-                                <UpdateCategory :category="category" v-model="updateDialog" />
 
-                                <!-- 削除ボタンの確認ダイアログ -->
+                                <!-- 編集ダイアログ -->
+                                <v-dialog v-model="updateDialog" width="400">
+                                    <v-card>
+                                        <v-form @submit.prevent="updateCategory">
+                                            <v-card-text>
+                                                <div class="text-center">
+                                                    <label for="name" class="m-5 block text-lg font-medium text-gray-700">カテゴリー名</label>
+                                                    <input
+                                                        type="text"
+                                                        name="name"
+                                                        v-model="form.name"
+                                                        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                    />
+                                                    <!-- <div v-if="errors.name" class="text-red-500">{{ errors.name }}</div> -->
+                                                    <v-btn type="submit" color="success" block class="mt-5">更新</v-btn>
+                                                </div>
+                                            </v-card-text>
+                                            <v-card-actions>
+                                                <v-btn type="button" color="primary" block @click="updateDialog = false">閉じる</v-btn>
+                                            </v-card-actions>
+                                        </v-form>
+                                    </v-card>
+                                </v-dialog>
+
+                                <!-- 削除の確認ダイアログ -->
                                 <v-dialog v-model="deleteDialog" width="auto">
                                     <v-card>
                                         <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
