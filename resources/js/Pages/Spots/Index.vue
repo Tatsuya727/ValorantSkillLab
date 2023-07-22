@@ -47,7 +47,7 @@ const deleteDialog = ref(false);
         <v-main class="bg-grey-lighten-2">
             <StoreCategory />
             <v-container>
-                <v-row v-if="props.spots">
+                <v-row v-if="props.spots" class="mx-15">
                     <template v-for="(category, index) in props.categories" :key="category.id">
                         <v-col class="mt-4 bg-gray-50 rounded" cols="12">
                             <h4 class="flex justify-between text-2xl font-bold cursor-pointer" @click="toggleCategory(category.id)">
