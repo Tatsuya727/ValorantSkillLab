@@ -2,6 +2,7 @@
 import { reactive } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import NavBar from '@/Components/NavBar.vue';
+import StoreCategory from '@/Components/StoreCategory.vue';
 
 const props = defineProps({
     maps: {
@@ -117,7 +118,7 @@ const removeImageForm = (index) => {
                     </div>
 
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                        <label for="category_id" class="block text-sm font-medium text-gray-700">サイト<span class="text-red-500">*</span></label>
+                        <label for="category_id" class="block text-sm font-medium text-gray-700">カテゴリー<span class="text-red-500">*</span></label>
                         <select
                             name="category_id"
                             v-model="form.category_id"
@@ -126,6 +127,7 @@ const removeImageForm = (index) => {
                             <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
                         </select>
                         <div v-if="errors.category_id" class="text-red-500">{{ errors.category_id }}</div>
+                        <StoreCategory />
                     </div>
                 </div>
 
