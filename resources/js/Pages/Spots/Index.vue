@@ -41,6 +41,8 @@ const openUpdateDialog = (category) => {
 // カテゴリーの更新
 const updateCategory = () => {
     Inertia.put(`/categories/${form.id}`, form);
+    // ダイアログをとじる
+    updateDialog.value = false;
 };
 
 // カテゴリーの削除
