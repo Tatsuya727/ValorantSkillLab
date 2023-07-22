@@ -23,7 +23,8 @@ class SpotController extends Controller
     public function index()
     {
         $spots = Spot::with('images')->get();
-        $categories = Category::all();
+        // ユーザーごとにカテゴリーを取得
+        $categories = Category::where('user_id', auth()->id())->get();
 
         // 各spotにshow_urlプロパティを追加
         foreach ($spots as $spot) {

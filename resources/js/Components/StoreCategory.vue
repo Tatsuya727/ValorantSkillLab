@@ -33,7 +33,6 @@ const storeCategory = () => {
 <template>
     <div class="mx-20 mt-4 text-right">
         <v-btn @click="dialog = true">カテゴリーを追加する</v-btn>
-        <!-- <v-btn @click="pageUrl">check</v-btn> -->
     </div>
 
     <v-dialog v-model="dialog" width="400">
