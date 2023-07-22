@@ -1,14 +1,27 @@
 <script setup>
 import { Inertia } from '@inertiajs/inertia';
 import { ref, reactive } from 'vue';
+import { usePage } from '@inertiajs/inertia-vue3';
 
 const dialog = ref(false);
 
 const form = reactive({
     name: null,
+    redirect_to_create: false,
 });
 
+const { url, component } = usePage();
+
+// コンポーネントを表示しているページによってredirect_to_createの値を変える
+const checkRedirect = () => {
+    if (url.value === '/spots/create') {
+        form.redirect_to_create = true;
+    }
+};
+
 const storeCategory = () => {
+    checkRedirect();
+    console.log(form);
     Inertia.post('/categories', form, {
         onSuccess: () => {
             dialog.value = false;
@@ -20,6 +33,7 @@ const storeCategory = () => {
 <template>
     <div class="mx-20 mt-4 text-right">
         <v-btn @click="dialog = true">カテゴリーを追加する</v-btn>
+        <!-- <v-btn @click="pageUrl">check</v-btn> -->
     </div>
 
     <v-dialog v-model="dialog" width="400">
