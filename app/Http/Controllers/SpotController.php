@@ -45,7 +45,7 @@ class SpotController extends Controller
     {
         $maps = Map::all();
         $characters = Character::all();
-        $categories = Category::all();
+        $categories = Category::where('user_id', auth()->id())->get();
 
         return Inertia::render('Spots/Create', [
             'maps' => $maps,

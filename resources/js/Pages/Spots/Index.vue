@@ -32,6 +32,20 @@ const toggleCategory = (categoryId) => {
     showCategory[categoryId] = !showCategory[categoryId];
 };
 
+// すべてのカテゴリーを開く
+const openAllCategory = () => {
+    props.categories.forEach((category) => {
+        showCategory[category.id] = true;
+    });
+};
+
+// すべてのカテゴリーを閉じる
+const closeAllCategory = () => {
+    props.categories.forEach((category) => {
+        showCategory[category.id] = false;
+    });
+};
+
 const openUpdateDialog = (category) => {
     form.id = category.id;
     form.name = category.name;
@@ -63,7 +77,13 @@ const deleteDialog = ref(false);
     <v-app id="inspire">
         <NavBar />
         <v-main class="bg-grey-lighten-2">
-            <StoreCategory />
+            <div>
+                <div>
+                    <v-btn @click="openAllCategory">すべて開く</v-btn>
+                    <v-btn @click="closeAllCategory">すべて閉じる</v-btn>
+                </div>
+                <StoreCategory />
+            </div>
             <v-container>
                 <v-row v-if="props.spots" class="mx-15">
                     <template v-for="(category, index) in props.categories" :key="category.id">
