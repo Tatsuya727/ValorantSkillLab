@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import NavBar from '@/Components/NavBar.vue';
 import StoreCategory from '@/Components/StoreCategory.vue';
@@ -14,6 +14,10 @@ const props = defineProps({
         required: true,
     },
     categories: {
+        type: Array,
+        required: true,
+    },
+    tags: {
         type: Array,
         required: true,
     },
@@ -33,6 +37,7 @@ const form = reactive({
         { file: null, description: null, preview: null },
         { file: null, description: null, preview: null },
     ],
+    tags: [],
 });
 
 const storeSpot = () => {
@@ -52,7 +57,25 @@ const storeSpot = () => {
         }
     });
 
+    form.tags.forEach((tagId, index) => {
+        formData.append(`tags[${index}]`, tagId);
+    });
+
     Inertia.post('/spots', formData);
+};
+
+const selectedTag = ref(null);
+
+const addTag = () => {
+    if (selectedTag.value && !form.tags.includes(selectedTag.value.id)) {
+        form.tags.push(selectedTag.value.id);
+    }
+    selectedTag.value = null;
+    console.log(form.tags);
+};
+
+const removeTag = (tag) => {
+    form.tags = form.tags.filter((t) => t !== tag);
 };
 
 const onFileChange = (e, image) => {
@@ -77,7 +100,7 @@ const removeImageForm = (index) => {
 <template>
     <v-app id="inspire">
         <NavBar />
-        <v-main class="bg-grey-lighten-2 flex justify-center min-h-screen mt-15">
+        <v-main class="bg-grey-lighten-2 flex justify-center min-h-screen mt-10">
             <v-form @submit.prevent="storeSpot" class="w-full max-w-6xl">
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
@@ -93,25 +116,27 @@ const removeImageForm = (index) => {
                 </div>
 
                 <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label for="map_id" class="block text-sm font-medium text-gray-700">マップ<span class="text-red-500">*</span></label>
                         <select
                             name="map_id"
                             v-model="form.map_id"
                             class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                         >
+                            <option disabled value="">マップを選択</option>
                             <option v-for="map in maps" :value="map.id">{{ map.name }}</option>
                         </select>
                         <div v-if="errors.map_id" class="text-red-500">{{ errors.map_id }}</div>
                     </div>
 
-                    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label for="character_id" class="block text-sm font-medium text-gray-700">キャラクター<span class="text-red-500">*</span></label>
                         <select
                             name="character_id"
                             v-model="form.character_id"
                             class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                         >
+                            <option disabled value="">キャラクターを選択</option>
                             <option v-for="character in characters" :value="character.id">{{ character.name }}</option>
                         </select>
                         <div v-if="errors.character_id" class="text-red-500">{{ errors.character_id }}</div>
@@ -124,10 +149,31 @@ const removeImageForm = (index) => {
                             v-model="form.category_id"
                             class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                         >
+                            <option disabled value="">カテゴリーを選択</option>
                             <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
                         </select>
                         <div v-if="errors.category_id" class="text-red-500">{{ errors.category_id }}</div>
                         <StoreCategory />
+                    </div>
+                    <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
+                        <div class="w-full px-3">
+                            <div class="flex flex-wrap">
+                                <label for="tags" class="block text-sm font-medium text-gray-700">タグ<span>(複数選択可)</span></label>
+                                <div v-for="tag in form.tags" :key="tag.id" class="pl-1 px-1 ml-4 bg-neutral-400 rounded-full cursor-pointer" @click="removeTag(tag)">
+                                    {{ tag.name }}
+                                    ✖
+                                </div>
+                            </div>
+                            <select
+                                name="tags"
+                                v-model="selectedTag"
+                                @change="addTag"
+                                class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                            >
+                                <option disabled value="">タグを選択</option>
+                                <option v-for="tag in tags" :key="tag.id" :value="tag">{{ tag.name }}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 

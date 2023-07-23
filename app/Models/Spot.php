@@ -33,5 +33,8 @@ class Spot extends Model
         return $this->belongsTo(Character::class);
     }
 
-    
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

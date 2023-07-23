@@ -164,9 +164,18 @@ const deleteDialog = ref(false);
                                                 <Link :href="spot.show_url">
                                                     <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="" />
                                                 </Link>
-                                                <div class="p-4">
-                                                    <p>{{}}</p>
-                                                    <p class="text-sm text-gray-700">{{ spot.title }}</p>
+                                                <div class="p-2">
+                                                    <div class="flex">
+                                                        <p class="text-sm text-gray-700 mx-3">
+                                                            map: <span class="font-bold">{{ spot.map.name }}</span>
+                                                        </p>
+                                                        <p class="text-sm text-gray-700">
+                                                            character: <span class="font-bold">{{ spot.character.name }}</span>
+                                                        </p>
+                                                    </div>
+                                                    <p class="text-sm text-gray-700 text-center">
+                                                        title: <span class="font-bold">{{ spot.title }}</span>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </v-slide-group-item>
