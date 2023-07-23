@@ -23,5 +23,18 @@ class Spot extends Model
         return $this->hasMany(Image::class);
     }
 
-    
+    public function map()
+    {
+        return $this->belongsTo(Map::class);
+    }
+
+    public function character()
+    {
+        return $this->belongsTo(Character::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

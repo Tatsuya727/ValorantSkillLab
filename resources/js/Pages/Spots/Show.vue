@@ -73,6 +73,12 @@ const dialog = ref(false);
             <div class="text-center">
                 <h1 class="font-bold text-4xl">{{ spot.title }}</h1>
                 <h2 class="text-xl">{{ spot.description }}</h2>
+                <!-- tagsのnameをすべて表示 -->
+                <div class="flex justify-center">
+                    <div v-for="(tag, index) in spot.tags" :key="index" class="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+                        {{ tag.name }}
+                    </div>
+                </div>
             </div>
             <div class="flex flex-wrap space-4 mx-4">
                 <div v-for="(image, index) in spot.images" :key="index" class="justify-center">

@@ -32,6 +32,20 @@ const toggleCategory = (categoryId) => {
     showCategory[categoryId] = !showCategory[categoryId];
 };
 
+// すべてのカテゴリーを開く
+const openAllCategory = () => {
+    props.categories.forEach((category) => {
+        showCategory[category.id] = true;
+    });
+};
+
+// すべてのカテゴリーを閉じる
+const closeAllCategory = () => {
+    props.categories.forEach((category) => {
+        showCategory[category.id] = false;
+    });
+};
+
 const openUpdateDialog = (category) => {
     form.id = category.id;
     form.name = category.name;
@@ -63,7 +77,15 @@ const deleteDialog = ref(false);
     <v-app id="inspire">
         <NavBar />
         <v-main class="bg-grey-lighten-2">
-            <StoreCategory />
+            <div class="flex text-right">
+                <div class="mx-20 mt-4">
+                    <v-btn class="mr-3" @click="openAllCategory">すべて開く</v-btn>
+                    <v-btn @click="closeAllCategory">すべて閉じる</v-btn>
+                </div>
+                <div class="ml-auto">
+                    <StoreCategory />
+                </div>
+            </div>
             <v-container>
                 <v-row v-if="props.spots" class="mx-15">
                     <template v-for="(category, index) in props.categories" :key="category.id">
@@ -142,8 +164,18 @@ const deleteDialog = ref(false);
                                                 <Link :href="spot.show_url">
                                                     <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="" />
                                                 </Link>
-                                                <div class="p-4">
-                                                    <p class="text-sm text-gray-700">{{ spot.description }}</p>
+                                                <div class="p-2">
+                                                    <div class="flex">
+                                                        <p class="text-sm text-gray-700 mx-3">
+                                                            map: <span class="font-bold">{{ spot.map.name }}</span>
+                                                        </p>
+                                                        <p class="text-sm text-gray-700">
+                                                            character: <span class="font-bold">{{ spot.character.name }}</span>
+                                                        </p>
+                                                    </div>
+                                                    <p class="text-sm text-gray-700 text-center">
+                                                        title: <span class="font-bold">{{ spot.title }}</span>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </v-slide-group-item>

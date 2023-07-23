@@ -10,6 +10,7 @@ use App\Models\Map;
 use App\Models\Character;
 use App\Models\Category;
 use App\Models\Image;
+use App\Models\Tag;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -22,8 +23,10 @@ class SpotController extends Controller
      */
     public function index()
     {
-        $spots = Spot::with('images')->get();
-        $categories = Category::all();
+        $spots = Spot::with(['images', 'map', 'character'])->get();
+        // ユーザーごとにカテゴリーを取得
+        $categories = Category::where('user_id', auth()->id())->get();
+        
 
         // 各spotにshow_urlプロパティを追加
         foreach ($spots as $spot) {
@@ -44,12 +47,14 @@ class SpotController extends Controller
     {
         $maps = Map::all();
         $characters = Character::all();
-        $categories = Category::all();
+        $categories = Category::where('user_id', auth()->id())->get();
+        $tags = Tag::all();
 
         return Inertia::render('Spots/Create', [
             'maps' => $maps,
             'characters' => $characters,
             'categories' => $categories,
+            'tags' => $tags,
         ]);
     }
 
@@ -67,7 +72,7 @@ class SpotController extends Controller
                 'character_id' => $request->character_id,
                 'category_id' => $request->category_id,
             ]);
-
+        
             foreach ($request->images as $image) {
                 // 画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
                 $image_path = Storage::putFileAs(
@@ -75,7 +80,7 @@ class SpotController extends Controller
                     $image['image_path'],
                     Str::random(20) . '.' . $image['image_path']->extension()
                 );
-
+        
                 // $image_pathの先頭のpublicをstorageに変更
                 $image_path = str_replace('public/', '', $image_path);
                 $image_path = "/storage/" . $image_path;
@@ -86,8 +91,13 @@ class SpotController extends Controller
                     'description' => $image['description'] ?? null,
                 ]);
             }
+        
+            // タグの保存
+            foreach ($request->tags as $tagId) {
+                $spot->tags()->attach($tagId);
+            }
         });
-
+        
         return redirect()->route('spots.index');
     }
 
@@ -97,7 +107,7 @@ class SpotController extends Controller
      */
     public function show(Spot $spot)
     {
-        $spot = Spot::with('images')->find($spot->id);
+        $spot = Spot::with(['images', 'tags'])->find($spot->id);
         
         return Inertia::render('Spots/Show', [
             'spot' => $spot,
