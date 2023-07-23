@@ -165,7 +165,8 @@ const deleteDialog = ref(false);
                                                     <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="" />
                                                 </Link>
                                                 <div class="p-4">
-                                                    <p class="text-sm text-gray-700">{{ spot.description }}</p>
+                                                    <p>{{}}</p>
+                                                    <p class="text-sm text-gray-700">{{ spot.title }}</p>
                                                 </div>
                                             </div>
                                         </v-slide-group-item>
