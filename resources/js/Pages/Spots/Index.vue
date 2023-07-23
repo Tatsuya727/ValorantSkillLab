@@ -77,12 +77,14 @@ const deleteDialog = ref(false);
     <v-app id="inspire">
         <NavBar />
         <v-main class="bg-grey-lighten-2">
-            <div>
-                <div>
-                    <v-btn @click="openAllCategory">すべて開く</v-btn>
+            <div class="flex text-right">
+                <div class="mx-20 mt-4">
+                    <v-btn class="mr-3" @click="openAllCategory">すべて開く</v-btn>
                     <v-btn @click="closeAllCategory">すべて閉じる</v-btn>
                 </div>
-                <StoreCategory />
+                <div class="ml-auto">
+                    <StoreCategory />
+                </div>
             </div>
             <v-container>
                 <v-row v-if="props.spots" class="mx-15">
