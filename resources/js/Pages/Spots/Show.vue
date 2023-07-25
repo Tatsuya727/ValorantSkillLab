@@ -74,8 +74,8 @@ const dialog = ref(false);
                 <h1 class="font-bold text-4xl">{{ spot.title }}</h1>
                 <h2 class="text-xl">{{ spot.description }}</h2>
                 <!-- tagsのnameをすべて表示 -->
-                <div class="flex justify-center">
-                    <div v-for="(tag, index) in spot.tags" :key="index" class="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+                <div class="flex justify-center mb-5">
+                    <div v-for="(tag, index) in spot.tags" :key="index" class="bg-sky-400 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
                         {{ tag.name }}
                     </div>
                 </div>

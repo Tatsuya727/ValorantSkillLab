@@ -155,6 +155,7 @@ const deleteDialog = ref(false);
                                 </v-dialog>
                             </h4>
                         </v-col>
+                        <!-- spot -->
                         <v-expand-transition>
                             <v-col cols="12" v-if="showCategory[category.id]">
                                 <div class="flex flex-wrap mx-auto gap-4">
@@ -176,6 +177,16 @@ const deleteDialog = ref(false);
                                                     <p class="text-sm text-gray-700 text-center">
                                                         title: <span class="font-bold">{{ spot.title }}</span>
                                                     </p>
+                                                    <!-- タグの名前をすべて表示 -->
+                                                    <div class="flex justify-center">
+                                                        <div
+                                                            v-for="(tag, index) in spot.tags"
+                                                            :key="index"
+                                                            class="border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                                                        >
+                                                            {{ tag.name }}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </v-slide-group-item>

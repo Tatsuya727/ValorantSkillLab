@@ -23,7 +23,7 @@ class SpotController extends Controller
      */
     public function index()
     {
-        $spots = Spot::with(['images', 'map', 'character'])->get();
+        $spots = Spot::with(['images', 'map', 'character', 'tags'])->get();
         // ユーザーごとにカテゴリーを取得
         $categories = Category::where('user_id', auth()->id())->get();
         
