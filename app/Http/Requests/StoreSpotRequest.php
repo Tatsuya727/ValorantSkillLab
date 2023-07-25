@@ -28,6 +28,7 @@ class StoreSpotRequest extends FormRequest
             'character_id' => ['required', 'exists:characters,id', 'integer'],
             'images.*.image_path' =>  ['required'],
             'images.*.description' => ['max:255'],
+            'tags' =>         ['array', 'max:3'],
         ];
     }
 }

@@ -178,11 +178,11 @@ const deleteDialog = ref(false);
                                                         title: <span class="font-bold">{{ spot.title }}</span>
                                                     </p>
                                                     <!-- タグの名前をすべて表示 -->
-                                                    <div class="flex justify-center">
+                                                    <div class="flex flex-wrap justify-center">
                                                         <div
                                                             v-for="(tag, index) in spot.tags"
                                                             :key="index"
-                                                            class="border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                                                            class="border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
                                                         >
                                                             {{ tag.name }}
                                                         </div>
