@@ -30,13 +30,13 @@ class UserRegistrationTest extends TestCase
         // データベースからユーザーを取得
         $user = User::where('email', $userData['email'])->first();
 
-        // ユーザーが作成されたことを確認
+        // ユーザーが作成されている
         $this->assertNotNull($user);
 
         // ユーザーに紐づくカテゴリーを取得
         $categories = $user->categories;
 
-        // デフォルトのカテゴリーが作成されていることを確認
+        // デフォルトのカテゴリーが作成されている
         $this->assertContains('Aサイト', $categories->pluck('name'));
         $this->assertContains('Bサイト', $categories->pluck('name'));
         $this->assertContains('Cサイト', $categories->pluck('name'));
