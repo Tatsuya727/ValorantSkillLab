@@ -166,7 +166,7 @@ const removeImageForm = (index) => {
                     <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
                         <div class="w-full px-3">
                             <div class="flex flex-wrap">
-                                <label for="tags" class="block text-sm font-medium text-gray-700">タグ<span>(複数選択可)</span></label>
+                                <label for="tags" class="block text-sm font-medium text-gray-700">タグ<span>(3つまで選択可)</span></label>
                                 <div v-for="tag in form.tags" :key="tag.id" class="pl-1 px-1 ml-4 bg-neutral-400 rounded-full cursor-pointer" @click="removeTag(tag)">
                                     {{ tag.name }}
                                     ✖
