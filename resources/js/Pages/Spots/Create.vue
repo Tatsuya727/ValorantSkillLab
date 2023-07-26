@@ -85,10 +85,9 @@ const storeSpot = () => {
                 ];
                 form.tags = [];
             },
-            onError: (errors) => {
-                Object.assign(errors, errors);
+            onError: (responseErrors) => {
+                Object.assign(errors, responseErrors);
                 console.log('onError');
-                console.log(errors.map_id);
             },
 
             onFinish: () => {
