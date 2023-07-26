@@ -65,10 +65,12 @@ const storeSpot = async () => {
         Inertia.post('/spots', formData, {
             onError: (errors) => {
                 this.errors = errors;
-                console.log(errors);
+                console.log('onError');
+                console.log(errors.map_id);
             },
         });
     } catch (error) {
+        console.log('catch error');
         console.log(error);
     }
 };
@@ -188,6 +190,7 @@ const removeImageForm = (index) => {
                                 <option disabled value="">タグを選択</option>
                                 <option v-for="tag in tags" :key="tag.id" :value="tag">{{ tag.name }}</option>
                             </select>
+                            <div v-if="errors.tags" class="text-red-500">{{ errors.tags }}</div>
                         </div>
                     </div>
                 </div>
@@ -202,6 +205,8 @@ const removeImageForm = (index) => {
                             v-model="form.description"
                             class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
+                        <!-- エラー -->
+                        <div v-if="errors.description" class="text-red-500">{{ errors.description }}</div>
                     </div>
                 </div>
 

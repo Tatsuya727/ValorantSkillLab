@@ -72,6 +72,11 @@ class SpotController extends Controller
                 'character_id' => $request->character_id,
                 'category_id' => $request->category_id,
             ]);
+
+            // タグの保存
+            foreach ($request->tags as $tagId) {
+                $spot->tags()->attach($tagId);
+            }
         
             foreach ($request->images as $image) {
                 // 画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
@@ -90,11 +95,6 @@ class SpotController extends Controller
                     'image_path' => $image_path,
                     'description' => $image['description'] ?? null,
                 ]);
-            }
-        
-            // タグの保存
-            foreach ($request->tags as $tagId) {
-                $spot->tags()->attach($tagId);
             }
         });
         
