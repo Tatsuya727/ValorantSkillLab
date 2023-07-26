@@ -68,8 +68,15 @@ const deleteCategory = (id) => {
     });
 };
 
-const deleteSpot = (id) => {
-    Inertia.delete(route('spots.destroy', { spot: id }), {
+const deleteSpotId = ref(null);
+
+const setDeleteSpotId = (id) => {
+    deleteSpotId.value = id;
+    deleteSpotDialog.value = true;
+};
+
+const deleteSpot = () => {
+    Inertia.delete(route('spots.destroy', { spot: deleteSpotId.value }), {
         onSuccess: () => {
             deleteSpotDialog.value = false;
         },
@@ -205,7 +212,7 @@ const deleteSpotDialog = ref(false);
                                                                 </v-list-item>
 
                                                                 <v-list-item>
-                                                                    <v-list-item-title @click="deleteSpotDialog = true" class="cursor-pointer"
+                                                                    <v-list-item-title @click="setDeleteSpotId(spot.id)" class="cursor-pointer"
                                                                         ><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title
                                                                     >
                                                                 </v-list-item>
