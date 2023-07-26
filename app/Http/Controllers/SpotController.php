@@ -191,6 +191,9 @@ class SpotController extends Controller
      */
     public function destroy(Spot $spot)
     {
+        // タグを削除
+        $spot->tags()->detach();
+
         $spot->delete();
 
         return redirect()->route('spots.index');

@@ -63,14 +63,24 @@ const updateCategory = () => {
 const deleteCategory = (id) => {
     Inertia.delete(route('categories.destroy', { category: id }), {
         onSuccess: () => {
-            deleteDialog.value = false;
+            deleteCategoryDialog.value = false;
+        },
+    });
+};
+
+const deleteSpot = (id) => {
+    Inertia.delete(route('spots.destroy', { spot: id }), {
+        onSuccess: () => {
+            deleteSpotDialog.value = false;
         },
     });
 };
 
 const updateDialog = ref(false);
 
-const deleteDialog = ref(false);
+const deleteCategoryDialog = ref(false);
+
+const deleteSpotDialog = ref(false);
 </script>
 
 <template>
@@ -113,7 +123,7 @@ const deleteDialog = ref(false);
                                         </v-list-item>
 
                                         <v-list-item>
-                                            <v-list-item-title @click="deleteDialog = true" class="cursor-pointer"><v-icon>mdi-trash-can-outline</v-icon>削除</v-list-item-title>
+                                            <v-list-item-title @click="deleteCategoryDialog = true" class="cursor-pointer"><v-icon>mdi-trash-can-outline</v-icon>削除</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -143,7 +153,7 @@ const deleteDialog = ref(false);
                                 </v-dialog>
 
                                 <!-- 削除の確認ダイアログ -->
-                                <v-dialog v-model="deleteDialog" width="auto">
+                                <v-dialog v-model="deleteCategoryDialog" width="auto">
                                     <v-card>
                                         <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
                                         <v-card-actions>
@@ -163,10 +173,12 @@ const deleteDialog = ref(false);
                                     <v-slide-group selected-class="bg-success" show-arrows>
                                         <v-slide-group-item v-for="spot in props.spots" :key="spot.id">
                                             <div v-if="spot.category_id === category.id" class="flex flex-col items-center mb-4 bg-white rounded shadow mr-5">
+                                                <!-- spot画像 -->
                                                 <Link :href="spot.show_url">
                                                     <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="" />
                                                 </Link>
                                                 <div class="p-2">
+                                                    <!-- マップとキャラクター -->
                                                     <div class="flex">
                                                         <p class="text-sm text-gray-700 mx-3">
                                                             map: <span class="font-bold">{{ spot.map.name }}</span>
@@ -174,6 +186,43 @@ const deleteDialog = ref(false);
                                                         <p class="text-sm text-gray-700">
                                                             character: <span class="font-bold">{{ spot.character.name }}</span>
                                                         </p>
+
+                                                        <v-menu>
+                                                            <template v-slot:activator="{ props }">
+                                                                <v-icon v-bind="props">mdi-dots-vertical</v-icon>
+                                                            </template>
+
+                                                            <v-list>
+                                                                <!-- <v-list-item>
+                                                                    <Link :href="`/categories/${category.id}/edit`">
+                                                                        <v-list-item-title><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
+                                                                    </Link>
+                                                                </v-list-item> -->
+                                                                <v-list-item>
+                                                                    <v-list-item-title @click="openUpdateDialog(category)" class="cursor-pointer"
+                                                                        ><v-icon>mdi-pencil</v-icon>名前を変更</v-list-item-title
+                                                                    >
+                                                                </v-list-item>
+
+                                                                <v-list-item>
+                                                                    <v-list-item-title @click="deleteSpotDialog = true" class="cursor-pointer"
+                                                                        ><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title
+                                                                    >
+                                                                </v-list-item>
+                                                            </v-list>
+                                                        </v-menu>
+                                                        <!-- Spot削除ボタンの確認ダイアログ -->
+                                                        <v-dialog v-model="deleteSpotDialog" width="auto">
+                                                            <v-card>
+                                                                <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
+                                                                <v-card-actions>
+                                                                    <v-btn variant="outlined" color="error" block @click="deleteSpot(spot.id)">削除する</v-btn>
+                                                                </v-card-actions>
+                                                                <v-card-actions>
+                                                                    <v-btn variant="outlined" color="primary" block @click="deleteSpotDialog = false">キャンセル</v-btn>
+                                                                </v-card-actions>
+                                                            </v-card>
+                                                        </v-dialog>
                                                     </div>
                                                     <p class="text-sm text-gray-700 text-center">
                                                         title: <span class="font-bold">{{ spot.title }}</span>
