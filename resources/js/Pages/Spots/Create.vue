@@ -28,19 +28,29 @@ const props = defineProps({
 });
 
 const form = reactive({
+    title: '',
+    description: '',
+    map_id: '',
+    character_id: '',
+    category_id: '',
+    images: [
+        { file: null, description: '', preview: null },
+        { file: null, description: '', preview: null },
+    ],
+    tags: [],
+});
+
+const errors = reactive({
     title: null,
     description: null,
     map_id: null,
     character_id: null,
     category_id: null,
-    images: [
-        { file: null, description: null, preview: null },
-        { file: null, description: null, preview: null },
-    ],
-    tags: [],
+    images: [],
+    tags: null,
 });
 
-const storeSpot = async () => {
+const storeSpot = () => {
     try {
         const formData = new FormData();
         formData.append('title', form.title);
@@ -63,10 +73,26 @@ const storeSpot = async () => {
         });
 
         Inertia.post('/spots', formData, {
+            onSuccess: () => {
+                form.title = null;
+                form.description = null;
+                form.map_id = null;
+                form.character_id = null;
+                form.category_id = null;
+                form.images = [
+                    { file: null, description: null, preview: null },
+                    { file: null, description: null, preview: null },
+                ];
+                form.tags = [];
+            },
             onError: (errors) => {
-                this.errors = errors;
+                Object.assign(errors, errors);
                 console.log('onError');
                 console.log(errors.map_id);
+            },
+
+            onFinish: () => {
+                console.log('finish');
             },
         });
     } catch (error) {
