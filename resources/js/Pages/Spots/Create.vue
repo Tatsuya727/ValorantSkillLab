@@ -28,19 +28,29 @@ const props = defineProps({
 });
 
 const form = reactive({
+    title: '',
+    description: '',
+    map_id: '',
+    character_id: '',
+    category_id: '',
+    images: [
+        { file: null, description: '', preview: null },
+        { file: null, description: '', preview: null },
+    ],
+    tags: [],
+});
+
+const errors = reactive({
     title: null,
     description: null,
     map_id: null,
     character_id: null,
     category_id: null,
-    images: [
-        { file: null, description: null, preview: null },
-        { file: null, description: null, preview: null },
-    ],
-    tags: [],
+    images: [],
+    tags: null,
 });
 
-const storeSpot = async () => {
+const storeSpot = () => {
     try {
         const formData = new FormData();
         formData.append('title', form.title);
@@ -63,12 +73,30 @@ const storeSpot = async () => {
         });
 
         Inertia.post('/spots', formData, {
-            onError: (errors) => {
-                this.errors = errors;
-                console.log(errors);
+            onSuccess: () => {
+                form.title = null;
+                form.description = null;
+                form.map_id = null;
+                form.character_id = null;
+                form.category_id = null;
+                form.images = [
+                    { file: null, description: null, preview: null },
+                    { file: null, description: null, preview: null },
+                ];
+                form.tags = [];
+            },
+            onError: (responseErrors) => {
+                Object.assign(errors, responseErrors);
+                console.log('onError');
+                console.log(errors.images.image_path);
+            },
+
+            onFinish: () => {
+                console.log('finish');
             },
         });
     } catch (error) {
+        console.log('catch error');
         console.log(error);
     }
 };
@@ -110,6 +138,7 @@ const removeImageForm = (index) => {
         <NavBar />
         <v-main class="bg-grey-lighten-2 flex justify-center min-h-screen mt-10">
             <v-form @submit.prevent="storeSpot" class="w-full max-w-6xl">
+                <!-- タイトル -->
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
                         <label for="title" class="block text-sm font-medium text-gray-700">タイトル<span class="text-red-500">*</span></label>
@@ -123,7 +152,9 @@ const removeImageForm = (index) => {
                     </div>
                 </div>
 
+                <!-- マップ, カテゴリー, キャラ, タグ -->
                 <div class="flex flex-wrap -mx-3 mb-6">
+                    <!-- マップ -->
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label for="map_id" class="block text-sm font-medium text-gray-700">マップ<span class="text-red-500">*</span></label>
                         <select
@@ -137,6 +168,7 @@ const removeImageForm = (index) => {
                         <div v-if="errors.map_id" class="text-red-500">{{ errors.map_id }}</div>
                     </div>
 
+                    <!-- キャラクター -->
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label for="character_id" class="block text-sm font-medium text-gray-700">キャラクター<span class="text-red-500">*</span></label>
                         <select
@@ -150,6 +182,7 @@ const removeImageForm = (index) => {
                         <div v-if="errors.character_id" class="text-red-500">{{ errors.character_id }}</div>
                     </div>
 
+                    <!-- カテゴリー -->
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                         <label for="category_id" class="block text-sm font-medium text-gray-700">カテゴリー<span class="text-red-500">*</span></label>
                         <select
@@ -163,12 +196,14 @@ const removeImageForm = (index) => {
                         <div v-if="errors.category_id" class="text-red-500">{{ errors.category_id }}</div>
                         <StoreCategory />
                     </div>
+
+                    <!-- タグ -->
                     <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
                         <div class="w-full px-3">
                             <div class="flex flex-wrap">
-                                <label for="tags" class="block text-sm font-medium text-gray-700">タグ<span>(複数選択可)</span></label>
-                                <div v-for="tag in form.tags" :key="tag.id" class="pl-1 px-1 ml-4 bg-neutral-400 rounded-full cursor-pointer" @click="removeTag(tag)">
-                                    {{ tag.name }}
+                                <label for="tags" class="block text-sm font-medium text-gray-700">タグ<span>(3つまで選択可)</span></label>
+                                <div v-for="tagId in form.tags" :key="tagId" class="pl-1 px-1 ml-4 bg-neutral-400 rounded-full cursor-pointer" @click="removeTag(tagId)">
+                                    {{ tags.find((tag) => tag.id === tagId).name }}
                                     ✖
                                 </div>
                             </div>
@@ -181,10 +216,12 @@ const removeImageForm = (index) => {
                                 <option disabled value="">タグを選択</option>
                                 <option v-for="tag in tags" :key="tag.id" :value="tag">{{ tag.name }}</option>
                             </select>
+                            <div v-if="errors.tags" class="text-red-500">{{ errors.tags }}</div>
                         </div>
                     </div>
                 </div>
 
+                <!-- 説明 -->
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
                         <label for="description" class="block text-sm font-medium text-gray-700">説明<span class="text-red-500">*</span></label>
@@ -194,6 +231,8 @@ const removeImageForm = (index) => {
                             v-model="form.description"
                             class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
+                        <!-- エラー -->
+                        <div v-if="errors.description" class="text-red-500">{{ errors.description }}</div>
                     </div>
                 </div>
 

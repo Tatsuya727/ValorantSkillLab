@@ -23,7 +23,7 @@ class SpotController extends Controller
      */
     public function index()
     {
-        $spots = Spot::with(['images', 'map', 'character'])->get();
+        $spots = Spot::with(['images', 'map', 'character', 'tags'])->get();
         // ユーザーごとにカテゴリーを取得
         $categories = Category::where('user_id', auth()->id())->get();
         
@@ -72,6 +72,11 @@ class SpotController extends Controller
                 'character_id' => $request->character_id,
                 'category_id' => $request->category_id,
             ]);
+
+            // タグの保存
+            foreach ($request->tags as $tagId) {
+                $spot->tags()->attach($tagId);
+            }
         
             foreach ($request->images as $image) {
                 // 画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
@@ -90,11 +95,6 @@ class SpotController extends Controller
                     'image_path' => $image_path,
                     'description' => $image['description'] ?? null,
                 ]);
-            }
-        
-            // タグの保存
-            foreach ($request->tags as $tagId) {
-                $spot->tags()->attach($tagId);
             }
         });
         
@@ -191,6 +191,9 @@ class SpotController extends Controller
      */
     public function destroy(Spot $spot)
     {
+        // タグを削除
+        $spot->tags()->detach();
+
         $spot->delete();
 
         return redirect()->route('spots.index');
