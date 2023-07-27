@@ -83,6 +83,14 @@ const deleteSpot = () => {
     });
 };
 
+const selectedTag = ref(null);
+
+// タグを選択するとそのタグのスポットのみ表示する
+const filterSpotsByTag = (tag) => {
+    selectedTag.value = tag;
+    Inertia.get(route('spots.index'), { tag: tag });
+};
+
 const updateDialog = ref(false);
 
 const deleteCategoryDialog = ref(false);
@@ -239,7 +247,9 @@ const deleteSpotDialog = ref(false);
                                                         <div
                                                             v-for="(tag, index) in spot.tags"
                                                             :key="index"
-                                                            class="border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+                                                            @click="filterSpotsByTag(tag.name)"
+                                                            class="border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer"
+                                                            :class="{ 'bg-cyan-500 text-white': selectedTag && selectedTag.value === tag.name }"
                                                         >
                                                             {{ tag.name }}
                                                         </div>
