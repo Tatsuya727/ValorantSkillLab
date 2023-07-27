@@ -68,13 +68,6 @@ const deleteCategory = (id) => {
     });
 };
 
-// タグ検索
-const selectedTags = ref(null);
-
-const selectTags = (tags) => {
-    selectedTags.value = tags;
-};
-
 const deleteSpotId = ref(null);
 
 const setDeleteSpotId = (id) => {
