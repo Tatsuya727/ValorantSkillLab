@@ -34,6 +34,16 @@ const deleteSpot = (id) => {
 };
 
 const dialog = ref(false);
+
+// ページがロードされるたびにローカルストレージから選択されたタグを読み込む
+const selectedTag = ref(localStorage.getItem('selectedTag') || '');
+
+// タグを選択するとそのタグのスポットのみ表示する
+const filterSpotsByTag = (tag) => {
+    selectedTag.value = tag;
+    localStorage.setItem('selectedTag', tag);
+    Inertia.get(route('spots.index'), { tag: tag });
+};
 </script>
 <template>
     <v-app id="inspire">
@@ -75,8 +85,8 @@ const dialog = ref(false);
                 <h2 class="text-xl">{{ spot.description }}</h2>
                 <!-- tagsのnameをすべて表示 -->
                 <div class="flex justify-center mb-5">
-                    <div v-for="(tag, index) in spot.tags" :key="index" class="bg-sky-400 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-                        {{ tag.name }}
+                    <div v-for="(tag, index) in spot.tags" :key="index">
+                        <div class="py-1 px-3 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer" @click="filterSpotsByTag(tag.name)">{{ tag.name }}</div>
                     </div>
                 </div>
             </div>

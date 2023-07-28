@@ -83,6 +83,28 @@ const deleteSpot = () => {
     });
 };
 
+// ページがロードされるたびにローカルストレージから選択されたタグを読み込む
+const selectedTag = ref(localStorage.getItem('selectedTag') || '');
+
+// タグを選択するとそのタグのスポットのみ表示する
+const filterSpotsByTag = (tag) => {
+    selectedTag.value = tag;
+    localStorage.setItem('selectedTag', tag);
+    Inertia.get(route('spots.index'), { tag: tag });
+};
+
+// ページを離れるときにローカルストレージから選択されたタグを削除する
+window.addEventListener('beforeunload', () => {
+    localStorage.removeItem('selectedTag');
+});
+
+// 画面上部に表示されたタグをクリックすると、タグの絞り込みを解除する
+const resetSelectedTag = () => {
+    selectedTag.value = '';
+    localStorage.removeItem('selectedTag');
+    Inertia.get(route('spots.index'));
+};
+
 const updateDialog = ref(false);
 
 const deleteCategoryDialog = ref(false);
@@ -98,6 +120,9 @@ const deleteSpotDialog = ref(false);
                 <div class="mx-20 mt-4">
                     <v-btn class="mr-3" @click="openAllCategory">すべて開く</v-btn>
                     <v-btn @click="closeAllCategory">すべて閉じる</v-btn>
+                </div>
+                <div v-if="selectedTag" class="mx-20 mt-6">
+                    選択したタグ: <span @click="resetSelectedTag" class="py-1 px-2 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer">{{ selectedTag }}✖</span>
                 </div>
                 <div class="ml-auto">
                     <StoreCategory />
@@ -196,7 +221,7 @@ const deleteSpotDialog = ref(false);
 
                                                         <v-menu>
                                                             <template v-slot:activator="{ props }">
-                                                                <v-icon v-bind="props">mdi-dots-vertical</v-icon>
+                                                                <v-icon v-bind="props" class="ml-5">mdi-dots-vertical</v-icon>
                                                             </template>
 
                                                             <v-list>
@@ -205,11 +230,11 @@ const deleteSpotDialog = ref(false);
                                                                         <v-list-item-title><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
                                                                     </Link>
                                                                 </v-list-item> -->
-                                                                <v-list-item>
+                                                                <!-- <v-list-item>
                                                                     <v-list-item-title @click="openUpdateDialog(category)" class="cursor-pointer"
                                                                         ><v-icon>mdi-pencil</v-icon>名前を変更</v-list-item-title
                                                                     >
-                                                                </v-list-item>
+                                                                </v-list-item> -->
 
                                                                 <v-list-item>
                                                                     <v-list-item-title @click="setDeleteSpotId(spot.id)" class="cursor-pointer"
@@ -239,9 +264,13 @@ const deleteSpotDialog = ref(false);
                                                         <div
                                                             v-for="(tag, index) in spot.tags"
                                                             :key="index"
-                                                            class="border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+                                                            @click="filterSpotsByTag(tag.name)"
+                                                            :class="{
+                                                                'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer': !selectedTag.value,
+                                                                'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
+                                                            }"
                                                         >
-                                                            {{ tag.name }}
+                                                            <div>{{ tag.name }}</div>
                                                         </div>
                                                     </div>
                                                 </div>

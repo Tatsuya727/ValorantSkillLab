@@ -15,18 +15,27 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class SpotController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $spots = Spot::with(['images', 'map', 'character', 'tags'])->get();
+        $tag = $request->query('tag');
+
+        $spots = Spot::with(['images', 'map', 'character', 'tags'])
+            ->when($tag, function ($query, $tag) {
+                return $query->whereHas('tags', function ($query) use ($tag) {
+                    $query->where('name', $tag);
+                });
+            })
+            ->get();
+
         // ユーザーごとにカテゴリーを取得
         $categories = Category::where('user_id', auth()->id())->get();
-        
 
         // 各spotにshow_urlプロパティを追加
         foreach ($spots as $spot) {
