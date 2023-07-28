@@ -221,7 +221,7 @@ const deleteSpotDialog = ref(false);
 
                                                         <v-menu>
                                                             <template v-slot:activator="{ props }">
-                                                                <v-icon v-bind="props">mdi-dots-vertical</v-icon>
+                                                                <v-icon v-bind="props" class="ml-5">mdi-dots-vertical</v-icon>
                                                             </template>
 
                                                             <v-list>
@@ -230,11 +230,11 @@ const deleteSpotDialog = ref(false);
                                                                         <v-list-item-title><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
                                                                     </Link>
                                                                 </v-list-item> -->
-                                                                <v-list-item>
+                                                                <!-- <v-list-item>
                                                                     <v-list-item-title @click="openUpdateDialog(category)" class="cursor-pointer"
                                                                         ><v-icon>mdi-pencil</v-icon>名前を変更</v-list-item-title
                                                                     >
-                                                                </v-list-item>
+                                                                </v-list-item> -->
 
                                                                 <v-list-item>
                                                                     <v-list-item-title @click="setDeleteSpotId(spot.id)" class="cursor-pointer"
