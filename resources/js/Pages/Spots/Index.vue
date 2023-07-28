@@ -91,7 +91,18 @@ const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
     localStorage.setItem('selectedTag', tag);
     Inertia.get(route('spots.index'), { tag: tag });
-    console.log(selectedTag.value);
+};
+
+// ページを離れるときにローカルストレージから選択されたタグを削除する
+window.addEventListener('beforeunload', () => {
+    localStorage.removeItem('selectedTag');
+});
+
+// 画面上部に表示されたタグをクリックすると、タグの絞り込みを解除する
+const resetSelectedTag = () => {
+    selectedTag.value = '';
+    localStorage.removeItem('selectedTag');
+    Inertia.get(route('spots.index'));
 };
 
 const updateDialog = ref(false);
@@ -109,6 +120,9 @@ const deleteSpotDialog = ref(false);
                 <div class="mx-20 mt-4">
                     <v-btn class="mr-3" @click="openAllCategory">すべて開く</v-btn>
                     <v-btn @click="closeAllCategory">すべて閉じる</v-btn>
+                </div>
+                <div v-if="selectedTag" class="mx-20 mt-6">
+                    選択したタグ: <span @click="resetSelectedTag" class="py-1 px-2 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer">{{ selectedTag }}✖</span>
                 </div>
                 <div class="ml-auto">
                     <StoreCategory />
