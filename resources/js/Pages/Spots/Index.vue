@@ -83,12 +83,15 @@ const deleteSpot = () => {
     });
 };
 
-const selectedTag = ref(null);
+// ページがロードされるたびにローカルストレージから選択されたタグを読み込む
+const selectedTag = ref(localStorage.getItem('selectedTag') || '');
 
 // タグを選択するとそのタグのスポットのみ表示する
 const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
+    localStorage.setItem('selectedTag', tag);
     Inertia.get(route('spots.index'), { tag: tag });
+    console.log(selectedTag.value);
 };
 
 const updateDialog = ref(false);
@@ -248,10 +251,12 @@ const deleteSpotDialog = ref(false);
                                                             v-for="(tag, index) in spot.tags"
                                                             :key="index"
                                                             @click="filterSpotsByTag(tag.name)"
-                                                            class="border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer"
-                                                            :class="{ 'bg-cyan-500 text-white': selectedTag && selectedTag.value === tag.name }"
+                                                            :class="{
+                                                                'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer': !selectedTag.value,
+                                                                'bg-cyan-500 text-white': selectedTag.value && selectedTag.value === tag.name,
+                                                            }"
                                                         >
-                                                            {{ tag.name }}
+                                                            <div>{{ tag.name }}</div>
                                                         </div>
                                                     </div>
                                                 </div>
