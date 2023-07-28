@@ -253,7 +253,7 @@ const deleteSpotDialog = ref(false);
                                                             @click="filterSpotsByTag(tag.name)"
                                                             :class="{
                                                                 'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer': !selectedTag.value,
-                                                                'bg-cyan-500 text-white': selectedTag.value && selectedTag.value === tag.name,
+                                                                'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
                                                             }"
                                                         >
                                                             <div>{{ tag.name }}</div>
