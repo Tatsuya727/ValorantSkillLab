@@ -92,7 +92,15 @@ const filterSpotsByTag = (tag) => {
             </div>
             <div class="flex flex-wrap space-4 mx-4">
                 <div v-for="(image, index) in spot.images" :key="index" class="justify-center">
-                    <v-img :width="465" cover class="object-cover cursor-pointer" :src="image.image_path" alt="" @click="openImageModal(image)"></v-img>
+                    <v-img
+                        :width="465"
+                        cover
+                        class="object-cover cursor-pointer transform transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg"
+                        :src="image.image_path"
+                        alt=""
+                        @click="openImageModal(image)"
+                    ></v-img>
+
                     <div v-if="image.description" class="border p-2 text-gray-500">{{ image.description }}</div>
                     <div v-else class="border p-2 text-gray-500">説明なし</div>
                 </div>

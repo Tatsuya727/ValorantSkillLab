@@ -121,8 +121,14 @@ const deleteSpotDialog = ref(false);
                     <v-btn class="mr-3" @click="openAllCategory">すべて開く</v-btn>
                     <v-btn @click="closeAllCategory">すべて閉じる</v-btn>
                 </div>
-                <div v-if="selectedTag" class="mx-20 mt-6">
-                    選択したタグ: <span @click="resetSelectedTag" class="py-1 px-2 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer">{{ selectedTag }}✖</span>
+                <div v-if="selectedTag" class="mx-20 mt-6 flex">
+                    <div>選択したタグ:</div>
+                    <div @click="resetSelectedTag" class="py-1 px-2 ml-7 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer">
+                        <span>
+                            {{ selectedTag }}
+                        </span>
+                        <span class="ml-1">✖</span>
+                    </div>
                 </div>
                 <div class="ml-auto">
                     <StoreCategory />
