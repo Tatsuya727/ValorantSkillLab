@@ -121,9 +121,13 @@ const deleteSpotDialog = ref(false);
                     <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
                     <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
                 </div>
-                <div>
-                    <div>マップ: {{ $page.props.mapName }}</div>
-                    <div>キャラクター: {{ $page.props.characterName }}</div>
+                <div v-if="$page.props.mapName && $page.props.characterName" class="flex items-center space-x-4">
+                    <div class="text-lg font-semibold">
+                        マップ: <span class="text-blue-600">{{ $page.props.mapName }}</span>
+                    </div>
+                    <div class="text-lg font-semibold">
+                        キャラクター: <span class="text-blue-600">{{ $page.props.characterName }}</span>
+                    </div>
                 </div>
                 <div v-if="selectedTag" class="mx-20 mt-6 flex">
                     <div class="font-semibold text-lg">選択したタグ:</div>
