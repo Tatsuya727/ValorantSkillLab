@@ -118,11 +118,11 @@ const deleteSpotDialog = ref(false);
         <v-main class="bg-grey-lighten-2">
             <div class="flex text-right">
                 <div class="mx-20 mt-4">
-                    <v-btn class="mr-3" @click="openAllCategory">すべて開く</v-btn>
-                    <v-btn @click="closeAllCategory">すべて閉じる</v-btn>
+                    <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
+                    <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
                 </div>
                 <div v-if="selectedTag" class="mx-20 mt-6 flex">
-                    <div>選択したタグ:</div>
+                    <div class="font-semibold text-lg">選択したタグ:</div>
                     <div @click="resetSelectedTag" class="py-1 px-2 ml-7 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer">
                         <span>
                             {{ selectedTag }}
@@ -140,22 +140,17 @@ const deleteSpotDialog = ref(false);
                         <!-- カテゴリーヘッダー -->
                         <v-col class="mt-4 bg-gray-50 rounded" cols="12">
                             <h4 class="flex justify-between text-2xl font-bold cursor-pointer" @click="toggleCategory(category.id)">
-                                <div>
-                                    <v-icon v-if="showCategory[category.id]">mdi-chevron-down</v-icon>
-                                    <v-icon v-else>mdi-chevron-right</v-icon>
-                                    {{ category.name }}
+                                <div class="flex items-center">
+                                    <v-icon v-if="showCategory[category.id]" class="text-primary">mdi-chevron-down</v-icon>
+                                    <v-icon v-else class="text-secondary">mdi-chevron-right</v-icon>
+                                    <span class="ml-2">{{ category.name }}</span>
                                 </div>
                                 <v-menu>
                                     <template v-slot:activator="{ props }">
-                                        <v-icon v-bind="props">mdi-dots-vertical</v-icon>
+                                        <v-icon v-bind="props" class="text-gray-600">mdi-dots-vertical</v-icon>
                                     </template>
 
                                     <v-list>
-                                        <!-- <v-list-item>
-                                            <Link :href="`/categories/${category.id}/edit`">
-                                                <v-list-item-title><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
-                                            </Link>
-                                        </v-list-item> -->
                                         <v-list-item>
                                             <v-list-item-title @click="openUpdateDialog(category)" class="cursor-pointer"><v-icon>mdi-pencil</v-icon>名前を変更</v-list-item-title>
                                         </v-list-item>
@@ -179,7 +174,6 @@ const deleteSpotDialog = ref(false);
                                                         v-model="form.name"
                                                         class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                                     />
-                                                    <!-- <div v-if="errors.name" class="text-red-500">{{ errors.name }}</div> -->
                                                     <v-btn type="submit" color="success" block class="mt-5">更新</v-btn>
                                                 </div>
                                             </v-card-text>
@@ -227,21 +221,10 @@ const deleteSpotDialog = ref(false);
 
                                                         <v-menu>
                                                             <template v-slot:activator="{ props }">
-                                                                <v-icon v-bind="props" class="ml-5">mdi-dots-vertical</v-icon>
+                                                                <v-icon v-bind="props" class="ml-5 text-gray-600">mdi-dots-vertical</v-icon>
                                                             </template>
 
                                                             <v-list>
-                                                                <!-- <v-list-item>
-                                                                    <Link :href="`/categories/${category.id}/edit`">
-                                                                        <v-list-item-title><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
-                                                                    </Link>
-                                                                </v-list-item> -->
-                                                                <!-- <v-list-item>
-                                                                    <v-list-item-title @click="openUpdateDialog(category)" class="cursor-pointer"
-                                                                        ><v-icon>mdi-pencil</v-icon>名前を変更</v-list-item-title
-                                                                    >
-                                                                </v-list-item> -->
-
                                                                 <v-list-item>
                                                                     <v-list-item-title @click="setDeleteSpotId(spot.id)" class="cursor-pointer"
                                                                         ><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title
