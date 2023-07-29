@@ -112,13 +112,20 @@ const selectedTag = ref(localStorage.getItem('selectedTag') || '');
 const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
     localStorage.setItem('selectedTag', tag);
-    Inertia.get(route('spots.index'), {
-        tag: tag,
-        mapName: props.mapName,
-        mapId: props.mapId,
-        characterName: props.characterName,
-        characterId: props.characterId,
-    });
+    if (props.mapName && props.mapId && props.characterName && props.characterId) {
+        console.log('mapName && mapId && characterName && characterId');
+        Inertia.get(route('spots.index'), {
+            mapName: props.mapName,
+            mapId: props.mapId,
+            characterName: props.characterName,
+            characterId: props.characterId,
+            selectedTag: selectedTag.value,
+        });
+    } else {
+        Inertia.get(route('spots.index'), {
+            tag: tag,
+        });
+    }
 };
 
 // ページを離れるときにローカルストレージから選択されたタグを削除する
@@ -130,7 +137,17 @@ window.addEventListener('beforeunload', () => {
 const resetSelectedTag = () => {
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
-    Inertia.get(route('spots.index'));
+    if (props.mapName && props.mapId && props.characterName && props.characterId) {
+        console.log('mapName && mapId && characterName && characterId');
+        Inertia.get(route('spots.index'), {
+            mapName: props.mapName,
+            mapId: props.mapId,
+            characterName: props.characterName,
+            characterId: props.characterId,
+        });
+    } else {
+        Inertia.get(route('spots.index'));
+    }
 };
 
 const updateDialog = ref(false);
