@@ -121,6 +121,9 @@ const deleteSpotDialog = ref(false);
                     <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
                     <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
                 </div>
+                <div>
+                    <div>page{{ $page.props.characterName }}</div>
+                </div>
                 <div v-if="selectedTag" class="mx-20 mt-6 flex">
                     <div class="font-semibold text-lg">選択したタグ:</div>
                     <div @click="resetSelectedTag" class="py-1 px-2 ml-7 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer">
@@ -205,61 +208,61 @@ const deleteSpotDialog = ref(false);
                                     <v-slide-group selected-class="bg-success" show-arrows>
                                         <v-slide-group-item v-for="spot in props.spots" :key="spot.id">
                                             <div v-if="spot.category_id === category.id" class="flex flex-col items-center mb-4 bg-white rounded shadow mr-5">
-                                                <!-- spot画像 -->
-                                                <Link :href="spot.show_url">
-                                                    <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="" />
-                                                </Link>
-                                                <div class="p-2">
-                                                    <!-- マップとキャラクター -->
-                                                    <div class="flex">
-                                                        <p class="text-sm text-gray-700 mx-3">
-                                                            map: <span class="font-bold">{{ spot.map.name }}</span>
+                                                <div v-if="!$page.props.mapId || !$page.props.characterId || (spot.map_id == $page.props.mapId && spot.character_id == $page.props.characterId)">
+                                                    <!-- spot画像 -->
+                                                    <Link :href="spot.show_url">
+                                                        <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="" />
+                                                    </Link>
+                                                    <div class="p-2">
+                                                        <!-- マップとキャラクター -->
+                                                        <div class="flex">
+                                                            <p class="text-sm text-gray-700 mx-3">
+                                                                map: <span class="font-bold">{{ spot.map.name }}</span>
+                                                            </p>
+                                                            <p class="text-sm text-gray-700">
+                                                                character: <span class="font-bold">{{ spot.character.name }}</span>
+                                                            </p>
+                                                            <v-menu>
+                                                                <template v-slot:activator="{ props }">
+                                                                    <v-icon v-bind="props" class="ml-5 text-gray-600">mdi-dots-vertical</v-icon>
+                                                                </template>
+                                                                <v-list>
+                                                                    <v-list-item>
+                                                                        <v-list-item-title @click="setDeleteSpotId(spot.id)" class="cursor-pointer"
+                                                                            ><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title
+                                                                        >
+                                                                    </v-list-item>
+                                                                </v-list>
+                                                            </v-menu>
+                                                            <!-- Spot削除ボタンの確認ダイアログ -->
+                                                            <v-dialog v-model="deleteSpotDialog" width="auto">
+                                                                <v-card>
+                                                                    <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
+                                                                    <v-card-actions>
+                                                                        <v-btn variant="outlined" color="error" block @click="deleteSpot(spot.id)">削除する</v-btn>
+                                                                    </v-card-actions>
+                                                                    <v-card-actions>
+                                                                        <v-btn variant="outlined" color="primary" block @click="deleteSpotDialog = false">キャンセル</v-btn>
+                                                                    </v-card-actions>
+                                                                </v-card>
+                                                            </v-dialog>
+                                                        </div>
+                                                        <p class="text-sm text-gray-700 text-center">
+                                                            title: <span class="font-bold">{{ spot.title }}</span>
                                                         </p>
-                                                        <p class="text-sm text-gray-700">
-                                                            character: <span class="font-bold">{{ spot.character.name }}</span>
-                                                        </p>
-
-                                                        <v-menu>
-                                                            <template v-slot:activator="{ props }">
-                                                                <v-icon v-bind="props" class="ml-5 text-gray-600">mdi-dots-vertical</v-icon>
-                                                            </template>
-
-                                                            <v-list>
-                                                                <v-list-item>
-                                                                    <v-list-item-title @click="setDeleteSpotId(spot.id)" class="cursor-pointer"
-                                                                        ><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title
-                                                                    >
-                                                                </v-list-item>
-                                                            </v-list>
-                                                        </v-menu>
-                                                        <!-- Spot削除ボタンの確認ダイアログ -->
-                                                        <v-dialog v-model="deleteSpotDialog" width="auto">
-                                                            <v-card>
-                                                                <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
-                                                                <v-card-actions>
-                                                                    <v-btn variant="outlined" color="error" block @click="deleteSpot(spot.id)">削除する</v-btn>
-                                                                </v-card-actions>
-                                                                <v-card-actions>
-                                                                    <v-btn variant="outlined" color="primary" block @click="deleteSpotDialog = false">キャンセル</v-btn>
-                                                                </v-card-actions>
-                                                            </v-card>
-                                                        </v-dialog>
-                                                    </div>
-                                                    <p class="text-sm text-gray-700 text-center">
-                                                        title: <span class="font-bold">{{ spot.title }}</span>
-                                                    </p>
-                                                    <!-- タグの名前をすべて表示 -->
-                                                    <div class="flex flex-wrap justify-center">
-                                                        <div
-                                                            v-for="(tag, index) in spot.tags"
-                                                            :key="index"
-                                                            @click="filterSpotsByTag(tag.name)"
-                                                            :class="{
-                                                                'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer': !selectedTag.value,
-                                                                'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
-                                                            }"
-                                                        >
-                                                            <div>{{ tag.name }}</div>
+                                                        <!-- タグの名前をすべて表示 -->
+                                                        <div class="flex flex-wrap justify-center">
+                                                            <div
+                                                                v-for="(tag, index) in spot.tags"
+                                                                :key="index"
+                                                                @click="filterSpotsByTag(tag.name)"
+                                                                :class="{
+                                                                    'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer': !selectedTag.value,
+                                                                    'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
+                                                                }"
+                                                            >
+                                                                <div>{{ tag.name }}</div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

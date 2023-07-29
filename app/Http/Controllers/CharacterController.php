@@ -12,10 +12,12 @@ class CharacterController extends Controller
     {
         $characters = Character::all();
         $mapName = $request->query('mapName');
+        $mapId = $request->query('mapId');
 
         return Inertia::render('Characters/Index', [
             'characters' => $characters,
             'mapName' => $mapName,
+            'mapId' => $mapId,
         ]);
     }
 
