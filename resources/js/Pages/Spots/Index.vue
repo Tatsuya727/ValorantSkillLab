@@ -2,7 +2,7 @@
 import NavBar from '@/Components/NavBar.vue';
 import StoreCategory from '@/Components/StoreCategory.vue';
 import { defineProps, reactive, ref } from 'vue';
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link, usePage } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
@@ -14,7 +14,29 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    mapName: {
+        type: String,
+        required: false,
+    },
+    mapId: {
+        type: Number,
+        required: false,
+    },
+    characterName: {
+        type: String,
+        required: false,
+    },
+    characterId: {
+        type: Number,
+        required: false,
+    },
 });
+const check = () => {
+    console.log(props.mapName);
+    console.log(props.mapId);
+    console.log(props.characterName);
+    console.log(props.characterId);
+};
 
 const form = reactive({
     id: null,
@@ -90,7 +112,13 @@ const selectedTag = ref(localStorage.getItem('selectedTag') || '');
 const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
     localStorage.setItem('selectedTag', tag);
-    Inertia.get(route('spots.index'), { tag: tag });
+    Inertia.get(route('spots.index'), {
+        tag: tag,
+        mapName: props.mapName,
+        mapId: props.mapId,
+        characterName: props.characterName,
+        characterId: props.characterId,
+    });
 };
 
 // ページを離れるときにローカルストレージから選択されたタグを削除する
@@ -120,6 +148,7 @@ const deleteSpotDialog = ref(false);
                 <div class="mx-20 mt-4">
                     <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
                     <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
+                    <v-btn @click="check">check</v-btn>
                 </div>
                 <div v-if="$page.props.mapName && $page.props.characterName" class="flex items-center space-x-4">
                     <div class="text-lg font-semibold">
