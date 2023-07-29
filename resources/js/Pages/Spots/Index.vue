@@ -115,6 +115,7 @@ const filterSpotsByTag = (tag) => {
     if (props.mapName && props.mapId && props.characterName && props.characterId) {
         console.log('mapName && mapId && characterName && characterId');
         Inertia.get(route('spots.index'), {
+            tag: tag,
             mapName: props.mapName,
             mapId: props.mapId,
             characterName: props.characterName,
