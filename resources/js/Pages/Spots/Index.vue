@@ -30,13 +30,11 @@ const props = defineProps({
         type: Number,
         required: false,
     },
+    maps: {
+        type: Array,
+        required: false,
+    },
 });
-const check = () => {
-    console.log(props.mapName);
-    console.log(props.mapId);
-    console.log(props.characterName);
-    console.log(props.characterId);
-};
 
 const form = reactive({
     id: null,
@@ -139,7 +137,6 @@ const resetSelectedTag = () => {
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
     if (props.mapName && props.mapId && props.characterName && props.characterId) {
-        console.log('mapName && mapId && characterName && characterId');
         Inertia.get(route('spots.index'), {
             mapName: props.mapName,
             mapId: props.mapId,
@@ -166,15 +163,17 @@ const deleteSpotDialog = ref(false);
                 <div class="mx-20 mt-4">
                     <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
                     <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
-                    <v-btn @click="check">check</v-btn>
                 </div>
-                <div v-if="$page.props.mapName && $page.props.characterName" class="flex items-center space-x-4">
+                <!-- <div v-if="$page.props.mapName && $page.props.characterName" class="flex items-center space-x-4">
                     <div class="text-lg font-semibold">
                         マップ: <span class="text-blue-600">{{ $page.props.mapName }}</span>
                     </div>
                     <div class="text-lg font-semibold">
                         キャラクター: <span class="text-blue-600">{{ $page.props.characterName }}</span>
                     </div>
+                </div> -->
+                <div>
+                    <v-select></v-select>
                 </div>
                 <div v-if="selectedTag" class="mx-20 mt-6 flex">
                     <div class="font-semibold text-lg">選択したタグ:</div>
