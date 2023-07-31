@@ -1,14 +1,14 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 
 const drawer = ref(null);
-const cards = ['Today', 'Yesterday'];
+const route = inject('route'); // route関数を注入
 const links = [
-    ['mdi-inbox-arrow-down', 'Inbox'],
-    ['mdi-send', 'Send'],
-    ['mdi-delete', 'Trash'],
-    ['mdi-alert-octagon', 'Spam'],
+    ['mdi-map', 'Map', 'maps.index'],
+    ['mdi-account', 'Character', 'characters.index'],
+    ['mdi-spotlight', 'Spot', 'spots.index'],
+    ['mdi-plus-box', 'Create', 'spots.create'],
 ];
 </script>
 
@@ -23,12 +23,14 @@ const links = [
         <v-divider></v-divider>
 
         <v-list>
-            <v-list-item v-for="[icon, text] in links" :key="icon" link>
-                <template v-slot:prepend>
-                    <v-icon>{{ icon }}</v-icon>
-                </template>
+            <v-list-item v-for="[icon, text, routeName] in links" :key="icon" link>
+                <Link :href="route(routeName)">
+                    <template v-slot:prepend>
+                        <v-icon>{{ icon }}</v-icon>
+                    </template>
 
-                <v-list-item-title>{{ text }}</v-list-item-title>
+                    <v-list-item-title>{{ text }}</v-list-item-title>
+                </Link>
             </v-list-item>
         </v-list>
     </v-navigation-drawer>
