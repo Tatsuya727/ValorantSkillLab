@@ -34,6 +34,10 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    characters: {
+        type: Array,
+        required: false,
+    },
 });
 
 const form = reactive({
@@ -155,8 +159,12 @@ const deleteCategoryDialog = ref(false);
 
 const deleteSpotDialog = ref(false);
 
-const selectedMap = ref(null);
-const selectedCharacter = ref(null);
+const selectedMap = ref(props.mapId);
+const selectedCharacter = ref(props.characterId);
+
+const filterSpots = () => {
+    Inertia.get(route('spots.index'), { mapId: selectedMap.value, characterId: selectedCharacter.value });
+};
 </script>
 
 <template>
@@ -168,24 +176,29 @@ const selectedCharacter = ref(null);
                     <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
                     <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
                 </div>
-                <div v-if="$page.props.mapName && $page.props.characterName" class="flex items-center space-x-4">
+
+                <div class="flex items-center space-x-4">
                     <div class="text-lg font-semibold">
-                        マップ: <span class="text-blue-600">{{ $page.props.mapName }}</span>
+                        マップ:
+                        <select
+                            v-model="selectedMap"
+                            class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                        >
+                            <option v-for="map in maps" :key="map.id" :value="map.id">{{ map.name }}</option>
+                        </select>
                     </div>
                     <div class="text-lg font-semibold">
-                        キャラクター: <span class="text-blue-600">{{ $page.props.characterName }}</span>
+                        キャラクター:
+                        <select
+                            v-model="selectedCharacter"
+                            class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                        >
+                            <option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }}</option>
+                        </select>
                     </div>
+                    <v-btn @click="filterSpots">検索</v-btn>
                 </div>
-                <!-- <div>
-                    <select v-model="selectedMap" @change="filterSpotsByMap" class="text-lg font-semibold">
-                        <option value="" selected>マップを選択</option>
-                        <option v-for="map in props.maps" :key="map.id" :value="map.id">{{ map.name }}</option>
-                    </select>
-                    <select v-model="selectedCharacter" @change="filterSpotsByCharacter" class="text-lg font-semibold">
-                        <option value="" selected>キャラクターを選択</option>
-                        <option v-for="character in props.characters" :key="character.id" :value="character.id">{{ character.name }}</option>
-                    </select>
-                </div> -->
+
                 <div v-if="selectedTag" class="mx-20 mt-6 flex">
                     <div class="font-semibold text-lg">選択したタグ:</div>
                     <div @click="resetSelectedTag" class="py-1 px-2 ml-7 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer">
@@ -270,7 +283,7 @@ const selectedCharacter = ref(null);
                                     <v-slide-group selected-class="bg-success" show-arrows>
                                         <v-slide-group-item v-for="spot in props.spots" :key="spot.id">
                                             <div v-if="spot.category_id === category.id" class="flex flex-col items-center mb-4 bg-white rounded shadow mr-5">
-                                                <div v-if="(!$page.props.mapId && !$page.props.characterId) || (spot.map_id == $page.props.mapId && spot.character_id == $page.props.characterId)">
+                                                <div v-if="(!props.mapId && !props.characterId) || (spot.map_id == props.mapId && spot.character_id == props.characterId)">
                                                     <!-- spot画像 -->
                                                     <Link :href="spot.show_url">
                                                         <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="" />

@@ -14,9 +14,6 @@ defineProps({
     status: {
         type: String,
     },
-    errors: {
-        type: Object,
-    },
 });
 
 const form = useForm({
@@ -27,6 +24,7 @@ const form = useForm({
 
 const submit = () => {
     form.post(route('login'), {
+        onError: (errors) => console.log(errors),
         onFinish: () => form.reset('password'),
     });
 };
