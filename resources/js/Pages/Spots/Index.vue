@@ -90,11 +90,13 @@ const deleteCategory = (id) => {
 
 const deleteSpotId = ref(null);
 
+// Spotの削除
 const setDeleteSpotId = (id) => {
     deleteSpotId.value = id;
     deleteSpotDialog.value = true;
 };
 
+// Spotの削除
 const deleteSpot = () => {
     Inertia.delete(route('spots.destroy', { spot: deleteSpotId.value }), {
         onSuccess: () => {
@@ -111,7 +113,6 @@ const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
     localStorage.setItem('selectedTag', tag);
     if (props.mapName && props.mapId && props.characterName && props.characterId) {
-        console.log('mapName && mapId && characterName && characterId');
         Inertia.get(route('spots.index'), {
             tag: tag,
             mapName: props.mapName,
@@ -153,6 +154,9 @@ const updateDialog = ref(false);
 const deleteCategoryDialog = ref(false);
 
 const deleteSpotDialog = ref(false);
+
+const selectedMap = ref(null);
+const selectedCharacter = ref(null);
 </script>
 
 <template>
@@ -164,17 +168,24 @@ const deleteSpotDialog = ref(false);
                     <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
                     <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
                 </div>
-                <!-- <div v-if="$page.props.mapName && $page.props.characterName" class="flex items-center space-x-4">
+                <div v-if="$page.props.mapName && $page.props.characterName" class="flex items-center space-x-4">
                     <div class="text-lg font-semibold">
                         マップ: <span class="text-blue-600">{{ $page.props.mapName }}</span>
                     </div>
                     <div class="text-lg font-semibold">
                         キャラクター: <span class="text-blue-600">{{ $page.props.characterName }}</span>
                     </div>
-                </div> -->
-                <div>
-                    <v-select></v-select>
                 </div>
+                <!-- <div>
+                    <select v-model="selectedMap" @change="filterSpotsByMap" class="text-lg font-semibold">
+                        <option value="" selected>マップを選択</option>
+                        <option v-for="map in props.maps" :key="map.id" :value="map.id">{{ map.name }}</option>
+                    </select>
+                    <select v-model="selectedCharacter" @change="filterSpotsByCharacter" class="text-lg font-semibold">
+                        <option value="" selected>キャラクターを選択</option>
+                        <option v-for="character in props.characters" :key="character.id" :value="character.id">{{ character.name }}</option>
+                    </select>
+                </div> -->
                 <div v-if="selectedTag" class="mx-20 mt-6 flex">
                     <div class="font-semibold text-lg">選択したタグ:</div>
                     <div @click="resetSelectedTag" class="py-1 px-2 ml-7 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer">
