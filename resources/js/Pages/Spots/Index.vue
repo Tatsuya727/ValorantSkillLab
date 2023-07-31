@@ -171,48 +171,48 @@ const filterSpots = () => {
     <v-app id="inspire">
         <NavBar />
         <v-main class="bg-grey-lighten-2">
-            <div class="flex text-right">
-                <div class="mx-20 mt-4">
-                    <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
-                    <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
-                </div>
-
-                <div class="flex items-center space-x-4">
-                    <div class="text-lg font-semibold">
-                        マップ:
-                        <select
-                            v-model="selectedMap"
-                            class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                        >
-                            <option v-for="map in maps" :key="map.id" :value="map.id">{{ map.name }}</option>
-                        </select>
-                    </div>
-                    <div class="text-lg font-semibold">
-                        キャラクター:
-                        <select
-                            v-model="selectedCharacter"
-                            class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                        >
-                            <option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }}</option>
-                        </select>
-                    </div>
-                    <v-btn @click="filterSpots">検索</v-btn>
-                </div>
-
-                <div v-if="selectedTag" class="mx-20 mt-6 flex">
-                    <div class="font-semibold text-lg">選択したタグ:</div>
-                    <div @click="resetSelectedTag" class="py-1 px-2 ml-7 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer">
-                        <span>
-                            {{ selectedTag }}
-                        </span>
-                        <span class="ml-1">✖</span>
-                    </div>
-                </div>
-                <div class="ml-auto">
-                    <StoreCategory />
-                </div>
-            </div>
-            <v-container>
+            <v-container fluid>
+                <v-row class="mt-4">
+                    <v-col cols="12">
+                        <div class="flex flex-wrap -mx-3 mb-6">
+                            <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
+                                <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
+                                <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
+                            </div>
+                            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0 flex">
+                                <div class="mr-3">
+                                    <label for="map-select" class="mr-2">マップ:</label>
+                                    <select
+                                        id="map-select"
+                                        v-model="selectedMap"
+                                        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                                    >
+                                        <option v-for="map in maps" :key="map.id" :value="map.id">{{ map.name }}</option>
+                                    </select>
+                                </div>
+                                <div class="mr-3">
+                                    <label for="character-select" class="mr-2">キャラクター:</label>
+                                    <select
+                                        id="character-select"
+                                        v-model="selectedCharacter"
+                                        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                                    >
+                                        <option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }}</option>
+                                    </select>
+                                </div>
+                                <div class="mr-3">
+                                    <v-btn block @click="filterSpots">検索</v-btn>
+                                </div>
+                            </div>
+                            <div class="mr-3">
+                                <v-chip v-if="selectedTag" color="primary" close @click="resetSelectedTag"> {{ selectedTag }} ✖ </v-chip>
+                            </div>
+                            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                <StoreCategory />
+                            </div>
+                        </div>
+                    </v-col>
+                </v-row>
                 <v-row v-if="props.spots" class="mx-15">
                     <template v-for="(category, index) in props.categories" :key="category.id">
                         <!-- カテゴリーヘッダー -->
