@@ -41,57 +41,11 @@ const props = defineProps({
     },
 });
 
-const form = reactive({
-    id: null,
-    name: null,
-});
-
 const showCategory = reactive({});
 
 props.categories.forEach((category) => {
     showCategory[category.id] = true;
 });
-
-// カテゴリーの表示状態を切り替える
-const toggleCategory = (categoryId) => {
-    showCategory[categoryId] = !showCategory[categoryId];
-};
-
-// すべてのカテゴリーを開く
-const openAllCategory = () => {
-    props.categories.forEach((category) => {
-        showCategory[category.id] = true;
-    });
-};
-
-// すべてのカテゴリーを閉じる
-const closeAllCategory = () => {
-    props.categories.forEach((category) => {
-        showCategory[category.id] = false;
-    });
-};
-
-const openUpdateDialog = (category) => {
-    form.id = category.id;
-    form.name = category.name;
-    updateDialog.value = true;
-};
-
-// カテゴリーの更新
-const updateCategory = () => {
-    Inertia.put(`/categories/${form.id}`, form);
-    // ダイアログをとじる
-    updateDialog.value = false;
-};
-
-// カテゴリーの削除
-const deleteCategory = (id) => {
-    Inertia.delete(route('categories.destroy', { category: id }), {
-        onSuccess: () => {
-            deleteCategoryDialog.value = false;
-        },
-    });
-};
 
 const deleteSpotId = ref(null);
 
@@ -154,11 +108,13 @@ const resetSelectedTag = () => {
     }
 };
 
-const updateDialog = ref(false);
-
-const deleteCategoryDialog = ref(false);
-
 const deleteSpotDialog = ref(false);
+
+const fileterDialog = ref(false);
+
+const openFilterDialog = () => {
+    fileterDialog.value = true;
+};
 
 const selectedMap = ref(props.mapId);
 const selectedCharacter = ref(props.characterId);
@@ -184,32 +140,37 @@ const resetSpots = () => {
                                 <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
                                 <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
                             </div>
-                            <v-col col="2">
-                                <div class="mr-3">
-                                    <label for="map-select" class="mr-2">マップ</label>
-                                    <select
-                                        id="map-select"
-                                        v-model="selectedMap"
-                                        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                                    >
-                                        <option v-for="map in maps" :key="map.id" :value="map.id">{{ map.name }}</option>
-                                    </select>
-                                </div>
-                            </v-col>
-                            <v-col col="2">
-                                <div class="mr-3">
-                                    <label for="character-select" class="mr-2">キャラクター</label>
-                                    <select
-                                        id="character-select"
-                                        v-model="selectedCharacter"
-                                        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                                    >
-                                        <option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }}</option>
-                                    </select>
-                                </div>
-                            </v-col>
+                            <v-btn @click="openFilterDialog">絞り込み</v-btn>
+                            <v-dialog v-model="fileterDialog">
+                                <v-card>
+                                    <v-col col="2">
+                                        <div>
+                                            <label for="map-select" class="mr-2">マップ</label>
+                                            <select
+                                                id="map-select"
+                                                v-model="selectedMap"
+                                                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                                            >
+                                                <option v-for="map in maps" :key="map.id" :value="map.id">{{ map.name }}</option>
+                                            </select>
+                                        </div>
+                                    </v-col>
+                                    <v-col col="2">
+                                        <div>
+                                            <label for="character-select" class="mr-2">キャラクター</label>
+                                            <select
+                                                id="character-select"
+                                                v-model="selectedCharacter"
+                                                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                                            >
+                                                <option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }}</option>
+                                            </select>
+                                        </div>
+                                    </v-col>
+                                    <v-btn block @click="filterSpots">検索</v-btn>
+                                </v-card>
+                            </v-dialog>
                             <div class="mt-6">
-                                <v-btn block @click="filterSpots">検索</v-btn>
                                 <v-btn block @click="resetSpots" class="mt-2">リセット</v-btn>
                             </div>
                             <v-col col="2">
