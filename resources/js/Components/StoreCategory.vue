@@ -31,7 +31,7 @@ const storeCategory = () => {
 </script>
 
 <template>
-    <div class="mx-20 mt-4 text-right">
+    <div class="text-right">
         <v-btn @click="dialog = true">カテゴリーを追加する</v-btn>
     </div>
 

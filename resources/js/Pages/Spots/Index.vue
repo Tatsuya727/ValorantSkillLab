@@ -165,6 +165,10 @@ const selectedCharacter = ref(props.characterId);
 const filterSpots = () => {
     Inertia.get(route('spots.index'), { mapId: selectedMap.value, characterId: selectedCharacter.value });
 };
+
+const resetSpots = () => {
+    Inertia.get(route('spots.index'));
+};
 </script>
 
 <template>
@@ -172,16 +176,16 @@ const filterSpots = () => {
         <NavBar />
         <v-main class="bg-grey-lighten-2">
             <v-container fluid>
-                <v-row class="mt-4">
-                    <v-col cols="12">
-                        <div class="flex flex-wrap -mx-3 mb-6">
-                            <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
+                <v-row justify="center" class="mt-4">
+                    <v-col cols="10">
+                        <v-row>
+                            <div class="w-full md:w-1/5">
                                 <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
                                 <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
                             </div>
-                            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0 flex">
+                            <v-col col="2">
                                 <div class="mr-3">
-                                    <label for="map-select" class="mr-2">マップ:</label>
+                                    <label for="map-select" class="mr-2">マップ</label>
                                     <select
                                         id="map-select"
                                         v-model="selectedMap"
@@ -190,8 +194,10 @@ const filterSpots = () => {
                                         <option v-for="map in maps" :key="map.id" :value="map.id">{{ map.name }}</option>
                                     </select>
                                 </div>
+                            </v-col>
+                            <v-col col="2">
                                 <div class="mr-3">
-                                    <label for="character-select" class="mr-2">キャラクター:</label>
+                                    <label for="character-select" class="mr-2">キャラクター</label>
                                     <select
                                         id="character-select"
                                         v-model="selectedCharacter"
@@ -200,23 +206,27 @@ const filterSpots = () => {
                                         <option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }}</option>
                                     </select>
                                 </div>
-                                <div class="mr-3">
-                                    <v-btn block @click="filterSpots">検索</v-btn>
+                            </v-col>
+                            <div class="mt-6">
+                                <v-btn block @click="filterSpots">検索</v-btn>
+                                <v-btn block @click="resetSpots" class="mt-2">リセット</v-btn>
+                            </div>
+                            <v-col col="2">
+                                <div>
+                                    タグ:
+                                    <v-chip v-if="selectedTag" color="primary" close @click="resetSelectedTag"> {{ selectedTag }} ✖ </v-chip>
                                 </div>
-                            </div>
-                            <div class="mr-3">
-                                <v-chip v-if="selectedTag" color="primary" close @click="resetSelectedTag"> {{ selectedTag }} ✖ </v-chip>
-                            </div>
-                            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            </v-col>
+                            <v-col col="2">
                                 <StoreCategory />
-                            </div>
-                        </div>
+                            </v-col>
+                        </v-row>
                     </v-col>
                 </v-row>
-                <v-row v-if="props.spots" class="mx-15">
+                <v-row justify="start" v-if="props.spots" class="mx-15">
                     <template v-for="(category, index) in props.categories" :key="category.id">
                         <!-- カテゴリーヘッダー -->
-                        <v-col class="mt-4 bg-gray-50 rounded" cols="12">
+                        <v-col class="mt-4 bg-gray-50 rounded" cols="11">
                             <h4 class="flex justify-between text-2xl font-bold cursor-pointer" @click="toggleCategory(category.id)">
                                 <div class="flex items-center">
                                     <v-icon v-if="showCategory[category.id]" class="text-primary">mdi-chevron-down</v-icon>
@@ -278,7 +288,7 @@ const filterSpots = () => {
                         </v-col>
                         <!-- spot -->
                         <v-expand-transition>
-                            <v-col cols="12" v-if="showCategory[category.id]">
+                            <v-col cols="11" v-if="showCategory[category.id]">
                                 <div class="flex flex-wrap mx-auto gap-4">
                                     <v-slide-group selected-class="bg-success" show-arrows>
                                         <v-slide-group-item v-for="spot in props.spots" :key="spot.id">
