@@ -238,17 +238,19 @@ const resetSpots = () => {
                                                 <div v-if="(!props.mapId && !props.characterId) || (spot.map_id == props.mapId && spot.character_id == props.characterId)">
                                                     <!-- spot画像 -->
                                                     <Link :href="spot.show_url">
-                                                        <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="" />
+                                                        <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="サムネイル画像" />
                                                     </Link>
                                                     <div class="p-2">
                                                         <!-- マップとキャラクター -->
-                                                        <div class="flex">
-                                                            <p class="text-sm text-gray-700 mx-3">
-                                                                map: <span class="font-bold">{{ spot.map.name }}</span>
-                                                            </p>
-                                                            <p class="text-sm text-gray-700">
-                                                                character: <span class="font-bold">{{ spot.character.name }}</span>
-                                                            </p>
+                                                        <div class="flex justify-between">
+                                                            <div>
+                                                                <p class="text-sm text-gray-700 mx-3">
+                                                                    map: <span class="font-bold">{{ spot.map.name }}</span>
+                                                                </p>
+                                                                <p class="text-sm text-gray-700">
+                                                                    character: <span class="font-bold">{{ spot.character.name }}</span>
+                                                                </p>
+                                                            </div>
                                                             <v-menu>
                                                                 <template v-slot:activator="{ props }">
                                                                     <v-icon v-bind="props" class="ml-5 text-gray-600">mdi-dots-vertical</v-icon>
@@ -284,7 +286,8 @@ const resetSpots = () => {
                                                                 :key="index"
                                                                 @click="filterSpotsByTag(tag.name)"
                                                                 :class="{
-                                                                    'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer': !selectedTag.value,
+                                                                    'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer hover:text-white':
+                                                                        !selectedTag.value,
                                                                     'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
                                                                 }"
                                                             >
