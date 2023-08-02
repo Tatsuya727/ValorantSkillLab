@@ -25,10 +25,10 @@ Route::resource("maps", MapController::class);
 Route::resource("characters", CharacterController::class);
 
 Route::resource("spots", SpotController::class)
-->middleware('auth');
+->middleware(['auth', 'verified']);
 
 Route::resource('/categories', CategoryController::class)
-->middleware('auth');
+->middleware(['auth', 'verified']);
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
