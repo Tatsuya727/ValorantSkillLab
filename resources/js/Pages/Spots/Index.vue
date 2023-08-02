@@ -139,6 +139,7 @@ const selectedCharacter = ref(props.characterId);
 
 const selectTag = (tagName) => {
     selectedTag.value = tagName;
+    localStorage.setItem('selectedTag', tagName);
 };
 
 const filterSpots = () => {
