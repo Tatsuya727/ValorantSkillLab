@@ -147,6 +147,8 @@ const filterSpots = () => {
 };
 
 const resetSpots = () => {
+    selectedTag.value = '';
+    localStorage.removeItem('selectedTag');
     Inertia.get(route('spots.index'));
 };
 </script>
