@@ -145,7 +145,7 @@ const resetSpots = () => {
                                 <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
                             </div>
                             <v-btn @click="openFilterDialog">絞り込み</v-btn>
-                            <v-dialog v-model="fileterDialog">
+                            <v-dialog v-model="fileterDialog" max-width="800px">
                                 <v-card>
                                     <v-col col="2">
                                         <div>
@@ -171,21 +171,20 @@ const resetSpots = () => {
                                             </select>
                                         </div>
                                     </v-col>
-                                    <div class="flex flex-wrap">
-                                        <div
-                                            v-for="(tag, index) in tags"
-                                            :key="index"
-                                            :class="{
-                                                'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer hover:text-white hover:bg-cyan-500':
-                                                    !selectedTag.value,
-                                                'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
-                                            }"
-                                            style="flex: 0 0 auto"
-                                        >
-                                            <div>{{ tag.name }}</div>
+                                    <div class="flex flex-wrap ml-3">
+                                        <div v-for="(tag, index) in tags" :key="index">
+                                            <div
+                                                :class="{
+                                                    'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer hover:text-white hover:bg-cyan-500':
+                                                        !selectedTag.value,
+                                                    'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
+                                                }"
+                                            >
+                                                {{ tag.name }}
+                                            </div>
                                         </div>
                                     </div>
-                                    <v-btn block @click="filterSpots">検索</v-btn>
+                                    <v-btn color="success" block @click="filterSpots">検索</v-btn>
                                     <v-card-actions>
                                         <v-btn type="button" color="primary" block @click="fileterDialog = false">閉じる</v-btn>
                                     </v-card-actions>
