@@ -203,9 +203,11 @@ const removeImageForm = (index) => {
                             <div class="flex flex-wrap">
                                 <label for="tags" class="block text-sm font-medium text-gray-700">タグ<span>(3つまで選択可)</span></label>
                                 <!-- 選択したタグを表示 -->
-                                <div v-for="tagId in form.tags" :key="tagId" class="py-1 px-2 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer" @click="removeTag(tagId)">
-                                    {{ tags.find((tag) => tag.id === tagId).name }}
-                                    ✖
+                                <div v-for="tagId in form.tags" :key="tagId" class="ml-2">
+                                    <v-chip color="primary" @click="removeTag(tagId)">
+                                        {{ tags.find((tag) => tag.id === tagId).name }}
+                                        ✖
+                                    </v-chip>
                                 </div>
                             </div>
                             <select

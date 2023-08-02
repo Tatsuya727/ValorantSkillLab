@@ -42,9 +42,25 @@ class SpotController extends Controller
             $spot->show_url = route('spots.show', ['spot' => $spot->id]);
         }
 
+        $mapName = $request->query('mapName');
+        $mapId = $request->query('mapId');
+        $characterName = $request->query('characterName');
+        $characterId = $request->query('characterId');
+
+        $characters = Character::all();
+        $maps = Map::all();
+        $tags = Tag::all();
+
         return Inertia::render('Spots/Index', [
             'spots' => $spots,
             'categories' => $categories,
+            'mapName' => $mapName,
+            'mapId' => $mapId,
+            'characterName' => $characterName,
+            'characterId' => $characterId,
+            'characters' => $characters,
+            'maps' => $maps,
+            'tags' => $tags,
         ]);
     }
 
