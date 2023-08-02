@@ -46,8 +46,10 @@ class SpotController extends Controller
         $mapId = $request->query('mapId');
         $characterName = $request->query('characterName');
         $characterId = $request->query('characterId');
+
         $characters = Character::all();
         $maps = Map::all();
+        $tags = Tag::all();
 
         return Inertia::render('Spots/Index', [
             'spots' => $spots,
@@ -58,6 +60,7 @@ class SpotController extends Controller
             'characterId' => $characterId,
             'characters' => $characters,
             'maps' => $maps,
+            'tags' => $tags,
         ]);
     }
 

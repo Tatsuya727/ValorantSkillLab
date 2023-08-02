@@ -39,6 +39,10 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    tags: {
+        type: Array,
+        required: false,
+    },
 });
 
 const showCategory = reactive({});
@@ -167,9 +171,27 @@ const resetSpots = () => {
                                             </select>
                                         </div>
                                     </v-col>
+                                    <div class="flex flex-wrap">
+                                        <div
+                                            v-for="(tag, index) in tags"
+                                            :key="index"
+                                            :class="{
+                                                'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer hover:text-white hover:bg-cyan-500':
+                                                    !selectedTag.value,
+                                                'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
+                                            }"
+                                            style="flex: 0 0 auto"
+                                        >
+                                            <div>{{ tag.name }}</div>
+                                        </div>
+                                    </div>
                                     <v-btn block @click="filterSpots">検索</v-btn>
+                                    <v-card-actions>
+                                        <v-btn type="button" color="primary" block @click="fileterDialog = false">閉じる</v-btn>
+                                    </v-card-actions>
                                 </v-card>
                             </v-dialog>
+
                             <div class="mt-6">
                                 <v-btn block @click="resetSpots" class="mt-2">リセット</v-btn>
                             </div>
