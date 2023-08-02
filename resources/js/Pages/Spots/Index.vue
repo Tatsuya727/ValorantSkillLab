@@ -51,6 +51,20 @@ props.categories.forEach((category) => {
     showCategory[category.id] = true;
 });
 
+// すべてのカテゴリーを開く
+const openAllCategory = () => {
+    props.categories.forEach((category) => {
+        showCategory[category.id] = true;
+    });
+};
+
+// すべてのカテゴリーを閉じる
+const closeAllCategory = () => {
+    props.categories.forEach((category) => {
+        showCategory[category.id] = false;
+    });
+};
+
 const deleteSpotId = ref(null);
 
 // Spotの削除

@@ -16,6 +16,8 @@ const toggleCategory = (id) => {
     props.showCategory[id] = !props.showCategory[id];
 };
 
+
+
 const openUpdateDialog = (category) => {
     form.name = category.name;
     updateDialog.value = true;
