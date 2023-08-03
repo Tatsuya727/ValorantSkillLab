@@ -9,6 +9,7 @@ use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\SpotController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 
 /*
@@ -67,6 +68,8 @@ Route::post('/email/verification-notification', function (Request $request) {
 
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+Route::post('/send-verification-email', 'VerificationController@sendEmail')->middleware('auth');
 
 
 require __DIR__.'/auth.php';
