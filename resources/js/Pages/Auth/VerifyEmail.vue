@@ -24,7 +24,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
         <Head title="Email Verification" />
 
         <div class="mb-4 text-sm text-gray-600">
-            ご登録ありがとうございます！登録を始める前に、以下のリンクをクリックしてメールアドレスを確認してください。 メールが届いていない場合は、再度お送りいたします。
+            ご登録ありがとうございます！登録を始める前に、以下のリンクをクリックしてメールアドレスを確認してください。 メールが届いていない場合は、下記のボタンをクリックして再送信してください。
         </div>
 
         <div class="mb-4 font-medium text-sm text-green-600" v-if="verificationLinkSent">登録時に入力されたEメールアドレスに新しい認証リンクが送信されました。</div>
