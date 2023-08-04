@@ -8,6 +8,10 @@ use App\Http\Controllers\MapController;
 use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\SpotController;
 use App\Http\Controllers\CategoryController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use App\Http\Controllers\GoogleLoginController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,15 +24,21 @@ use App\Http\Controllers\CategoryController;
 |
 */
 
+Route::get('/auth/google', [GoogleLoginController::class, 'redirectToGoogle'])
+    ->name('login.google');
+
+Route::get('/auth/google/callback', [GoogleLoginController::class, 'handleGoogleCallback'])
+    ->name('login.google.callback');
+
 Route::resource("maps", MapController::class);
 
 Route::resource("characters", CharacterController::class);
 
 Route::resource("spots", SpotController::class)
-->middleware('auth');
+->middleware(['auth', 'verified']);
 
 Route::resource('/categories', CategoryController::class)
-->middleware('auth');
+->middleware(['auth', 'verified']);
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -48,5 +58,25 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+Route::get('/email/verify', function () {
+    return Inertia::render('Auth/VerifyEmail');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect()->route('dashboard');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+Route::post('/send-verification-email', 'VerificationController@sendEmail')->middleware('auth');
+
 
 require __DIR__.'/auth.php';

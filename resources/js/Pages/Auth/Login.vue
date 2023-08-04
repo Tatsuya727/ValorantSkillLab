@@ -74,5 +74,12 @@ const submit = () => {
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing"> Log in </PrimaryButton>
             </div>
         </form>
+
+        <!-- google login -->
+        <div class="flex items-center justify-end mt-4">
+            <Link :href="route('login.google')" class="ml-4">
+                <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" style="margin-left: 3em" />
+            </Link>
+        </div>
     </GuestLayout>
 </template>
