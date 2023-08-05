@@ -29,6 +29,12 @@ class GoogleLoginController extends Controller
                 ['name' => $socialiteUser->name,]
             );
 
+            // providerにgoogleをセット
+            if ($user->provider !== 'google') {
+                $user->provider = 'google';
+                $user->save();
+            }
+
             Auth::login($user, true);
 
             return Inertia::render('Spots/Index');

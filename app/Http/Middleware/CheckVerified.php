@@ -19,7 +19,7 @@ class CheckVerified
         $user = $request->user();
 
         // passwordがnullの場合は、google認証
-        if (!is_null($user->password) && !$user->hasVerifiedEmail()) {
+        if ($user->provider !== 'google' && !$user->hasVerifiedEmail()) {
             return redirect()->route('verification.notice');
         }
 
