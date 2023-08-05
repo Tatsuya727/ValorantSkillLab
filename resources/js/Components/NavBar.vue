@@ -17,7 +17,7 @@ const links = [
         <v-sheet color="grey-lighten-4" class="pa-4">
             <v-avatar class="mb-4" color="grey-darken-1" size="64"></v-avatar>
 
-            <div>test user</div>
+            <div>{{ $page.props.auth.user.name }}</div>
         </v-sheet>
 
         <v-divider></v-divider>

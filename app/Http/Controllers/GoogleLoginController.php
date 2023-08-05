@@ -31,7 +31,7 @@ class GoogleLoginController extends Controller
 
             Auth::login($user, true);
 
-            return Inertia::render('spots/Index');
+            return Inertia::render('Spots/Index');
         } catch (Exception $e) {
             Log::error($e);
             throw $e;
