@@ -158,8 +158,8 @@ const resetSpots = () => {
 <template>
     <v-app id="inspire">
         <NavBar />
-        <v-main class="bg-black">
-            <v-container fluid class="bg-gray-700 mt-5 ml-5">
+        <v-main class="bg-zinc-900">
+            <v-container fluid class="bg-neutral-700 mt-5 ml-5">
                 <v-row justify="center" class="mt-4">
                     <v-col cols="10">
                         <v-row>
