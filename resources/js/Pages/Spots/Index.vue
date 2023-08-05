@@ -155,6 +155,7 @@ const resetSpots = () => {
 
 <template>
     <v-app id="inspire">
+        <Head title="お気に入り" />
         <NavBar />
         <v-main class="bg-grey-lighten-2">
             <v-container fluid>
