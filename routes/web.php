@@ -32,13 +32,14 @@ Route::get('/auth/google/callback', [GoogleLoginController::class, 'handleGoogle
 
 Route::resource("maps", MapController::class);
 
-Route::resource("characters", CharacterController::class);
+Route::resource("characters", CharacterController::class)
+->middleware(['auth']);
 
 Route::resource("spots", SpotController::class)
-->middleware(['auth', 'verified']);
+->middleware(['auth', 'check.verified']);
 
 Route::resource('/categories', CategoryController::class)
-->middleware(['auth', 'verified']);
+->middleware(['auth', 'check.verified']);
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -51,7 +52,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'check.verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

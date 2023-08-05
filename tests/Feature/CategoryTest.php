@@ -13,6 +13,8 @@ class CategoryTest extends TestCase
     /** @test */
     public function create_category()
     {
+        // 作成のテスト
+        
         $this->withoutExceptionHandling();
 
         // テスト用のユーザーを作成
@@ -41,6 +43,8 @@ class CategoryTest extends TestCase
     /** @test */
     public function delete_category()
     {
+        // 削除のテスト
+        
         $this->withoutExceptionHandling();
 
         // テスト用のユーザーを作成
