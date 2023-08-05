@@ -136,12 +136,12 @@ const removeImageForm = (index) => {
 <template>
     <v-app id="inspire">
         <NavBar />
-        <v-main class="bg-grey-lighten-2 flex justify-center min-h-screen mt-10">
-            <v-form @submit.prevent="storeSpot" class="w-full max-w-6xl">
+        <v-main class="bg-zinc-900 flex justify-center min-h-screen mt-10">
+            <v-form @submit.prevent="storeSpot" class="w-full max-w-7xl bg-neutral-700 p-10 rounded">
                 <!-- タイトル -->
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
-                        <label for="title" class="block text-sm font-medium text-gray-700">タイトル<span class="text-red-500">*</span></label>
+                        <label for="title" class="block text-sm font-medium text-white">タイトル<span class="text-red-500">*</span></label>
                         <input
                             type="text"
                             name="title"
@@ -156,7 +156,7 @@ const removeImageForm = (index) => {
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <!-- マップ -->
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label for="map_id" class="block text-sm font-medium text-gray-700">マップ<span class="text-red-500">*</span></label>
+                        <label for="map_id" class="block text-sm font-medium text-white">マップ<span class="text-red-500">*</span></label>
                         <select
                             name="map_id"
                             v-model="form.map_id"
@@ -170,7 +170,7 @@ const removeImageForm = (index) => {
 
                     <!-- キャラクター -->
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label for="character_id" class="block text-sm font-medium text-gray-700">キャラクター<span class="text-red-500">*</span></label>
+                        <label for="character_id" class="block text-sm font-medium text-white">キャラクター<span class="text-red-500">*</span></label>
                         <select
                             name="character_id"
                             v-model="form.character_id"
@@ -184,7 +184,7 @@ const removeImageForm = (index) => {
 
                     <!-- カテゴリー -->
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                        <label for="category_id" class="block text-sm font-medium text-gray-700">カテゴリー<span class="text-red-500">*</span></label>
+                        <label for="category_id" class="block text-sm font-medium text-white">カテゴリー<span class="text-red-500">*</span></label>
                         <select
                             name="category_id"
                             v-model="form.category_id"
@@ -201,7 +201,7 @@ const removeImageForm = (index) => {
                     <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
                         <div class="w-full px-3">
                             <div class="flex flex-wrap">
-                                <label for="tags" class="block text-sm font-medium text-gray-700">タグ<span>(3つまで選択可)</span></label>
+                                <label for="tags" class="block text-sm font-medium text-white">タグ<span>(3つまで選択可)</span></label>
                                 <!-- 選択したタグを表示 -->
                                 <div v-for="tagId in form.tags" :key="tagId" class="ml-2">
                                     <v-chip color="primary" @click="removeTag(tagId)">
@@ -227,7 +227,7 @@ const removeImageForm = (index) => {
                 <!-- 説明 -->
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
-                        <label for="description" class="block text-sm font-medium text-gray-700">説明<span class="text-red-500">*</span></label>
+                        <label for="description" class="block text-sm font-medium text-white">説明<span class="text-red-500">*</span></label>
                         <input
                             type="text"
                             name="description"
@@ -243,12 +243,12 @@ const removeImageForm = (index) => {
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div v-for="(image, index) in form.images" :key="index" class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <div class="my-5">
-                            <label class="mb-2 inline-block text-neutral-700 dark:text-neutral-200 font-bold" for="image_path">
+                            <label class="mb-2 inline-block text-white dark:text-neutral-200 font-bold" for="image_path">
                                 {{ index === 0 ? '結果' : index === 1 ? 'ポジション' : '追加' + (index - 1) }}
                                 <span v-if="index === 0 || index === 1" class="text-red-500">*</span>
                             </label>
                             <input
-                                class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+                                class="cursor-pointer relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
                                 type="file"
                                 name="image_path"
                                 @change="(e) => onFileChange(e, image)"
@@ -259,7 +259,7 @@ const removeImageForm = (index) => {
                             <button v-if="index >= 2" type="button" @click="removeImageForm(index)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">削除</button>
                         </div>
 
-                        <label for="description" class="block text-sm font-medium text-gray-700">説明</label>
+                        <label for="description" class="block text-sm font-medium text-white">説明</label>
                         <textarea
                             name="description"
                             v-model="image.description"

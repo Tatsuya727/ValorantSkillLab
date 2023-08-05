@@ -13,7 +13,7 @@ const links = [
 </script>
 
 <template>
-    <v-app-bar>
+    <v-app-bar color="grey-darken-3">
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title>ValorantSkillLab</v-toolbar-title>
 
@@ -25,8 +25,8 @@ const links = [
 
         <v-spacer></v-spacer>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer">
-        <v-sheet color="grey-lighten-4" class="pa-4">
+    <v-navigation-drawer v-model="drawer" color="grey-darken-3">
+        <v-sheet color="grey-darken-4" class="pa-4">
             <v-avatar class="mb-4" color="grey-darken-1" size="64"></v-avatar>
 
             <div v-if="$page.props.auth.user">{{ $page.props.auth.user.name }}</div>

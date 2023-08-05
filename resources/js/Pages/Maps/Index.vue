@@ -11,8 +11,8 @@ const props = defineProps({
 <template>
     <v-app id="inspire">
         <NavBar />
-        <v-main class="bg-grey-lighten-2">
-            <div class="flex flex-wrap justify-center mx-auto p-10 gap-4">
+        <v-main class="bg-zinc-900">
+            <div class="flex flex-wrap justify-center p-10 gap-4 bg-neutral-700 mt-5 mx-5 pb-10 rounded">
                 <ul v-for="map in maps" :key="map.id" class="w-1/4">
                     <li>
                         <Link :href="route('characters.index', { mapName: map.name, mapId: map.id })">
