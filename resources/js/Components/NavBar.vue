@@ -17,7 +17,16 @@ const links = [
         <v-sheet color="grey-lighten-4" class="pa-4">
             <v-avatar class="mb-4" color="grey-darken-1" size="64"></v-avatar>
 
-            <div>{{ $page.props.auth.user.name }}</div>
+            <div v-if="$page.props.auth.user">{{ $page.props.auth.user.name }}</div>
+            <div v-else>
+                <v-btn>
+                    <Link :href="route('login')">ログイン</Link>
+                </v-btn>
+
+                <v-btn class="ml-2">
+                    <Link :href="route('register')">新規登録 </Link>
+                </v-btn>
+            </div>
         </v-sheet>
 
         <v-divider></v-divider>
@@ -31,6 +40,9 @@ const links = [
 
                     <v-list-item-title>{{ text }}</v-list-item-title>
                 </Link>
+            </v-list-item>
+            <v-list-item>
+                <Link :href="route('logout')" method="post">ログアウト</Link>
             </v-list-item>
         </v-list>
     </v-navigation-drawer>
