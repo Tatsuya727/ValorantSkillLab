@@ -5,10 +5,14 @@ import { Link } from '@inertiajs/inertia-vue3';
 const drawer = ref(null);
 const route = inject('route'); // route関数を注入
 const links = [
-    ['mdi-map', 'Map', 'maps.index'],
-    ['mdi-account', 'Character', 'characters.index'],
-    ['mdi-spotlight', 'Spot', 'spots.index'],
-    ['mdi-plus-box', 'Create', 'spots.create'],
+    // ['mdi-map', 'Map', 'maps.index'],
+    // ['mdi-account', 'Character', 'characters.index'],
+    // ['mdi-spotlight', 'Spot', 'spots.index'],
+    // ['mdi-plus-box', 'Create', 'spots.create'],
+    ['mdi-map', 'Map', 'maps.index', 'Maps/Index'],
+    ['mdi-account', 'Character', 'characters.index', 'Characters/Index'],
+    ['mdi-spotlight', 'Spot', 'spots.index', 'Spots/Index'],
+    ['mdi-plus-box', 'Create', 'spots.create', 'Spots/Create'],
 ];
 </script>
 
@@ -44,17 +48,19 @@ const links = [
         <v-divider></v-divider>
 
         <v-list>
-            <v-list-item v-for="[icon, text, routeName] in links" :key="icon" link>
-                <Link :href="route(routeName)">
-                    <template v-slot:prepend>
+            <v-list-item v-for="[icon, text, routeName, routeComponent] in links" :key="icon" link>
+                <Link :href="route(routeName)" :class="{ 'text-blue-500': $page.component === routeComponent }">
+                    <v-list-item-title>
                         <v-icon>{{ icon }}</v-icon>
-                    </template>
-
-                    <v-list-item-title>{{ text }}</v-list-item-title>
+                        {{ text }}
+                    </v-list-item-title>
                 </Link>
             </v-list-item>
             <v-list-item>
-                <Link :href="route('logout')" method="post">ログアウト</Link>
+                <Link :href="route('logout')" method="post">
+                    <v-icon>mdi-logout</v-icon>
+                    ログアウト
+                </Link>
             </v-list-item>
         </v-list>
     </v-navigation-drawer>
