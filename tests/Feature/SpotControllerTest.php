@@ -19,6 +19,8 @@ class SpotControllerTest extends TestCase
     /** @test */
     public function create_spot()
     {
+        // 作成のテスト
+
         $this->withoutExceptionHandling();
 
         Storage::fake('public');  // フェイクのストレージを作成
@@ -65,6 +67,8 @@ class SpotControllerTest extends TestCase
     /** @test */
     public function delete_spot()
     {
+        // 削除のテスト
+        
         $this->withoutExceptionHandling();
 
         // テスト用のユーザーを作成

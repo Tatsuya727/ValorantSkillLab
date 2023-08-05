@@ -16,6 +16,8 @@ class UserRegistrationTest extends TestCase
     /** @test */
     public function a_user_is_created_with_default_categories()
     {
+        // ユーザー登録時にデフォルトのカテゴリーが作成される
+        
         // テスト用のユーザーデータを作成
         $userData = [
             'name' => 'Test User',

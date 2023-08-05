@@ -52,7 +52,8 @@ const links = [
                     </v-list-item-title>
                 </Link>
             </v-list-item>
-            <v-list-item>
+            <!-- $page.props.auth.userがいない場合は表示しない -->
+            <v-list-item v-if="$page.props.auth.user" link>
                 <Link :href="route('logout')" method="post">
                     <v-list-item-title>
                         <v-icon class="mr-4">mdi-logout</v-icon>
