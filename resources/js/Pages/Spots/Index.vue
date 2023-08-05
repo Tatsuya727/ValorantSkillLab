@@ -160,7 +160,7 @@ const resetSpots = () => {
         <NavBar />
         <v-main class="bg-zinc-900">
             <v-container fluid>
-                <div class="bg-neutral-700 pt-5 pb-10 mt-5 mx-5 rounded">
+                <div class="bg-neutral-700 pt-5 pb-10 mt-2 mx-2 rounded">
                     <v-row justify="center" class="mt-4">
                         <v-col cols="10">
                             <v-row>
