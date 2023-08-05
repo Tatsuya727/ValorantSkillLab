@@ -47,9 +47,11 @@ const props = defineProps({
 
 const showCategory = reactive({});
 
-props.categories.forEach((category) => {
-    showCategory[category.id] = true;
-});
+if (props.categories) {
+    props.categories.forEach((category) => {
+        showCategory[category.id] = true;
+    });
+}
 
 // すべてのカテゴリーを開く
 const openAllCategory = () => {
@@ -155,10 +157,9 @@ const resetSpots = () => {
 
 <template>
     <v-app id="inspire">
-        <Head title="お気に入り" />
         <NavBar />
-        <v-main class="bg-grey-lighten-2">
-            <v-container fluid>
+        <v-main class="bg-black">
+            <v-container fluid class="bg-gray-700 mt-5 ml-5">
                 <v-row justify="center" class="mt-4">
                     <v-col cols="10">
                         <v-row>

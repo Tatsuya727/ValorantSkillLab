@@ -16,8 +16,6 @@ const toggleCategory = (id) => {
     props.showCategory[id] = !props.showCategory[id];
 };
 
-
-
 const openUpdateDialog = (category) => {
     form.name = category.name;
     updateDialog.value = true;
@@ -37,7 +35,7 @@ const deleteCategory = (id) => {
 <template>
     <v-col class="mt-4 bg-gray-50 rounded" cols="11">
         <h4 class="flex justify-between text-2xl font-bold cursor-pointer" @click="toggleCategory(category.id)">
-            <div class="flex items-center">
+            <div class="flex items-center text-black">
                 <v-icon v-if="showCategory[category.id]" class="text-primary">mdi-chevron-down</v-icon>
                 <v-icon v-else class="text-secondary">mdi-chevron-right</v-icon>
                 <span class="ml-2">{{ category.name }}</span>
