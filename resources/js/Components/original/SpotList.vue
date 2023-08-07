@@ -86,7 +86,14 @@ const deleteSpotDialog = ref(false);
                 <v-slide-group selected-class="bg-success" show-arrows>
                     <v-slide-group-item v-for="spot in props.spots" :key="spot.id">
                         <div v-if="spot.category_id === category.id" class="flex flex-col items-center mb-4 bg-white rounded shadow mr-5">
-                            <div v-if="(!props.mapId && !props.characterId) || (spot.map_id == props.mapId && spot.character_id == props.characterId)">
+                            <div
+                                v-if="
+                                    (!props.mapId && !props.characterId) ||
+                                    (spot.map_id == props.mapId && spot.character_id == props.characterId) ||
+                                    spot.map_id == props.mapId ||
+                                    spot.character_id == props.characterId
+                                "
+                            >
                                 <!-- spot画像 -->
                                 <Link :href="spot.show_url">
                                     <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="サムネイル画像" />
