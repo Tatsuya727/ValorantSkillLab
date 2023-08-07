@@ -29,7 +29,7 @@ const links = [
         <v-sheet color="grey-darken-4" class="pa-4">
             <!-- <v-avatar class="mb-4" color="grey-darken-1" size="64"></v-avatar> -->
 
-            <div v-if="$page.props.auth.user">{{ $page.props.auth.user.name }}</div>
+            <div v-if="$page.props.auth.user" class="username">{{ $page.props.auth.user.name }}</div>
             <div v-else>
                 <v-btn>
                     <Link :href="route('login')">ログイン</Link>

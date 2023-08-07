@@ -4,12 +4,12 @@ import { mount } from '@vue/test-utils';
 
 import NavBar from '../NavBar.vue';
 
-function setup() {
+function setup(user = null) {
     const route = (name) => `route('${name}')`;
     const $page = {
         props: {
             auth: {
-                user: null,
+                user: user,
             },
         },
     };
@@ -28,21 +28,18 @@ function setup() {
     return wrapper;
 }
 
-// テストを実行
 describe('NavBar.vue', () => {
-    it('renders the app bar correctly', () => {
+    it('正しいタイトル', () => {
         // ダミーのroute関数を作成
         const wrapper = setup();
 
         // app barのタイトルを検証
         const title = wrapper.find('v-toolbar-title');
-        console.log('---');
-        console.log(title.text());
-        console.log('---');
+
         expect(title.text()).toBe('ValorantSkillLab');
     });
 
-    it('renders links correctly', () => {
+    it('正しいリンク', () => {
         // コンポーネントをマウント
         const wrapper = setup();
 
@@ -52,6 +49,46 @@ describe('NavBar.vue', () => {
         expect(wrapper.find('a[href="route(\'spots.index\')"]').exists()).toBeTruthy();
         expect(wrapper.find('a[href="route(\'spots.create\')"]').exists()).toBeTruthy();
     });
+});
 
-    // 他のテストケースを追加
+describe('ログインしていない場合', () => {
+    it('ログインボタンと新規登録ボタンが表示される', () => {
+        const wrapper = setup();
+
+        expect(wrapper.find('a[href="route(\'login\')"]').exists()).toBeTruthy();
+        expect(wrapper.find('a[href="route(\'register\')"]').exists()).toBeTruthy();
+    });
+
+    it('ログアウトボタンが表示されない', () => {
+        const wrapper = setup();
+
+        expect(wrapper.find('a[href="route(\'logout\')"]').exists()).toBeFalsy();
+    });
+});
+
+describe('ログインしている場合', () => {
+    it('ログアウトボタンが表示される', () => {
+        const loggedInUser = {
+            name: 'test',
+        };
+
+        const wrapper = setup({
+            user: loggedInUser,
+        });
+
+        expect(wrapper.find('a[href="route(\'logout\')"]').exists()).toBeTruthy();
+    });
+
+    it('ログインボタンと新規登録ボタンが表示されない', () => {
+        const loggedInUser = {
+            name: 'test',
+        };
+
+        const wrapper = setup({
+            user: loggedInUser,
+        });
+
+        expect(wrapper.find('a[href="route(\'login\')"]').exists()).toBeFalsy();
+        expect(wrapper.find('a[href="route(\'register\')"]').exists()).toBeFalsy();
+    });
 });
