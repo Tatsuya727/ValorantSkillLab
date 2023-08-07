@@ -30,6 +30,8 @@ const props = defineProps({
     },
 });
 
+const selectedTag = ref(localStorage.getItem('selectedTag') || '');
+
 // Spotの削除
 const setDeleteSpotId = (id) => {
     deleteSpotId.value = id;
@@ -125,8 +127,8 @@ const deleteSpotDialog = ref(false);
                                             </v-card>
                                         </v-dialog>
                                     </div>
-                                    <p class="text-sm text-gray-700 text-center">
-                                        title: <span class="font-bold spot-title">{{ spot.title }}</span>
+                                    <p class="text-sm text-gray-700 text-center spot-title">
+                                        title: <span class="font-bold">{{ spot.title }}</span>
                                     </p>
                                     <!-- タグの名前をすべて表示 -->
                                     <div class="flex flex-wrap justify-center">
