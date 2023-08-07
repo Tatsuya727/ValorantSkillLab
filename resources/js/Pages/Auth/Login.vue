@@ -24,7 +24,11 @@ const form = useForm({
 
 const submit = () => {
     form.post(route('login'), {
-        onError: (errors) => console.log(errors),
+        onError: (errors) => {
+            console.log(errors);
+            console.log(errors.email);
+            console.log(errors.password);
+        },
         onFinish: () => form.reset('password'),
     });
 };

@@ -37,7 +37,8 @@ class GoogleLoginController extends Controller
 
             Auth::login($user, true);
 
-            return Inertia::render('Spots/Index');
+            // ルートページにリダイレクト
+            return redirect()->route('spots.index');
         } catch (Exception $e) {
             Log::error($e);
             throw $e;
