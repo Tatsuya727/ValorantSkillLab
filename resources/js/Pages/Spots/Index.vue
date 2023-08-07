@@ -99,7 +99,7 @@ const resetSelectedTag = () => {
                                 <v-col col="2">
                                     <div>
                                         タグ:
-                                        <v-chip v-if="selectedTag" color="primary" close @click="resetSelectedTag"> {{ selectedTag }} ✖ </v-chip>
+                                        <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
                                     </div>
                                 </v-col>
                                 <v-col col="2">
