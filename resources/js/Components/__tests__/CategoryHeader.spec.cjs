@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import CategoryHeader from '../CategoryHeader.vue';
+import CategoryHeader from '../original/CategoryHeader.vue';
 
 describe('CategoryHeader', () => {
     const category = { id: 1, name: 'Test Category' };

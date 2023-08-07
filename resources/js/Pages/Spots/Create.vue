@@ -1,8 +1,8 @@
 <script setup>
 import { reactive, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
-import NavBar from '@/Components/NavBar.vue';
-import StoreCategory from '@/Components/StoreCategory.vue';
+import NavBar from '@/Components/original/NavBar.vue';
+import StoreCategory from '@/Components/original/StoreCategory.vue';
 
 const props = defineProps({
     maps: {

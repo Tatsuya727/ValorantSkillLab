@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import NavBar from '../NavBar.vue';
+import NavBar from '../original/NavBar.vue';
 
 function setup(user = null) {
     const route = (name) => `route('${name}')`;

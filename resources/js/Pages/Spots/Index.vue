@@ -1,7 +1,8 @@
 <script setup>
-import NavBar from '@/Components/NavBar.vue';
-import StoreCategory from '@/Components/StoreCategory.vue';
-import CategoryHeader from '@/Components/CategoryHeader.vue';
+import NavBar from '@/Components/original/NavBar.vue';
+import StoreCategory from '@/Components/original/StoreCategory.vue';
+import CategoryHeader from '@/Components/original/CategoryHeader.vue';
+import CategoryControls from '@/Components/original/CategoryControls.vue';
 import { defineProps, reactive, ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
@@ -52,20 +53,6 @@ if (props.categories) {
         showCategory[category.id] = true;
     });
 }
-
-// すべてのカテゴリーを開く
-const openAllCategory = () => {
-    props.categories.forEach((category) => {
-        showCategory[category.id] = true;
-    });
-};
-
-// すべてのカテゴリーを閉じる
-const closeAllCategory = () => {
-    props.categories.forEach((category) => {
-        showCategory[category.id] = false;
-    });
-};
 
 const deleteSpotId = ref(null);
 
@@ -165,8 +152,7 @@ const resetSpots = () => {
                         <v-col cols="10">
                             <v-row>
                                 <div class="w-full md:w-1/5">
-                                    <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
-                                    <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
+                                    <CategoryControls :categories="categories" :showCategory="showCategory" :openAllCategory="openAllCategory" :closeAllCategory="closeAllCategory" />
                                 </div>
                                 <div class="mt-6">
                                     <v-btn @click="openFilterDialog" class="mr-3">絞り込み</v-btn>
