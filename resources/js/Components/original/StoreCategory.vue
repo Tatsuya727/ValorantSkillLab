@@ -4,6 +4,7 @@ import { ref, reactive } from 'vue';
 import { usePage } from '@inertiajs/inertia-vue3';
 
 const dialog = ref(false);
+const errorMessage = ref(null);
 
 const form = reactive({
     name: null,
@@ -20,6 +21,11 @@ const checkRedirect = () => {
 };
 
 const storeCategory = () => {
+    if (!form.name) {
+        errorMessage.value = 'カテゴリー名を入力してください。';
+        return;
+    }
+
     checkRedirect();
     Inertia.post('/categories', form, {
         onSuccess: () => {
@@ -46,7 +52,7 @@ const storeCategory = () => {
                             v-model="form.name"
                             class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
-                        <!-- <div v-if="errors.name" class="text-red-500">{{ errors.name }}</div> -->
+                        <div class="text-red-500">{{ errorMessage }}</div>
                         <v-btn type="submit" color="success" block class="mt-5">追加</v-btn>
                     </div>
                 </v-card-text>
