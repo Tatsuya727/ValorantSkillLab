@@ -36,6 +36,7 @@ const resetSpots = () => {
     localStorage.removeItem('selectedTag');
     Inertia.get(route('spots.index'));
 };
+const toggle = ref(null);
 </script>
 
 <template>
@@ -69,8 +70,19 @@ const resetSpots = () => {
                     </select>
                 </div>
             </v-col>
-            <div class="flex flex-wrap">
-                <div
+            <div class="flex flex-wrap m-3">
+                <v-btn-toggle v-model="toggle" divided v-for="(tag, index) in tags" :key="index">
+                    <v-btn
+                        color="indigo-darken-4
+
+"
+                        :value="tag.name"
+                        @click="selectTag(tag.name)"
+                        class="mr-2 mb-2 border"
+                        >{{ tag.name }}</v-btn
+                    >
+                </v-btn-toggle>
+                <!-- <div
                     v-for="(tag, index) in tags"
                     :key="index"
                     :class="{
@@ -81,7 +93,7 @@ const resetSpots = () => {
                     style="flex: 0 0 auto"
                 >
                     <div>{{ tag.name }}</div>
-                </div>
+                </div> -->
             </div>
             <v-btn color="success" block @click="filterSpots">検索</v-btn>
             <v-card-actions>
