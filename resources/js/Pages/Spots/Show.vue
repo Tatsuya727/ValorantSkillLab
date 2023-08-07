@@ -1,6 +1,6 @@
 <script setup>
-import NavBar from '@/Components/NavBar.vue';
-import ImageModal from '@/Components/ImageModal.vue';
+import NavBar from '@/Components/original/NavBar.vue';
+import ImageModal from '@/Components/original/ImageModal.vue';
 import { defineProps, ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';

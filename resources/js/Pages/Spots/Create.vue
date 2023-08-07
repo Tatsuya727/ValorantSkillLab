@@ -1,8 +1,8 @@
 <script setup>
 import { reactive, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
-import NavBar from '@/Components/NavBar.vue';
-import StoreCategory from '@/Components/StoreCategory.vue';
+import NavBar from '@/Components/original/NavBar.vue';
+import StoreCategory from '@/Components/original/StoreCategory.vue';
 
 const props = defineProps({
     maps: {
@@ -194,7 +194,9 @@ const removeImageForm = (index) => {
                             <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
                         </select>
                         <div v-if="errors.category_id" class="text-red-500">{{ errors.category_id }}</div>
-                        <StoreCategory />
+                        <div class="text-center mt-3">
+                            <StoreCategory />
+                        </div>
                     </div>
 
                     <!-- タグ -->
@@ -204,9 +206,8 @@ const removeImageForm = (index) => {
                                 <label for="tags" class="block text-sm font-medium text-white">タグ<span>(3つまで選択可)</span></label>
                                 <!-- 選択したタグを表示 -->
                                 <div v-for="tagId in form.tags" :key="tagId" class="ml-2">
-                                    <v-chip color="primary" @click="removeTag(tagId)">
+                                    <v-chip color="light-blue-lighten-5" close closable @click="removeTag(tagId)">
                                         {{ tags.find((tag) => tag.id === tagId).name }}
-                                        ✖
                                     </v-chip>
                                 </div>
                             </div>

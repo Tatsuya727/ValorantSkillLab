@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
-import NavBar from '@/Components/NavBar.vue';
+import NavBar from '@/Components/original/NavBar.vue';
 
 const props = defineProps({
     spot: {

@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import NavBar from '@/Components/NavBar.vue';
+import NavBar from '@/Components/original/NavBar.vue';
 
 defineProps({
     canLogin: {

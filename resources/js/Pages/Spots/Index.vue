@@ -1,7 +1,10 @@
 <script setup>
-import NavBar from '@/Components/NavBar.vue';
-import StoreCategory from '@/Components/StoreCategory.vue';
-import CategoryHeader from '@/Components/CategoryHeader.vue';
+import NavBar from '@/Components/original/NavBar.vue';
+import StoreCategory from '@/Components/original/StoreCategory.vue';
+import CategoryHeader from '@/Components/original/CategoryHeader.vue';
+import CategoryControls from '@/Components/original/CategoryControls.vue';
+import FilterControls from '@/Components/original/FilterControls.vue';
+import SpotList from '@/Components/original/SpotList.vue';
 import { defineProps, reactive, ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
@@ -47,65 +50,15 @@ const props = defineProps({
 
 const showCategory = reactive({});
 
+// カテゴリーの表示・非表示を切り替える
 if (props.categories) {
     props.categories.forEach((category) => {
         showCategory[category.id] = true;
     });
 }
 
-// すべてのカテゴリーを開く
-const openAllCategory = () => {
-    props.categories.forEach((category) => {
-        showCategory[category.id] = true;
-    });
-};
-
-// すべてのカテゴリーを閉じる
-const closeAllCategory = () => {
-    props.categories.forEach((category) => {
-        showCategory[category.id] = false;
-    });
-};
-
-const deleteSpotId = ref(null);
-
-// Spotの削除
-const setDeleteSpotId = (id) => {
-    deleteSpotId.value = id;
-    deleteSpotDialog.value = true;
-};
-
-// Spotの削除
-const deleteSpot = () => {
-    Inertia.delete(route('spots.destroy', { spot: deleteSpotId.value }), {
-        onSuccess: () => {
-            deleteSpotDialog.value = false;
-        },
-    });
-};
-
 // ページがロードされるたびにローカルストレージから選択されたタグを読み込む
 const selectedTag = ref(localStorage.getItem('selectedTag') || '');
-
-// タグを選択するとそのタグのスポットのみ表示する
-const filterSpotsByTag = (tag) => {
-    selectedTag.value = tag;
-    localStorage.setItem('selectedTag', tag);
-    if (props.mapName && props.mapId && props.characterName && props.characterId) {
-        Inertia.get(route('spots.index'), {
-            tag: tag,
-            mapName: props.mapName,
-            mapId: props.mapId,
-            characterName: props.characterName,
-            characterId: props.characterId,
-            selectedTag: selectedTag.value,
-        });
-    } else {
-        Inertia.get(route('spots.index'), {
-            tag: tag,
-        });
-    }
-};
 
 // ページを離れるときにローカルストレージから選択されたタグを削除する
 window.addEventListener('beforeunload', () => {
@@ -127,32 +80,6 @@ const resetSelectedTag = () => {
         Inertia.get(route('spots.index'));
     }
 };
-
-const deleteSpotDialog = ref(false);
-
-const fileterDialog = ref(false);
-
-const openFilterDialog = () => {
-    fileterDialog.value = true;
-};
-
-const selectedMap = ref(props.mapId);
-const selectedCharacter = ref(props.characterId);
-
-const selectTag = (tagName) => {
-    selectedTag.value = tagName;
-    localStorage.setItem('selectedTag', tagName);
-};
-
-const filterSpots = () => {
-    Inertia.get(route('spots.index'), { mapId: selectedMap.value, characterId: selectedCharacter.value, tag: selectedTag.value });
-};
-
-const resetSpots = () => {
-    selectedTag.value = '';
-    localStorage.removeItem('selectedTag');
-    Inertia.get(route('spots.index'));
-};
 </script>
 
 <template>
@@ -165,68 +92,20 @@ const resetSpots = () => {
                         <v-col cols="10">
                             <v-row>
                                 <div class="w-full md:w-1/5">
-                                    <v-btn color="primary" class="mr-3" @click="openAllCategory">すべて開く</v-btn>
-                                    <v-btn color="secondary" @click="closeAllCategory">すべて閉じる</v-btn>
+                                    <CategoryControls :categories="categories" :showCategory="showCategory" />
                                 </div>
-                                <div class="mt-6">
-                                    <v-btn @click="openFilterDialog" class="mr-3">絞り込み</v-btn>
-                                    <v-btn @click="resetSpots">リセット</v-btn>
-                                </div>
-                                <v-dialog v-model="fileterDialog" max-width="800px">
-                                    <v-card>
-                                        <v-col col="2">
-                                            <div>
-                                                <label for="map-select" class="mr-2">マップ</label>
-                                                <select
-                                                    id="map-select"
-                                                    v-model="selectedMap"
-                                                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                                                >
-                                                    <option v-for="map in maps" :key="map.id" :value="map.id">{{ map.name }}</option>
-                                                </select>
-                                            </div>
-                                        </v-col>
-                                        <v-col col="2">
-                                            <div>
-                                                <label for="character-select" class="mr-2">キャラクター</label>
-                                                <select
-                                                    id="character-select"
-                                                    v-model="selectedCharacter"
-                                                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                                                >
-                                                    <option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }}</option>
-                                                </select>
-                                            </div>
-                                        </v-col>
-                                        <div class="flex flex-wrap">
-                                            <div
-                                                v-for="(tag, index) in tags"
-                                                :key="index"
-                                                :class="{
-                                                    'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer hover:text-white hover:bg-cyan-500':
-                                                        selectedTag.value !== tag.name,
-                                                    'bg-cyan-500 text-white': selectedTag.value === tag.name,
-                                                }"
-                                                @click="selectTag(tag.name)"
-                                                style="flex: 0 0 auto"
-                                            >
-                                                <div>{{ tag.name }}</div>
-                                            </div>
-                                        </div>
-                                        <v-btn color="success" block @click="filterSpots">検索</v-btn>
-                                        <v-card-actions>
-                                            <v-btn type="button" color="primary" block @click="fileterDialog = false">閉じる</v-btn>
-                                        </v-card-actions>
-                                    </v-card>
-                                </v-dialog>
+
+                                <FilterControls :selectedTag="selectedTag" :maps="maps" :characters="characters" :tags="tags" :mapId="mapId" :characterId="characterId" />
                                 <v-col col="2">
                                     <div>
                                         タグ:
-                                        <v-chip v-if="selectedTag" color="primary" close @click="resetSelectedTag"> {{ selectedTag }} ✖ </v-chip>
+                                        <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
                                     </div>
                                 </v-col>
                                 <v-col col="2">
-                                    <StoreCategory />
+                                    <div class="text-right">
+                                        <StoreCategory />
+                                    </div>
                                 </v-col>
                             </v-row>
                         </v-col>
@@ -236,79 +115,16 @@ const resetSpots = () => {
                             <!-- カテゴリーヘッダー -->
                             <CategoryHeader :category="category" :showCategory="showCategory" :toggleCategory="toggleCategory" :openUpdateDialog="openUpdateDialog" :deleteCategory="deleteCategory" />
                             <!-- spot -->
-                            <v-expand-transition>
-                                <v-col cols="11" v-if="showCategory[category.id]">
-                                    <div class="flex flex-wrap mx-auto gap-4">
-                                        <v-slide-group selected-class="bg-success" show-arrows>
-                                            <v-slide-group-item v-for="spot in props.spots" :key="spot.id">
-                                                <div v-if="spot.category_id === category.id" class="flex flex-col items-center mb-4 bg-white rounded shadow mr-5">
-                                                    <div v-if="(!props.mapId && !props.characterId) || (spot.map_id == props.mapId && spot.character_id == props.characterId)">
-                                                        <!-- spot画像 -->
-                                                        <Link :href="spot.show_url">
-                                                            <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="サムネイル画像" />
-                                                        </Link>
-                                                        <div class="p-2">
-                                                            <!-- マップとキャラクター -->
-                                                            <div class="flex justify-between">
-                                                                <div>
-                                                                    <p class="text-sm text-gray-700 mx-3">
-                                                                        map: <span class="font-bold">{{ spot.map.name }}</span>
-                                                                    </p>
-                                                                    <p class="text-sm text-gray-700">
-                                                                        character: <span class="font-bold">{{ spot.character.name }}</span>
-                                                                    </p>
-                                                                </div>
-                                                                <v-menu>
-                                                                    <template v-slot:activator="{ props }">
-                                                                        <v-icon v-bind="props" class="ml-5 text-gray-600">mdi-dots-vertical</v-icon>
-                                                                    </template>
-                                                                    <v-list>
-                                                                        <v-list-item>
-                                                                            <v-list-item-title @click="setDeleteSpotId(spot.id)" class="cursor-pointer"
-                                                                                ><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title
-                                                                            >
-                                                                        </v-list-item>
-                                                                    </v-list>
-                                                                </v-menu>
-                                                                <!-- Spot削除ボタンの確認ダイアログ -->
-                                                                <v-dialog v-model="deleteSpotDialog" width="auto">
-                                                                    <v-card>
-                                                                        <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
-                                                                        <v-card-actions>
-                                                                            <v-btn variant="outlined" color="error" block @click="deleteSpot(spot.id)">削除する</v-btn>
-                                                                        </v-card-actions>
-                                                                        <v-card-actions>
-                                                                            <v-btn variant="outlined" color="primary" block @click="deleteSpotDialog = false">キャンセル</v-btn>
-                                                                        </v-card-actions>
-                                                                    </v-card>
-                                                                </v-dialog>
-                                                            </div>
-                                                            <p class="text-sm text-gray-700 text-center">
-                                                                title: <span class="font-bold">{{ spot.title }}</span>
-                                                            </p>
-                                                            <!-- タグの名前をすべて表示 -->
-                                                            <div class="flex flex-wrap justify-center">
-                                                                <div
-                                                                    v-for="(tag, index) in spot.tags"
-                                                                    :key="index"
-                                                                    @click="filterSpotsByTag(tag.name)"
-                                                                    :class="{
-                                                                        'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer hover:text-white hover:bg-cyan-500':
-                                                                            !selectedTag.value,
-                                                                        'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
-                                                                    }"
-                                                                >
-                                                                    <div>{{ tag.name }}</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </v-slide-group-item>
-                                        </v-slide-group>
-                                    </div>
-                                </v-col>
-                            </v-expand-transition>
+                            <SpotList
+                                :selectedTag="selectedTag"
+                                :showCategory="showCategory"
+                                :spots="props.spots"
+                                :category="category"
+                                :mapName="props.mapName"
+                                :mapId="props.mapId"
+                                :characterName="props.characterName"
+                                :characterId="props.characterId"
+                            />
                         </template>
                     </v-row>
                 </div>

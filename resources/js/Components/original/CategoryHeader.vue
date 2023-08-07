@@ -38,7 +38,7 @@ const deleteCategory = (id) => {
             <div class="flex items-center text-black">
                 <v-icon v-if="showCategory[category.id]" class="text-primary">mdi-chevron-down</v-icon>
                 <v-icon v-else class="text-secondary">mdi-chevron-right</v-icon>
-                <span class="ml-2">{{ category.name }}</span>
+                <span class="ml-2 categoryname">{{ category.name }}</span>
             </div>
             <v-menu>
                 <template v-slot:activator="{ props }">
@@ -47,11 +47,11 @@ const deleteCategory = (id) => {
 
                 <v-list>
                     <v-list-item>
-                        <v-list-item-title @click="openUpdateDialog(category)" class="cursor-pointer"><v-icon>mdi-pencil</v-icon>名前を変更</v-list-item-title>
+                        <v-list-item-title @click="openUpdateDialog(category)" class="cursor-pointer open-update-dialog"><v-icon>mdi-pencil</v-icon>名前を変更</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item>
-                        <v-list-item-title @click="deleteCategoryDialog = true" class="cursor-pointer"><v-icon>mdi-trash-can-outline</v-icon>削除</v-list-item-title>
+                        <v-list-item-title @click="deleteCategoryDialog = true" class="cursor-pointer open-delete-dialog"><v-icon>mdi-trash-can-outline</v-icon>削除</v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -73,7 +73,7 @@ const deleteCategory = (id) => {
                             </div>
                         </v-card-text>
                         <v-card-actions>
-                            <v-btn type="button" color="primary" block @click="updateDialog = false">閉じる</v-btn>
+                            <v-btn class="close-update-dialog" type="button" color="primary" block @click="updateDialog = false">閉じる</v-btn>
                         </v-card-actions>
                     </v-form>
                 </v-card>
@@ -87,7 +87,7 @@ const deleteCategory = (id) => {
                         <v-btn variant="outlined" color="error" block @click="deleteCategory(category.id)">削除する</v-btn>
                     </v-card-actions>
                     <v-card-actions>
-                        <v-btn variant="outlined" color="primary" block @click="deleteDialog = false">キャンセル</v-btn>
+                        <v-btn class="cancel-delete-dialog" variant="outlined" color="primary" block @click="deleteCategoryDialog = false">キャンセル</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
-import NavBar from '@/Components/NavBar.vue';
+import NavBar from '@/Components/original/NavBar.vue';
 
 const props = defineProps({
     characters: Object,
