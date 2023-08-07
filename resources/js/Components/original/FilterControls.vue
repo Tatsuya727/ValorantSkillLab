@@ -80,9 +80,11 @@ const resetFilter = () => {
                 </div>
             </v-col>
             <div class="flex flex-wrap m-3">
-                <v-btn-toggle v-model="toggle" divided v-for="(tag, index) in tags" :key="index">
-                    <v-btn color="indigo-darken-4" :value="tag.name" @click="selectTag(tag.name)" class="mr-2 mb-2 border">{{ tag.name }}</v-btn>
-                </v-btn-toggle>
+                <v-row justify="center">
+                    <v-btn-toggle v-model="toggle" divided v-for="(tag, index) in tags" :key="index">
+                        <v-btn color="indigo-darken-4" :value="tag.name" @click="selectTag(tag.name)" class="mr-2 mb-2 border">{{ tag.name }}</v-btn>
+                    </v-btn-toggle>
+                </v-row>
             </div>
             <v-row justify="center">
                 <v-col cols="5">

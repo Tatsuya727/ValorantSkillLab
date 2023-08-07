@@ -30,8 +30,8 @@ const storeCategory = () => {
 </script>
 
 <template>
-    <div class="text-right">
-        <v-btn class="addCategory" @click="dialog = true">カテゴリーを追加する</v-btn>
+    <div>
+        <v-btn color="success" class="addCategory" @click="dialog = true">カテゴリーを追加する</v-btn>
     </div>
 
     <v-dialog v-model="dialog" width="400">

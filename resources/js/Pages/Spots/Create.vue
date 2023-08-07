@@ -194,7 +194,9 @@ const removeImageForm = (index) => {
                             <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
                         </select>
                         <div v-if="errors.category_id" class="text-red-500">{{ errors.category_id }}</div>
-                        <StoreCategory />
+                        <div class="text-center mt-3">
+                            <StoreCategory />
+                        </div>
                     </div>
 
                     <!-- タグ -->

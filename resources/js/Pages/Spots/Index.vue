@@ -103,7 +103,9 @@ const resetSelectedTag = () => {
                                     </div>
                                 </v-col>
                                 <v-col col="2">
-                                    <StoreCategory />
+                                    <div class="text-right">
+                                        <StoreCategory />
+                                    </div>
                                 </v-col>
                             </v-row>
                         </v-col>
