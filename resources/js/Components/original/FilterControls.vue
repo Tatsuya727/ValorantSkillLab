@@ -36,7 +36,16 @@ const resetSpots = () => {
     localStorage.removeItem('selectedTag');
     Inertia.get(route('spots.index'));
 };
+
 const toggle = ref(null);
+
+const resetFilter = () => {
+    selectedMap.value = null;
+    selectedCharacter.value = null;
+    selectedTag.value = '';
+    localStorage.removeItem('selectedTag');
+    toggle.value = null;
+};
 </script>
 
 <template>
@@ -72,30 +81,17 @@ const toggle = ref(null);
             </v-col>
             <div class="flex flex-wrap m-3">
                 <v-btn-toggle v-model="toggle" divided v-for="(tag, index) in tags" :key="index">
-                    <v-btn
-                        color="indigo-darken-4
-
-"
-                        :value="tag.name"
-                        @click="selectTag(tag.name)"
-                        class="mr-2 mb-2 border"
-                        >{{ tag.name }}</v-btn
-                    >
+                    <v-btn color="indigo-darken-4" :value="tag.name" @click="selectTag(tag.name)" class="mr-2 mb-2 border">{{ tag.name }}</v-btn>
                 </v-btn-toggle>
-                <!-- <div
-                    v-for="(tag, index) in tags"
-                    :key="index"
-                    :class="{
-                        'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer hover:text-white hover:bg-cyan-500': selectedTag.value !== tag.name,
-                        'bg-cyan-500 text-white': selectedTag.value === tag.name,
-                    }"
-                    @click="selectTag(tag.name)"
-                    style="flex: 0 0 auto"
-                >
-                    <div>{{ tag.name }}</div>
-                </div> -->
             </div>
-            <v-btn color="success" block @click="filterSpots">検索</v-btn>
+            <v-row justify="center">
+                <v-col cols="5">
+                    <v-btn color="success" block @click="filterSpots">検索</v-btn>
+                </v-col>
+                <v-col cols="5">
+                    <v-btn type="button" color="primary" block @click="resetFilter">リセット</v-btn>
+                </v-col>
+            </v-row>
             <v-card-actions>
                 <v-btn type="button" color="primary" block @click="filterDialog = false">閉じる</v-btn>
             </v-card-actions>
