@@ -51,20 +51,33 @@ const deleteSpot = () => {
 const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
     localStorage.setItem('selectedTag', tag);
-    if (props.mapId && props.characterId) {
+    if (props.mapName && props.mapId && props.characterName && props.characterId) {
         Inertia.get(route('spots.index'), {
             tag: tag,
+            mapName: props.mapName,
             mapId: props.mapId,
+            characterName: props.characterName,
             characterId: props.characterId,
             selectedTag: selectedTag.value,
         });
-    } else if (props.mapId) {
-        Inertia.get(route('spots.index'), { tag: tag, mapId: props.mapId, selectedTag: selectedTag.value });
-    } else if (props.characterId) {
-        Inertia.get(route('spots.index'), { tag: tag, characterId: props.characterId, selectedTag: selectedTag.value });
+    } else if (props.mapName && props.mapId) {
+        Inertia.get(route('spots.index'), {
+            tag: tag,
+            mapName: props.mapName,
+            mapId: props.mapId,
+            selectedTag: selectedTag.value,
+        });
+    } else if (props.characterName && props.characterId) {
+        Inertia.get(route('spots.index'), {
+            tag: tag,
+            characterName: props.characterName,
+            characterId: props.characterId,
+            selectedTag: selectedTag.value,
+        });
     } else {
         Inertia.get(route('spots.index'), {
             tag: tag,
+            selectedTag: selectedTag.value,
         });
     }
 };
@@ -91,9 +104,9 @@ const deleteSpotDialog = ref(false);
                             <div
                                 v-if="
                                     (!props.mapId && !props.characterId) ||
-                                    (spot.map_id == props.mapId && spot.character_id == props.characterId) ||
-                                    spot.map_id == props.mapId ||
-                                    spot.character_id == props.characterId
+                                    (props.mapId && props.characterId && spot.map_id == props.mapId && spot.character_id == props.characterId) ||
+                                    (props.mapId && !props.characterId && spot.map_id == props.mapId) ||
+                                    (!props.mapId && props.characterId && spot.character_id == props.characterId)
                                 "
                             >
                                 <!-- spot画像 -->

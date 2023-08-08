@@ -69,11 +69,17 @@ window.addEventListener('beforeunload', () => {
 const resetSelectedTag = () => {
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
-    if (props.mapName && props.mapId && props.characterName && props.characterId) {
+    if (props.mapId && props.characterId) {
         Inertia.get(route('spots.index'), {
-            mapName: props.mapName,
             mapId: props.mapId,
-            characterName: props.characterName,
+            characterId: props.characterId,
+        });
+    } else if (props.mapId) {
+        Inertia.get(route('spots.index'), {
+            mapId: props.mapId,
+        });
+    } else if (props.characterId) {
+        Inertia.get(route('spots.index'), {
             characterId: props.characterId,
         });
     } else {
@@ -115,16 +121,7 @@ const resetSelectedTag = () => {
                             <!-- カテゴリーヘッダー -->
                             <CategoryHeader :category="category" :showCategory="showCategory" :toggleCategory="toggleCategory" :openUpdateDialog="openUpdateDialog" :deleteCategory="deleteCategory" />
                             <!-- spot -->
-                            <SpotList
-                                :selectedTag="selectedTag"
-                                :showCategory="showCategory"
-                                :spots="props.spots"
-                                :category="category"
-                                :mapName="props.mapName"
-                                :mapId="props.mapId"
-                                :characterName="props.characterName"
-                                :characterId="props.characterId"
-                            />
+                            <SpotList :selectedTag="selectedTag" :showCategory="showCategory" :spots="props.spots" :category="category" :mapId="props.mapId" :characterId="props.characterId" />
                         </template>
                     </v-row>
                 </div>
