@@ -99,6 +99,7 @@ const filterSpotsByTag = (tag) => {
                         :src="image.image_path"
                         alt=""
                         @click="openImageModal(image)"
+                        loading="lazy"
                     ></v-img>
 
                     <div v-if="image.description" class="border p-2 text-gray-500">{{ image.description }}</div>

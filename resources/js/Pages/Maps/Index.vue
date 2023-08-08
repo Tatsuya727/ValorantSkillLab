@@ -16,7 +16,7 @@ const props = defineProps({
                 <ul v-for="map in maps" :key="map.id" class="w-1/4">
                     <li>
                         <Link :href="route('characters.index', { mapName: map.name, mapId: map.id })">
-                            <img :src="map.image_path" :alt="map.name" class="w-full h-auto" />
+                            <img :src="map.image_path" :alt="map.name" class="w-full h-auto" loading="lazy" />
                         </Link>
                     </li>
                 </ul>
