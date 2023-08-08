@@ -51,15 +51,17 @@ const deleteSpot = () => {
 const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
     localStorage.setItem('selectedTag', tag);
-    if (props.mapName && props.mapId && props.characterName && props.characterId) {
+    if (props.mapId && props.characterId) {
         Inertia.get(route('spots.index'), {
             tag: tag,
-            mapName: props.mapName,
             mapId: props.mapId,
-            characterName: props.characterName,
             characterId: props.characterId,
             selectedTag: selectedTag.value,
         });
+    } else if (props.mapId) {
+        Inertia.get(route('spots.index'), { tag: tag, mapId: props.mapId, selectedTag: selectedTag.value });
+    } else if (props.characterId) {
+        Inertia.get(route('spots.index'), { tag: tag, characterId: props.characterId, selectedTag: selectedTag.value });
     } else {
         Inertia.get(route('spots.index'), {
             tag: tag,

@@ -27,6 +27,8 @@ class SpotController extends Controller
         $tag = $request->query('tag');
         $mapName = $request->query('mapName');
         $mapId = $request->query('mapId');
+        $characterName = $request->query('characterName');
+        $characterId = $request->query('characterId');
 
         $spots = Spot::with(['images', 'map', 'character', 'tags'])
             ->when($tag, function ($query, $tag) {
@@ -54,8 +56,7 @@ class SpotController extends Controller
             $spot->show_url = route('spots.show', ['spot' => $spot->id]);
         }
         
-        $characterName = $request->query('characterName');
-        $characterId = $request->query('characterId');
+
 
         $characters = Character::all();
         $maps = Map::all();
