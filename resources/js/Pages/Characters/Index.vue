@@ -13,7 +13,7 @@ const props = defineProps({
         <NavBar />
         <v-main class="bg-zinc-900">
             <div class="bg-neutral-700 mt-5 mx-5 pb-10 rounded">
-                <div class="text-center font-bold text-lg text-white">選択したマップ: {{ $page.props.mapName }}</div>
+                <div class="pt-5 text-center font-bold text-lg text-white">選択したマップ: {{ $page.props.mapName }}</div>
                 <div class="flex flex-wrap justify-center mx-auto gap-4">
                     <ul v-for="character in characters" :key="character.id" class="w-1/6">
                         <li>

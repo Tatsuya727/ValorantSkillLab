@@ -103,7 +103,7 @@ const resetSelectedTag = () => {
 
                                 <FilterControls :selectedTag="selectedTag" :maps="maps" :characters="characters" :tags="tags" :mapId="mapId" :characterId="characterId" />
                                 <v-col col="2">
-                                    <div>
+                                    <div class="text-white">
                                         タグ:
                                         <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
                                     </div>
