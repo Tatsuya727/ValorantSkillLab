@@ -34,7 +34,11 @@ const resetSelectedTag = () => {
 </script>
 
 <template>
-    <div class="text-white">
+    <div class="share-spot-search">
+        <v-btn>絞り込み</v-btn>
+        <v-text-field class="text-white" label="検索" variant="outlined"></v-text-field>
+    </div>
+    <div class="text-white ml-10">
         タグ:
         <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
     </div>
