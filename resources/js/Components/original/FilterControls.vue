@@ -11,14 +11,6 @@ const props = defineProps({
     characters: Array,
 });
 
-const maps = ref([
-    { id: 1, name: 'アセント', image_path: 'images/maps/アセント.jpg' },
-    { id: 2, name: 'バインド', image_path: 'images/maps/バインド.jpg' },
-    { id: 3, name: 'ヘイブン', image_path: 'images/maps/ヘイブン.jpg' },
-    { id: 4, name: 'スプリット', image_path: 'images/maps/スプリット.jpg' },
-    { id: 5, name: 'アイスボックス', image_path: 'images/maps/アイスボックス.jpg' },
-]);
-
 const selectedTag = ref(props.selectedTag);
 
 const filterDialog = ref(false);

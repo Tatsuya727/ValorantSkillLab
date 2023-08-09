@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/inertia-vue3';
 import { defineProps, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+import Pagination from '@/Components/original/Pagination.vue';
 
 const props = defineProps({
     spots: {
@@ -65,7 +66,7 @@ const filterSpotsByTag = (tag) => {
 </script>
 
 <template>
-    <div v-for="spot in props.spots" :key="spot.id" class="m-10 text-white">
+    <div v-for="spot in props.spots.data" :key="spot.id" class="m-10 text-white">
         <div class="flex">
             <Link :href="spot.show_url">
                 <div><img :width="300" cover class="rounded-l-lg" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy" /></div>
@@ -99,4 +100,5 @@ const filterSpotsByTag = (tag) => {
             </div>
         </div>
     </div>
+    <Pagination class="mt-6" :links="props.spots.links"></Pagination>
 </template>

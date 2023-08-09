@@ -22,7 +22,7 @@ class ShareSpotController extends Controller
                     $query->where('name', $tag);
                 });
             })
-            ->get();
+            ->paginate(5);
 
         // ユーザーごとにカテゴリーを取得
         // $categories = Category::where('user_id', auth()->id())->get();
