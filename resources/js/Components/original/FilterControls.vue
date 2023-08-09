@@ -11,6 +11,14 @@ const props = defineProps({
     characters: Array,
 });
 
+const maps = ref([
+    { id: 1, name: 'アセント', image_path: 'images/maps/アセント.jpg' },
+    { id: 2, name: 'バインド', image_path: 'images/maps/バインド.jpg' },
+    { id: 3, name: 'ヘイブン', image_path: 'images/maps/ヘイブン.jpg' },
+    { id: 4, name: 'スプリット', image_path: 'images/maps/スプリット.jpg' },
+    { id: 5, name: 'アイスボックス', image_path: 'images/maps/アイスボックス.jpg' },
+]);
+
 const selectedTag = ref(props.selectedTag);
 
 const filterDialog = ref(false);
@@ -34,6 +42,7 @@ const filterSpots = () => {
 const resetSpots = () => {
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
+    console.log(props.maps);
     Inertia.get(route('spots.index'));
 };
 
@@ -57,26 +66,12 @@ const resetFilter = () => {
         <v-card>
             <v-col col="2">
                 <div>
-                    <label for="map-select" class="mr-2">マップ</label>
-                    <select
-                        id="map-select"
-                        v-model="selectedMap"
-                        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                    >
-                        <option v-for="map in maps" :key="map.id" :value="map.id">{{ map.name }}</option>
-                    </select>
+                    <v-autocomplete label="マップ" v-model="selectedMap" :items="maps" item-title="name" item-value="id" variant="outlined"></v-autocomplete>
                 </div>
             </v-col>
             <v-col col="2">
                 <div>
-                    <label for="character-select" class="mr-2">キャラクター</label>
-                    <select
-                        id="character-select"
-                        v-model="selectedCharacter"
-                        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                    >
-                        <option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }}</option>
-                    </select>
+                    <v-autocomplete label="キャラクター" v-model="selectedCharacter" :items="characters" item-title="name" variant="outlined"> </v-autocomplete>
                 </div>
             </v-col>
             <div class="flex flex-wrap m-3">
@@ -95,7 +90,7 @@ const resetFilter = () => {
                 </v-col>
             </v-row>
             <v-card-actions>
-                <v-btn type="button" color="primary" block @click="filterDialog = false">閉じる</v-btn>
+                <v-btn type="button" block @click="filterDialog = false">閉じる</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
