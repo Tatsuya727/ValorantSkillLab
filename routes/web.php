@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\SpotController;
+use App\Http\Controllers\ShareSpotController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -37,6 +38,9 @@ Route::resource("characters", CharacterController::class)
 
 Route::resource("spots", SpotController::class)
 ->middleware(['auth', 'check.verified']);
+
+Route::get("/sharespots", [ShareSpotController::class, 'index'])
+->name('sharespots.index'); 
 
 Route::resource('/categories', CategoryController::class)
 ->middleware(['auth', 'check.verified']);

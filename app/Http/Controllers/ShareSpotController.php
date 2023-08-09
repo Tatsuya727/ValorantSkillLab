@@ -10,7 +10,7 @@ use App\Models\Character;
 use App\Models\Tag;
 use Inertia\Inertia;
 
-class ShareSpotsController extends Controller
+class ShareSpotController extends Controller
 {
     public function index(Request $request)
     {
@@ -22,20 +22,10 @@ class ShareSpotsController extends Controller
                     $query->where('name', $tag);
                 });
             })
-            ->when($mapName, function ($query, $mapName) {
-                return $query->whereHas('map', function ($query) use ($mapName) {
-                    $query->where('name', $mapName);
-                });
-            })
-            ->when($mapId, function ($query, $mapId) {
-                return $query->whereHas('map', function ($query) use ($mapId) {
-                    $query->where('id', $mapId);
-                });
-            })
             ->get();
 
         // ユーザーごとにカテゴリーを取得
-        $categories = Category::where('user_id', auth()->id())->get();
+        // $categories = Category::where('user_id', auth()->id())->get();
 
         // 各spotにshow_urlプロパティを追加
         foreach ($spots as $spot) {
@@ -48,9 +38,9 @@ class ShareSpotsController extends Controller
         $maps = Map::all();
         $tags = Tag::all();
 
-        return Inertia::render('Spots/Index', [
+        return Inertia::render('ShareSpots/Index', [
             'spots' => $spots,
-            'categories' => $categories,
+            // 'categories' => $categories,
             'characters' => $characters,
             'maps' => $maps,
             'tags' => $tags,
