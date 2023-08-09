@@ -37,10 +37,11 @@ class ShareSpotController extends Controller
         $characters = Character::all();
         $maps = Map::all();
         $tags = Tag::all();
+        $categories = Category::all();
 
         return Inertia::render('ShareSpots/Index', [
             'spots' => $spots,
-            // 'categories' => $categories,
+            'categories' => $categories,
             'characters' => $characters,
             'maps' => $maps,
             'tags' => $tags,
