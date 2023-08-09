@@ -71,7 +71,7 @@ const filterSpotsByTag = (tag) => {
             <Link :href="spot.show_url">
                 <div><img :width="375" cover class="rounded-l-lg" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy" /></div>
             </Link>
-            <div class="p-4 bg-zinc-900 rounded w-full">
+            <div class="p-4 bg-zinc-900 rounded w-1/3">
                 <Link :href="spot.show_url">
                     <h1 class="text-2xl font-bold">{{ spot.title }}</h1>
                     <div class="mt-2">

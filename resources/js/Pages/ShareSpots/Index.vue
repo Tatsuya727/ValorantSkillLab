@@ -1,6 +1,7 @@
 <script setup>
 import NavBar from '@/Components/original/NavBar.vue';
 import ShareSpotList from '@/Components/original/ShareSpotList.vue';
+import ShareSpotHeader from '@/Components/original/ShareSpotHeader.vue';
 import { defineProps, ref } from 'vue';
 
 const props = defineProps({
@@ -33,28 +34,6 @@ const selectedTag = ref(localStorage.getItem('selectedTag') || '');
 window.addEventListener('beforeunload', () => {
     localStorage.removeItem('selectedTag');
 });
-
-// 画面上部に表示されたタグをクリックすると、タグの絞り込みを解除する
-const resetSelectedTag = () => {
-    selectedTag.value = '';
-    localStorage.removeItem('selectedTag');
-    if (props.mapId && props.characterId) {
-        Inertia.get(route('sharespots.index'), {
-            mapId: props.mapId,
-            characterId: props.characterId,
-        });
-    } else if (props.mapId) {
-        Inertia.get(route('sharespots.index'), {
-            mapId: props.mapId,
-        });
-    } else if (props.characterId) {
-        Inertia.get(route('sharespots.index'), {
-            characterId: props.characterId,
-        });
-    } else {
-        Inertia.get(route('sharespots.index'));
-    }
-};
 </script>
 
 <template>
@@ -63,10 +42,7 @@ const resetSelectedTag = () => {
         <v-main class="bg-zinc-900">
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
-                    <div class="text-white">
-                        タグ:
-                        <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
-                    </div>
+                    <ShareSpotHeader :selectedTag="selectedTag" />
                     <ShareSpotList :selectedTag="selectedTag" :spots="props.spots" :category="category" />
                 </div>
             </v-container>
