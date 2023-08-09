@@ -25,11 +25,25 @@ class SpotController extends Controller
     public function index(Request $request)
     {
         $tag = $request->query('tag');
+        $mapName = $request->query('mapName');
+        $mapId = $request->query('mapId');
+        $characterName = $request->query('characterName');
+        $characterId = $request->query('characterId');
 
         $spots = Spot::with(['images', 'map', 'character', 'tags'])
             ->when($tag, function ($query, $tag) {
                 return $query->whereHas('tags', function ($query) use ($tag) {
                     $query->where('name', $tag);
+                });
+            })
+            ->when($mapName, function ($query, $mapName) {
+                return $query->whereHas('map', function ($query) use ($mapName) {
+                    $query->where('name', $mapName);
+                });
+            })
+            ->when($mapId, function ($query, $mapId) {
+                return $query->whereHas('map', function ($query) use ($mapId) {
+                    $query->where('id', $mapId);
                 });
             })
             ->get();
@@ -41,11 +55,8 @@ class SpotController extends Controller
         foreach ($spots as $spot) {
             $spot->show_url = route('spots.show', ['spot' => $spot->id]);
         }
+        
 
-        $mapName = $request->query('mapName');
-        $mapId = $request->query('mapId');
-        $characterName = $request->query('characterName');
-        $characterId = $request->query('characterId');
 
         $characters = Character::all();
         $maps = Map::all();

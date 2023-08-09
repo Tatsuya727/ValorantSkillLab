@@ -60,9 +60,24 @@ const filterSpotsByTag = (tag) => {
             characterId: props.characterId,
             selectedTag: selectedTag.value,
         });
+    } else if (props.mapName && props.mapId) {
+        Inertia.get(route('spots.index'), {
+            tag: tag,
+            mapName: props.mapName,
+            mapId: props.mapId,
+            selectedTag: selectedTag.value,
+        });
+    } else if (props.characterName && props.characterId) {
+        Inertia.get(route('spots.index'), {
+            tag: tag,
+            characterName: props.characterName,
+            characterId: props.characterId,
+            selectedTag: selectedTag.value,
+        });
     } else {
         Inertia.get(route('spots.index'), {
             tag: tag,
+            selectedTag: selectedTag.value,
         });
     }
 };
@@ -86,10 +101,18 @@ const deleteSpotDialog = ref(false);
                 <v-slide-group selected-class="bg-success" show-arrows>
                     <v-slide-group-item v-for="spot in props.spots" :key="spot.id">
                         <div v-if="spot.category_id === category.id" class="flex flex-col items-center mb-4 bg-white rounded shadow mr-5">
-                            <div v-if="(!props.mapId && !props.characterId) || (spot.map_id == props.mapId && spot.character_id == props.characterId)">
+                            <!-- 選択されたマップとキャラクターによって表示を変える -->
+                            <div
+                                v-if="
+                                    (!props.mapId && !props.characterId) ||
+                                    (props.mapId && props.characterId && spot.map_id == props.mapId && spot.character_id == props.characterId) ||
+                                    (props.mapId && !props.characterId && spot.map_id == props.mapId) ||
+                                    (!props.mapId && props.characterId && spot.character_id == props.characterId)
+                                "
+                            >
                                 <!-- spot画像 -->
                                 <Link :href="spot.show_url">
-                                    <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="サムネイル画像" />
+                                    <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy" />
                                 </Link>
                                 <div class="p-2">
                                     <!-- マップとキャラクター -->

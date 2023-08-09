@@ -13,12 +13,12 @@ const props = defineProps({
         <NavBar />
         <v-main class="bg-zinc-900">
             <div class="bg-neutral-700 mt-5 mx-5 pb-10 rounded">
-                <div class="text-center font-bold text-lg text-white">選択したマップ: {{ $page.props.mapName }}</div>
+                <div class="pt-5 text-center font-bold text-lg text-white">選択したマップ: {{ $page.props.mapName }}</div>
                 <div class="flex flex-wrap justify-center mx-auto gap-4">
                     <ul v-for="character in characters" :key="character.id" class="w-1/6">
                         <li>
                             <Link :href="route('spots.index', { mapName: $page.props.mapName, mapId: $page.props.mapId, characterName: character.name, characterId: character.id })">
-                                <img :src="character.image_path" :alt="character.name" class="w-full h-auto shadow-2xl" />
+                                <img :src="character.image_path" :alt="character.name" class="w-full h-auto shadow-2xl" loading="lazy" />
                             </Link>
                             <div class="bg-purple-500 text-center font-bold">
                                 {{ character.name }}
