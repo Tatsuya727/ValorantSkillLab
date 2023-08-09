@@ -12,10 +12,6 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    showCategory: {
-        type: Object,
-        required: true,
-    },
     selectedTag: {
         type: String,
         required: false,
@@ -32,27 +28,12 @@ const props = defineProps({
 
 const selectedTag = ref(localStorage.getItem('selectedTag') || '');
 
-// Spotの削除
-const setDeleteSpotId = (id) => {
-    deleteSpotId.value = id;
-    deleteSpotDialog.value = true;
-};
-
-// Spotの削除
-const deleteSpot = () => {
-    Inertia.delete(route('spots.destroy', { spot: deleteSpotId.value }), {
-        onSuccess: () => {
-            deleteSpotDialog.value = false;
-        },
-    });
-};
-
 // タグを選択するとそのタグのスポットのみ表示する
 const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
     localStorage.setItem('selectedTag', tag);
     if (props.mapName && props.mapId && props.characterName && props.characterId) {
-        Inertia.get(route('spots.index'), {
+        Inertia.get(route('sharespots.index'), {
             tag: tag,
             mapName: props.mapName,
             mapId: props.mapId,
@@ -61,37 +42,63 @@ const filterSpotsByTag = (tag) => {
             selectedTag: selectedTag.value,
         });
     } else if (props.mapName && props.mapId) {
-        Inertia.get(route('spots.index'), {
+        Inertia.get(route('sharespots.index'), {
             tag: tag,
             mapName: props.mapName,
             mapId: props.mapId,
             selectedTag: selectedTag.value,
         });
     } else if (props.characterName && props.characterId) {
-        Inertia.get(route('spots.index'), {
+        Inertia.get(route('sharespots.index'), {
             tag: tag,
             characterName: props.characterName,
             characterId: props.characterId,
             selectedTag: selectedTag.value,
         });
     } else {
-        Inertia.get(route('spots.index'), {
+        Inertia.get(route('sharespots.index'), {
             tag: tag,
             selectedTag: selectedTag.value,
         });
     }
 };
-
-// カテゴリーの表示・非表示を切り替える
-if (props.categories) {
-    props.categories.forEach((category) => {
-        showCategory[category.id] = true;
-    });
-}
-
-const deleteSpotId = ref(null);
-
-const deleteSpotDialog = ref(false);
 </script>
 
-<template></template>
+<template>
+    <div v-for="spot in props.spots" :key="spot.id" class="bg-zinc-900 m-10 text-white rounded-lg shadow-lg">
+        <Link :href="spot.show_url" class="flex">
+            <div>
+                <img :width="300" cover class="rounded-l-lg" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy" />
+            </div>
+
+            <div class="p-4">
+                <h1 class="text-2xl font-bold">{{ spot.title }}</h1>
+                <div class="mt-2">
+                    <p class="text-sm text-gray-400">
+                        map: <span class="font-bold text-white">{{ spot.map.name }}</span>
+                    </p>
+                    <p class="text-sm text-gray-400">
+                        character: <span class="font-bold text-white">{{ spot.character.name }}</span>
+                    </p>
+                </div>
+                <!-- タグの名前をすべて表示 -->
+                <div class="flex flex-wrap mt-4">
+                    <div v-for="(tag, index) in spot.tags" :key="index">
+                        <div
+                            @click="
+                                filterSpotsByTag(tag.name);
+                                $event.stopPropagation();
+                            "
+                            :class="{
+                                'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-white mr-2 mb-2 cursor-pointer hover:text-white hover:bg-cyan-500': !selectedTag.value,
+                                'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
+                            }"
+                        >
+                            {{ tag.name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Link>
+    </div>
+</template>
