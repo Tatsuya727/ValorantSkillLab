@@ -18,6 +18,27 @@ class Spot extends Model
         'category_id',
     ];
 
+    public function scopeSearchSpot($query, $search)
+    {
+        return $query->where('title', 'LIKE', "%$search%")
+            ->orWhere('description', 'LIKE', "%$search%")
+            ->orWhereHas('tags', function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%$search%");
+            })
+            ->orWhereHas('category', function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%$search%");
+            })
+            ->orWhereHas('character', function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%$search%");
+            })
+            ->orWhereHas('map', function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%$search%");
+            })
+            ->orWhereHas('images', function ($query) use ($search) {
+                $query->where('description', 'LIKE', "%$search%");
+            });
+    }
+
     public function images()
     {
         return $this->hasMany(Image::class);
