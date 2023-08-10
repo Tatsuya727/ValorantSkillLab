@@ -31,13 +31,20 @@ const resetSelectedTag = () => {
     //     Inertia.get(route('sharespots.index'));
     // }
 };
+
+const search = ref('');
+
+const searchSpots = () => {
+    Inertia.get(route('sharespots.index', { search: search.value }));
+};
 </script>
 
 <template>
     <div class="flex">
         <div class="share-spot-search flex w-1/3">
             <v-btn class="ml-5 mt-3" height="45" color="danger">絞り込み</v-btn>
-            <v-text-field class="ml-5 text-white" label="検索" variant="outlined"></v-text-field>
+            <v-text-field label="検索" v-model="search" class="ml-5 text-white" variant="outlined"></v-text-field>
+            <v-btn @click="searchSpots">検索</v-btn>
         </div>
         <div v-if="selectedTag" class="text-white ml-10">
             タグ:
