@@ -15,8 +15,10 @@ class ShareSpotController extends Controller
     public function index(Request $request)
     {
         $tag = $request->query('tag');
+        $search = $request->query('search');
 
         $spots = Spot::with(['images', 'map', 'character', 'tags'])
+            ->searchSpot($search)
             ->when($tag, function ($query, $tag) {
                 return $query->whereHas('tags', function ($query) use ($tag) {
                     $query->where('name', $tag);
