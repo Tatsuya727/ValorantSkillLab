@@ -12,6 +12,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    user: {
+        type: Object,
+        required: true,
+    },
 });
 
 const imageModal = ref({
@@ -50,7 +54,7 @@ const filterSpotsByTag = (tag) => {
         <NavBar />
         <v-main class="bg-zinc-900">
             <div class="bg-neutral-700 mt-10 mx-5 pb-20 rounded">
-                <div class="text-right mt-5 mr-5">
+                <div v-if="$page.props.auth.user.name === props.user.name" class="text-right mt-5 mr-5">
                     <v-menu>
                         <template v-slot:activator="{ props }">
                             <v-btn class="mt-5" icon="mdi-dots-horizontal" v-bind="props"></v-btn>
@@ -79,6 +83,9 @@ const filterSpotsByTag = (tag) => {
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
+                </div>
+                <div v-else class="text-right m-10 pt-10 text-grey">
+                    作成者: <span class="text-blue">{{ props.user.name }}</span>
                 </div>
                 <div class="text-center">
                     <h1 class="font-bold text-4xl text-white">{{ spot.title }}</h1>
