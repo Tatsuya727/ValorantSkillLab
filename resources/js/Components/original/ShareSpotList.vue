@@ -135,7 +135,7 @@ const filterSpotsByTag = (tag) => {
                         </div>
                     </div>
                     <div class="absolute bottom-0 right-0 mb-2 mr-2 flex">
-                        <div class="text-white mr-3">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
+                        <div class="text-gray-400 mr-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
                         <div class="text-green">{{ spot.user.name }}</div>
                     </div>
                 </div>
