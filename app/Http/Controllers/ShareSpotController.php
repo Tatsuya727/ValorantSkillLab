@@ -26,15 +26,25 @@ class ShareSpotController extends Controller
             })
             ->paginate(10);
 
-        // ユーザーごとにカテゴリーを取得
-        // $categories = Category::where('user_id', auth()->id())->get();
+        $allSpots = Spot::with(['images', 'map', 'character', 'tags'])
+            ->searchSpot($search)
+            ->when($tag, function ($query, $tag) {
+                return $query->whereHas('tags', function ($query) use ($tag) {
+                    $query->where('name', $tag);
+                });
+            })
+            ->get();
+
+        // Spotの合計数
+        $allSpotsCount = Spot::count();
+
+        // $spotsの合計数
+        $spotsCount = $allSpots->count();
 
         // 各spotにshow_urlプロパティを追加
         foreach ($spots as $spot) {
             $spot->show_url = route('spots.show', ['spot' => $spot->id]);
         }
-        
-
 
         $characters = Character::all();
         $maps = Map::all();
@@ -47,6 +57,8 @@ class ShareSpotController extends Controller
             'characters' => $characters,
             'maps' => $maps,
             'tags' => $tags,
+            'allSpotsCount' => $allSpotsCount,
+            'spotsCount' => $spotsCount,
         ]);
     }
 }

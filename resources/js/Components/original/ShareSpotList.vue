@@ -17,6 +17,14 @@ const props = defineProps({
         type: String,
         required: false,
     },
+    allSpotsCount: {
+        type: Number,
+        required: true,
+    },
+    spotsCount: {
+        type: Number,
+        required: true,
+    },
     // mapId: {
     //     type: Number,
     //     required: false,
@@ -66,8 +74,20 @@ const filterSpotsByTag = (tag) => {
 </script>
 
 <template>
-    <div v-if="props.spots.data.length === 0" class="mt-10 text-center text-white text-lg">検索結果無し</div>
-    <Pagination class="mb-5 text-white" :links="props.spots.links"></Pagination>
+    <div>
+        <div v-if="props.spots.data.length === 0" class="mt-10 text-center text-white text-lg">検索結果無し</div>
+        <div v-else-if="spotsCount < allSpotsCount" class="mt-5 text-center text-white text-lg">
+            検索結果
+            <span class="text-3xl">{{ props.spotsCount }}</span>
+            件
+        </div>
+        <div v-else class="mt-5 text-center text-white text-lg">
+            すべての投稿
+            <span class="text-3xl">{{ props.allSpotsCount }}</span>
+            件
+        </div>
+    </div>
+    <Pagination class="mt-5 text-white" :links="props.spots.links"></Pagination>
     <v-row justify="center">
         <v-col v-for="spot in props.spots.data" :key="spot.id" cols="5" class="mt-10">
             <div class="flex border border-gray-500 rounded overflow-hidden">

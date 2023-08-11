@@ -37,6 +37,11 @@ const search = ref('');
 const searchSpots = () => {
     Inertia.get(route('sharespots.index', { search: search.value }));
 };
+
+const resetSpots = () => {
+    search.value = '';
+    Inertia.get(route('sharespots.index'));
+};
 </script>
 
 <template>
@@ -45,6 +50,7 @@ const searchSpots = () => {
             <v-btn class="ml-5 mt-3" height="45" color="danger">絞り込み</v-btn>
             <v-text-field data-test="search-input" id="name" label="検索" v-model="search" class="ml-5 text-white search-spots" variant="outlined"></v-text-field>
             <v-btn @click="searchSpots" class="search-button">検索</v-btn>
+            <v-btn @click="resetSpots">リセット</v-btn>
         </div>
         <div v-if="selectedTag" class="text-white ml-10">
             タグ:

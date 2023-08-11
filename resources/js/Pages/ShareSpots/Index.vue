@@ -25,6 +25,14 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    allSpotsCount: {
+        type: Number,
+        required: true,
+    },
+    spotsCount: {
+        type: Number,
+        required: true,
+    },
 });
 
 // ページがロードされるたびにローカルストレージから選択されたタグを読み込む
@@ -43,7 +51,7 @@ window.addEventListener('beforeunload', () => {
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
                     <ShareSpotHeader :selectedTag="selectedTag" />
-                    <ShareSpotList :selectedTag="selectedTag" :spots="props.spots" :category="category" />
+                    <ShareSpotList :selectedTag="selectedTag" :spots="props.spots" :categories="props.categories" :allSpotsCount="props.allSpotsCount" :spotsCount="props.spotsCount" />
                 </div>
             </v-container>
         </v-main>
