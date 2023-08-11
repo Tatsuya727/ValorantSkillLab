@@ -63,7 +63,7 @@ const resetFilter = () => {
             </v-col>
             <v-col col="2">
                 <div>
-                    <v-autocomplete label="キャラクター" v-model="selectedCharacter" :items="characters" item-title="name" variant="outlined"> </v-autocomplete>
+                    <v-autocomplete label="キャラクター" v-model="selectedCharacter" :items="characters" item-title="name" item-value="id" variant="outlined"> </v-autocomplete>
                 </div>
             </v-col>
             <div class="flex flex-wrap m-3">
