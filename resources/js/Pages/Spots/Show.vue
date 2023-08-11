@@ -91,9 +91,11 @@ const filterSpotsByTag = (tag) => {
                     <h1 class="font-bold text-4xl text-white">{{ spot.title }}</h1>
                     <h2 class="text-xl text-white">{{ spot.description }}</h2>
                     <!-- tagsのnameをすべて表示 -->
-                    <div class="flex justify-center mb-5">
+                    <div class="flex justify-center my-5">
                         <div v-for="(tag, index) in spot.tags" :key="index">
-                            <div class="py-1 px-3 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer" @click="filterSpotsByTag(tag.name)">{{ tag.name }}</div>
+                            <v-chip color="light-blue-lighten-5" class="py-1 px-3 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer" @click="filterSpotsByTag(tag.name)">{{
+                                tag.name
+                            }}</v-chip>
                         </div>
                     </div>
                 </div>
