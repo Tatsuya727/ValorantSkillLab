@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/inertia-vue3';
 import { defineProps, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import Pagination from '@/Components/original/Pagination.vue';
+import LikeButton from '@/Components/original/LikeButton.vue';
 import dayjs from 'dayjs';
 
 const props = defineProps({
@@ -134,8 +135,10 @@ const filterSpotsByTag = (tag) => {
                             </div> -->
                         </div>
                     </div>
-                    <div class="absolute bottom-0 right-0 mb-2 mr-2 flex">
-                        <div class="text-gray-400 mr-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
+                    <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
+                        <LikeButton :spot="spot" />
+
+                        <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
                         <div class="text-green">{{ spot.user.name }}</div>
                     </div>
                 </div>

@@ -9,6 +9,7 @@ use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\SpotController;
 use App\Http\Controllers\ShareSpotController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LikeController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\GoogleLoginController;
@@ -40,7 +41,16 @@ Route::resource("spots", SpotController::class)
 ->middleware(['auth', 'check.verified']);
 
 Route::get("/sharespots", [ShareSpotController::class, 'index'])
-->name('sharespots.index'); 
+->name('sharespots.index');
+
+Route::post('/spots/{spot}/like', [LikeController::class, 'store'])
+->name('likes.store')
+->middleware(['auth', 'check.verified']);
+
+Route::delete('/spots/{spot}/like', [LikeController::class, 'destroy'])
+->name('likes.destroy')
+->middleware(['auth', 'check.verified']);
+
 
 Route::resource('/categories', CategoryController::class)
 ->middleware(['auth', 'check.verified']);

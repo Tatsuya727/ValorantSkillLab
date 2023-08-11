@@ -74,4 +74,8 @@ class Spot extends Model
         return $this->belongsToMany(User::class, 'likes');
     }
 
+    public function getLikesCountAttribute()
+    {
+        return $this->likedBy->count();
+    }
 }

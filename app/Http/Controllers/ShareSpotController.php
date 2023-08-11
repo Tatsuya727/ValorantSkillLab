@@ -18,6 +18,7 @@ class ShareSpotController extends Controller
         $search = $request->query('search');
 
         $spots = Spot::with(['images', 'map', 'character', 'tags', 'user'])
+            ->withCount('likedBy')
             ->searchSpot($search)
             ->when($tag, function ($query, $tag) {
                 return $query->whereHas('tags', function ($query) use ($tag) {
@@ -25,6 +26,11 @@ class ShareSpotController extends Controller
                 });
             })
             ->paginate(10);
+
+        // 各spotにis_liked_by_userプロパティを追加
+        foreach ($spots as $spot) {
+            $spot->is_liked_by_user = $spot->likedBy->contains(auth()->id());
+        }
 
         $allSpots = Spot::with(['images', 'map', 'character', 'tags'])
             ->searchSpot($search)

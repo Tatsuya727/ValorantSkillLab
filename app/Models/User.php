@@ -50,7 +50,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Category::class);
     }
 
-    public function likes()
+    public function likedSpots()
     {
         return $this->belongsToMany(Spot::class, 'likes');
     }
