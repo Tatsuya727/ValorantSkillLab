@@ -88,7 +88,22 @@ const filterSpotsByTag = (tag) => {
                     <!-- タグの名前をすべて表示 -->
                     <div class="flex flex-wrap mt-4">
                         <div v-for="(tag, index) in spot.tags" :key="index">
-                            <div
+                            <v-chip
+                                v-if="selectedTag && selectedTag === tag.name"
+                                :class="'cursor-pointer hover:bg-cyan-600 active:bg-indigo-500'"
+                                @click="filterSpotsByTag(tag.name)"
+                                class="ma-2"
+                                color="light-blue-lighten-4
+
+"
+                                label
+                            >
+                                {{ tag.name }}
+                            </v-chip>
+                            <v-chip v-else :class="'cursor-pointer hover:bg-cyan-900 active:bg-indigo-500'" @click="filterSpotsByTag(tag.name)" class="ma-2" color="indigo-accent-4 " label>
+                                {{ tag.name }}
+                            </v-chip>
+                            <!-- <div
                                 @click="filterSpotsByTag(tag.name)"
                                 :class="{
                                     'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-white mr-2 mb-2 cursor-pointer hover:bg-cyan-600': !selectedTag.value,
@@ -96,7 +111,7 @@ const filterSpotsByTag = (tag) => {
                                 }"
                             >
                                 {{ tag.name }}
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
