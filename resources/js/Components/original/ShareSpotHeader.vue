@@ -51,6 +51,7 @@ const searchSpots = () => {
             <v-chip color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
         </div>
     </div>
+    <v-divider></v-divider>
 </template>
 
 <style scoped>

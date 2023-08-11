@@ -66,6 +66,7 @@ const filterSpotsByTag = (tag) => {
 </script>
 
 <template>
+    <div v-if="props.spots.data.length === 0" class="mt-10 text-center text-white text-lg">検索結果無し</div>
     <Pagination class="mb-5 text-white" :links="props.spots.links"></Pagination>
     <v-row justify="center">
         <v-col v-for="spot in props.spots.data" :key="spot.id" cols="5" class="mt-10">
@@ -93,9 +94,7 @@ const filterSpotsByTag = (tag) => {
                                 :class="'cursor-pointer hover:bg-cyan-600 active:bg-indigo-500'"
                                 @click="filterSpotsByTag(tag.name)"
                                 class="ma-2"
-                                color="light-blue-lighten-4
-
-"
+                                color="light-blue-lighten-4"
                                 label
                             >
                                 {{ tag.name }}
