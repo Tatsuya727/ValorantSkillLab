@@ -90,7 +90,7 @@ const filterSpotsByTag = (tag) => {
     <Pagination class="mt-5 text-white" :links="props.spots.links"></Pagination>
     <v-row justify="center">
         <v-col v-for="spot in props.spots.data" :key="spot.id" cols="5" class="mt-10">
-            <div class="flex border border-gray-500 rounded overflow-hidden">
+            <div class="flex border border-gray-500 rounded overflow-hidden relative">
                 <Link :href="spot.show_url">
                     <div><img cover class="w-full h-auto" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy" /></div>
                 </Link>
@@ -133,6 +133,7 @@ const filterSpotsByTag = (tag) => {
                             </div> -->
                         </div>
                     </div>
+                    <div class="absolute bottom-0 right-0 mb-2 mr-2 text-green">{{ spot.user.name }}</div>
                 </div>
             </div>
         </v-col>
