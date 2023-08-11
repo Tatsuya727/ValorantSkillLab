@@ -46,13 +46,13 @@ const resetSpots = () => {
 
 <template>
     <div class="flex">
-        <div class="share-spot-search flex w-1/3">
-            <v-btn class="ml-5 mt-3" height="45" color="danger">絞り込み</v-btn>
-            <v-text-field data-test="search-input" id="name" label="検索" v-model="search" class="ml-5 text-white search-spots" variant="outlined"></v-text-field>
-            <v-btn @click="searchSpots" class="search-button">検索</v-btn>
-            <v-btn @click="resetSpots">リセット</v-btn>
+        <div class="share-spot-search flex w-1/2">
+            <v-btn class="ml-5 mt-3" color="danger">絞り込み</v-btn>
+            <v-text-field data-test="search-input" id="name" label="検索" v-model="search" class="ml-5 text-white search-spots" @keyup.enter="searchSpots" variant="outlined"></v-text-field>
+            <v-btn @click="searchSpots" class="search-button ml-5 mt-3">検索</v-btn>
+            <v-btn @click="resetSpots" class="ml-2 mt-3">リセット</v-btn>
         </div>
-        <div v-if="selectedTag" class="text-white ml-10">
+        <div v-if="selectedTag" class="text-white ml-10 mt-3">
             タグ:
             <v-chip color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
         </div>
