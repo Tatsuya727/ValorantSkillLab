@@ -66,16 +66,16 @@ const filterSpotsByTag = (tag) => {
 </script>
 
 <template>
-    <Pagination class="" :links="props.spots.links"></Pagination>
+    <Pagination class="mb-5 text-white" :links="props.spots.links"></Pagination>
     <v-row justify="center">
-        <v-col v-for="spot in props.spots.data" :key="spot.id" cols="5" class="mt-10 text-white">
-            <div class="flex">
+        <v-col v-for="spot in props.spots.data" :key="spot.id" cols="5" class="mt-10">
+            <div class="flex border border-gray-500 rounded overflow-hidden">
                 <Link :href="spot.show_url">
-                    <div><img cover class="rounded-l" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy" /></div>
+                    <div><img cover class="w-full h-auto" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy" /></div>
                 </Link>
-                <div class="p-4 bg-zinc-900 rounded-r w-full">
+                <div class="p-4 bg-neutral-800 w-full">
                     <Link :href="spot.show_url">
-                        <h1 class="text-2xl font-bold">{{ spot.title }}</h1>
+                        <h1 class="text-2xl font-bold text-white">{{ spot.title }}</h1>
                         <div class="mt-2">
                             <p class="text-sm text-gray-400">
                                 map: <span class="font-bold text-white">{{ spot.map.name }}</span>
@@ -91,9 +91,8 @@ const filterSpotsByTag = (tag) => {
                             <div
                                 @click="filterSpotsByTag(tag.name)"
                                 :class="{
-                                    'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-white mr-2 mb-2 cursor-pointer hover:text-white hover:bg-cyan-500 tag':
-                                        !selectedTag.value,
-                                    'bg-cyan-500 text-white selected-tag': selectedTag && selectedTag === tag.name,
+                                    'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-white mr-2 mb-2 cursor-pointer hover:bg-cyan-600': !selectedTag.value,
+                                    'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
                                 }"
                             >
                                 {{ tag.name }}
@@ -104,5 +103,5 @@ const filterSpotsByTag = (tag) => {
             </div>
         </v-col>
     </v-row>
-    <Pagination class="mt-5" :links="props.spots.links"></Pagination>
+    <Pagination class="mt-5 text-white" :links="props.spots.links"></Pagination>
 </template>
