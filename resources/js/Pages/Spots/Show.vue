@@ -12,6 +12,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    user: {
+        type: Object,
+        required: true,
+    },
 });
 
 const imageModal = ref({
@@ -50,7 +54,7 @@ const filterSpotsByTag = (tag) => {
         <NavBar />
         <v-main class="bg-zinc-900">
             <div class="bg-neutral-700 mt-10 mx-5 pb-20 rounded">
-                <div class="text-right mt-5 mr-5">
+                <div v-if="$page.props.auth.user.name === props.user.name" class="text-right mt-5 mr-5">
                     <v-menu>
                         <template v-slot:activator="{ props }">
                             <v-btn class="mt-5" icon="mdi-dots-horizontal" v-bind="props"></v-btn>
@@ -80,13 +84,18 @@ const filterSpotsByTag = (tag) => {
                         </v-card>
                     </v-dialog>
                 </div>
+                <div v-else class="text-right m-10 pt-10 text-grey">
+                    作成者: <span class="text-blue">{{ props.user.name }}</span>
+                </div>
                 <div class="text-center">
                     <h1 class="font-bold text-4xl text-white">{{ spot.title }}</h1>
                     <h2 class="text-xl text-white">{{ spot.description }}</h2>
                     <!-- tagsのnameをすべて表示 -->
-                    <div class="flex justify-center mb-5">
+                    <div class="flex justify-center my-5">
                         <div v-for="(tag, index) in spot.tags" :key="index">
-                            <div class="py-1 px-3 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer" @click="filterSpotsByTag(tag.name)">{{ tag.name }}</div>
+                            <v-chip color="light-blue-lighten-5" class="py-1 px-3 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer" @click="filterSpotsByTag(tag.name)">{{
+                                tag.name
+                            }}</v-chip>
                         </div>
                     </div>
                 </div>
@@ -101,7 +110,7 @@ const filterSpotsByTag = (tag) => {
                             @click="openImageModal(image)"
                             loading="lazy"
                         ></v-img>
-                        <div v-if="image.description" class="border-2 border-white p-2 text-white">{{ image.description }}</div>
+                        <div v-if="image.description" class="border border-white p-2 text-white">{{ image.description }}</div>
                         <div v-else class="border border-white p-2 text-white">説明なし</div>
                     </div>
                 </div>

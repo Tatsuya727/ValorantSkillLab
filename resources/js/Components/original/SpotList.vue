@@ -51,6 +51,7 @@ const deleteSpot = () => {
 const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
     localStorage.setItem('selectedTag', tag);
+    console.log(props.spots);
     if (props.mapName && props.mapId && props.characterName && props.characterId) {
         Inertia.get(route('spots.index'), {
             tag: tag,

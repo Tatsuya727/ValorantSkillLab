@@ -9,6 +9,8 @@ const links = [
     ['mdi-account', 'Character', 'characters.index', 'Characters/Index'],
     ['mdi-spotlight', 'Spot', 'spots.index', 'Spots/Index'],
     ['mdi-plus-box', 'Create', 'spots.create', 'Spots/Create'],
+    // post
+    ['mdi-plus-bo', 'Post', 'sharespots.index', 'ShareSpots/Index'],
 ];
 </script>
 

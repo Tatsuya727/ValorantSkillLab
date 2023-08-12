@@ -30,7 +30,9 @@ class SpotController extends Controller
         $characterName = $request->query('characterName');
         $characterId = $request->query('characterId');
 
+        // ユーザーごとのスポットを取得
         $spots = Spot::with(['images', 'map', 'character', 'tags'])
+            ->where('user_id', auth()->id())
             ->when($tag, function ($query, $tag) {
                 return $query->whereHas('tags', function ($query) use ($tag) {
                     $query->where('name', $tag);
@@ -144,9 +146,12 @@ class SpotController extends Controller
     public function show(Spot $spot)
     {
         $spot = Spot::with(['images', 'tags'])->find($spot->id);
+
+        $user = User::find($spot->user_id);
         
         return Inertia::render('Spots/Show', [
             'spot' => $spot,
+            'user' => $user,
         ]);
     }
 
