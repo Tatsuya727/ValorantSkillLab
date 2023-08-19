@@ -55,6 +55,7 @@ const deleteSpot = () => {
     });
 };
 
+
 // カテゴリーの表示・非表示を切り替える
 if (props.categories) {
     props.categories.forEach((category) => {
@@ -74,10 +75,12 @@ const deleteSpotDialog = ref(false);
         <v-col cols="11" v-if="showCategory[category.id]">
             <div class="flex flex-wrap mx-auto gap-4">
                 <v-slide-group selected-class="bg-success" show-arrows>
+
                     <div v-if="filteredSpots.length === 0" class="text-white text-center text-lg font-bold">無し</div>
                     <v-slide-group-item v-for="spot in filteredSpots" :key="spot.id">
                         <div class="flex flex-col items-center mb-4 rounded shadow mr-5">
                             <div>
+
                                 <!-- spot画像 -->
                                 <Link :href="spot.show_url">
                                     <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy" />

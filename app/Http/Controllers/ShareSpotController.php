@@ -79,7 +79,7 @@ class ShareSpotController extends Controller
         } else {
             $userCategories = null;
         }
-
+      
         // Spotの合計数
         $allSpotsCount = Spot::count();
 

@@ -31,7 +31,7 @@ class SpotController extends Controller
         $tag = $request->query('tag');
         $selectedMap = $request->query('selectedMap');
         $selectedCharacter = $request->query('selectedCharacter');
-        
+
         // ユーザーごとのスポットを取得
         $spots = Spot::with(['images', 'map', 'character', 'tags'])
             ->where('user_id', auth()->id())
@@ -40,6 +40,7 @@ class SpotController extends Controller
                     $query->where('name', $tag);
                 });
             })
+
             ->when($selectedMap, function ($query, $selectedMap) {
                 return $query->whereHas('map', function ($query) use ($selectedMap) {
                     $query->where('id', $selectedMap['id']);
@@ -59,6 +60,7 @@ class SpotController extends Controller
         foreach ($spots as $spot) {
             $spot->show_url = route('spots.show', ['spot' => $spot->id]);
         }
+        
 
 
 

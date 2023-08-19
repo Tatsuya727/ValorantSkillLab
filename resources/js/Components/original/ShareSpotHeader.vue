@@ -1,11 +1,14 @@
 <script setup>
 import { defineProps, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+
 import SpotFilter from '@/Components/original/SpotFilter.vue';
+
 
 const props = defineProps({
     selectedTag: String,
     resetSelectedTag: Function,
+
     maps: Array,
     characters: Array,
     tags: Array,
@@ -21,10 +24,12 @@ window.addEventListener('beforeunload', () => {
     localStorage.removeItem('selectedTag');
 });
 
+
 // 画面上部に表示されたタグをクリックすると、タグの絞り込みを解除する
 const resetSelectedTag = () => {
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
+
     // 選択したマップとキャラクターがあれば、それらを含めて絞り込みを行う
     if (props.selectedMap && props.selectedCharacter) {
         Inertia.get(route('sharespots.index'), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter });
@@ -40,8 +45,10 @@ const searchSpots = () => {
 };
 
 const resetSpots = () => {
+
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
+
     search.value = '';
     Inertia.get(route('sharespots.index'));
 };
@@ -49,6 +56,7 @@ const resetSpots = () => {
 
 <template>
     <div class="flex">
+
         <div class="share-spot-search flex w-full">
             <v-row>
                 <v-col cols="4" class="flex">
@@ -83,6 +91,7 @@ const resetSpots = () => {
                     <v-btn @click="resetSpots" class="ml-2 mt-3">リセット</v-btn>
                 </v-col>
             </v-row>
+
         </div>
     </div>
     <v-divider></v-divider>

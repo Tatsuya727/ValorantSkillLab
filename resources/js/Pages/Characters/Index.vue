@@ -16,8 +16,10 @@ const props = defineProps({
                 <div class="pt-5 text-center font-bold text-lg text-white">選択したマップ: {{ $page.props.mapName }}</div>
                 <div class="flex flex-wrap justify-center mx-auto gap-4">
                     <ul v-for="character in characters" :key="character.id" class="w-1/6">
+
                         <li class="relative">
                             <Link :href="route('spots.index', { mapName: $page.props.mapName, selectedMap: $page.props.selectedMap, characterName: character.name, selectedCharacter: character.id })">
+
                                 <img :src="character.image_path" :alt="character.name" class="w-full h-auto shadow-2xl" loading="lazy" />
                             </Link>
                             <div class="absolute bottom-0 left-0 bg-gradient-to-r from-black to-transparent text-white text-2xl font-serif text-center font-bold rounded px-2 py-1">

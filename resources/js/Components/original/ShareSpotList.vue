@@ -4,8 +4,10 @@ import { defineProps, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import Pagination from '@/Components/original/Pagination.vue';
 import LikeButton from '@/Components/original/LikeButton.vue';
+
 import ShareSpotMenu from '@/Components/original/ShareSpotMenu.vue';
 import SpotTags from '@/Components/original/SpotTags.vue';
+
 import dayjs from 'dayjs';
 
 const props = defineProps({
@@ -13,7 +15,9 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+
     categories: {
+
         type: Object,
         required: true,
     },
@@ -29,6 +33,7 @@ const props = defineProps({
         type: Number,
         required: true,
     },
+
     userCategories: {
         type: Array,
         required: false,
@@ -42,6 +47,7 @@ const props = defineProps({
         required: false,
     },
 });
+
 </script>
 
 <template>
@@ -59,6 +65,7 @@ const props = defineProps({
         </div>
     </div>
     <Pagination class="mt-5 text-white" :links="props.spots.links"></Pagination>
+
     <v-row justify="center" class="mx-3">
         <v-col v-for="spot in props.spots.data" :key="spot.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
             <div class="flex flex-col rounded overflow-hidden relative h-full">
@@ -95,6 +102,7 @@ const props = defineProps({
                     <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
                         <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
                         <!-- ユーザーネーム -->
+
                         <div class="text-green">{{ spot.user.name }}</div>
                     </div>
                 </div>
