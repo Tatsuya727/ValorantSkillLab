@@ -120,9 +120,10 @@ const resetFilter = () => {
                     <!-- ボタンのセクション -->
                     <v-col cols="3" class="items-center justify-center">
                         <div class="mt-10">
-                            <v-autocomplete class="m-3" label="マップ" v-model="selectedMap" :items="maps" item-title="name" item-value="id" variant="outlined"></v-autocomplete>
-                            <v-autocomplete class="m-3" label="キャラクター" v-model="selectedCharacter" :items="characters" item-title="name" item-value="id" variant="outlined"> </v-autocomplete>
-                            <v-autocomplete class="m-3" label="タグ" v-model="selectedTag" :items="tags" item-title="name" item-value="name" clearable chips variant="outlined"></v-autocomplete>
+                            <v-autocomplete class="m-3" label="マップ" v-model="selectedMap" :items="maps" item-title="name" item-value="id" clearable variant="outlined"></v-autocomplete>
+                            <v-autocomplete class="m-3" label="キャラクター" v-model="selectedCharacter" :items="characters" item-title="name" item-value="id" clearable variant="outlined">
+                            </v-autocomplete>
+                            <v-autocomplete class="m-3" label="タグ" v-model="selectedTag" :items="tags" item-title="name" item-value="name" clearable variant="outlined"></v-autocomplete>
                         </div>
 
                         <v-btn color="success" block @click="filterSpots">検索</v-btn>
