@@ -80,12 +80,15 @@ const deleteSpotDialog = ref(false);
                             <div>
                                 <!-- spot画像 -->
                                 <Link :href="spot.show_url">
-                                    <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy" />
+                                    <v-img :width="300" cover class="cursor-pointer" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy"></v-img>
                                 </Link>
-                                <div class="p-2 bg-neutral-800 mt-[-7px]">
+                                <div class="p-2 bg-neutral-800">
                                     <!-- マップとキャラクター -->
                                     <div class="flex justify-between">
-                                        <div>
+                                        <div class="overflow-hidden">
+                                            <p class="text-sm text-gray-700 text-white">
+                                                title: <span class="font-bold display-block">{{ spot.title }}</span>
+                                            </p>
                                             <p class="text-sm text-gray-700 text-white">
                                                 map: <span class="font-bold">{{ spot.map.name }}</span>
                                             </p>
@@ -118,9 +121,7 @@ const deleteSpotDialog = ref(false);
                                             </v-card>
                                         </v-dialog>
                                     </div>
-                                    <p class="text-sm text-gray-700 text-center spot-title text-white">
-                                        title: <span class="font-bold">{{ spot.title }}</span>
-                                    </p>
+
                                     <!-- タグの名前をすべて表示 -->
                                     <div class="flex flex-wrap justify-center tags-container">
                                         <SpotTags
