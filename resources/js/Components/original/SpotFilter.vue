@@ -43,12 +43,16 @@ const filterSpots = () => {
 
 const selectMap = (map) => {
     selectedMap.value = map;
-    tab.value = 2;
+    if (!selectedCharacter.value) {
+        tab.value = 2;
+    }
 };
 
 const selectCharacter = (character) => {
     selectedCharacter.value = character;
-    tab.value = 3;
+    if (!selectedTag.value) {
+        tab.value = 3;
+    }
 };
 
 const selectTags = (tag) => {
