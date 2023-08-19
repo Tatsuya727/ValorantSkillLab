@@ -122,8 +122,15 @@ const deleteSpotDialog = ref(false);
                                         title: <span class="font-bold">{{ spot.title }}</span>
                                     </p>
                                     <!-- タグの名前をすべて表示 -->
-                                    <div class="flex flex-wrap justify-center">
-                                        <SpotTags :tags="spot.tags" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'spots.index'" />
+                                    <div class="flex flex-wrap justify-center tags-container">
+                                        <SpotTags
+                                            v-if="spot.tags && spot.tags.length > 0"
+                                            :tags="spot.tags"
+                                            :selectedMap="props.selectedMap"
+                                            :selectedCharacter="props.selectedCharacter"
+                                            :routeName="'spots.index'"
+                                        />
+                                        <v-chip v-else class="m-2" color="grey" label>タグがありません</v-chip>
                                     </div>
                                 </div>
                             </div>
