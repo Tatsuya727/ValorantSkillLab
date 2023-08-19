@@ -33,6 +33,7 @@ class SpotController extends Controller
         $selectedMap = $request->query('selectedMap');
         $selectedCharacter = $request->query('selectedCharacter');
 
+
         // ユーザーごとにカテゴリーを取得
         $categories = Category::where('user_id', auth()->id())->get();
         
@@ -45,6 +46,7 @@ class SpotController extends Controller
                     $query->where('name', $tag);
                 });
             })
+
             ->when($selectedMap, function ($query, $selectedMap) {
                 return $query->whereHas('map', function ($query) use ($selectedMap) {
                     $query->where('id', $selectedMap['id']);
@@ -61,6 +63,7 @@ class SpotController extends Controller
         foreach ($spots as $spot) {
             $spot->show_url = route('spots.show', ['spot' => $spot->id]);
         }
+        
 
         return Inertia::render('Spots/Index', [
             'spots' => $spots,

@@ -10,7 +10,9 @@ use App\Http\Controllers\SpotController;
 use App\Http\Controllers\ShareSpotController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LikeController;
+
 use App\Http\Controllers\TagController;
+
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\GoogleLoginController;

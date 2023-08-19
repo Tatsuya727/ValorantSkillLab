@@ -40,6 +40,7 @@ const filteredSpots = computed(() => {
 // 親コンポーネントにfilteredSpotsを返す
 const emits = defineEmits(['filteredSpots']);
 
+
 // カテゴリーの表示・非表示を切り替える
 if (props.categories) {
     props.categories.forEach((category) => {
@@ -53,6 +54,7 @@ if (props.categories) {
     <CategoryHeader :category="category" :showCategory="showCategory" :filteredSpots="filteredSpots" />
     <v-expand-transition>
         <v-col cols="11" v-if="showCategory[category.id]">
+
             <v-row justify="center" class="mx-3">
                 <v-col v-if="filteredSpots.length === 0" cols="12" class="text-white text-center text-lg font-bold">無し</v-col>
                 <v-col v-for="spot in filteredSpots" :key="spot.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
@@ -76,6 +78,7 @@ if (props.categories) {
                                     </p>
                                     <p class="text-sm text-gray-700 text-white">
                                         character: <span class="font-bold">{{ spot.character.name }}</span>
+
                                     </p>
                                 </div>
 

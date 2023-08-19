@@ -34,6 +34,7 @@ const filterSpots = () => {
 const resetSpots = () => {
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
+    console.log(props.maps);
     Inertia.get(route('spots.index'));
 };
 
