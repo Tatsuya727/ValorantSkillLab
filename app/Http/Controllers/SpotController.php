@@ -32,6 +32,9 @@ class SpotController extends Controller
         $search = $request->query('search');
         $selectedMap = $request->query('selectedMap');
         $selectedCharacter = $request->query('selectedCharacter');
+
+        // ユーザーごとにカテゴリーを取得
+        $categories = Category::where('user_id', auth()->id())->get();
         
         // ユーザーごとのスポットを取得
         $spots = Spot::with(['images', 'map', 'character', 'tags'])
@@ -54,15 +57,10 @@ class SpotController extends Controller
             })
             ->get();
 
-        // ユーザーごとにカテゴリーを取得
-        $categories = Category::where('user_id', auth()->id())->get();
-
         // 各spotにshow_urlプロパティを追加
         foreach ($spots as $spot) {
             $spot->show_url = route('spots.show', ['spot' => $spot->id]);
         }
-
-
 
         return Inertia::render('Spots/Index', [
             'spots' => $spots,
