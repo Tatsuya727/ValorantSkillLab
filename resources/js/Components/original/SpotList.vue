@@ -1,7 +1,9 @@
 <script setup>
 import { Link } from '@inertiajs/inertia-vue3';
-import { defineProps, ref } from 'vue';
+import { defineEmits, ref, computed } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+import SpotTags from '@/Components/original/SpotTags.vue';
+import CategoryHeader from '@/Components/original/CategoryHeader.vue';
 
 const props = defineProps({
     spots: {
@@ -20,17 +22,23 @@ const props = defineProps({
         type: String,
         required: false,
     },
-    mapId: {
+    selectedMap: {
         type: Number,
         required: false,
     },
-    characterId: {
+    selectedCharacter: {
         type: Number,
         required: false,
     },
 });
 
-const selectedTag = ref(localStorage.getItem('selectedTag') || '');
+// category.id と一致する spot のみをフィルタリングする computed property
+const filteredSpots = computed(() => {
+    return props.spots.filter((spot) => spot.category_id === props.category.id);
+});
+
+// 親コンポーネントにfilteredSpotsを返す
+const emits = defineEmits(['filteredSpots']);
 
 // Spotの削除
 const setDeleteSpotId = (id) => {
@@ -47,26 +55,6 @@ const deleteSpot = () => {
     });
 };
 
-// タグを選択するとそのタグのスポットのみ表示する
-const filterSpotsByTag = (tag) => {
-    selectedTag.value = tag;
-    localStorage.setItem('selectedTag', tag);
-    if (props.mapName && props.mapId && props.characterName && props.characterId) {
-        Inertia.get(route('spots.index'), {
-            tag: tag,
-            mapName: props.mapName,
-            mapId: props.mapId,
-            characterName: props.characterName,
-            characterId: props.characterId,
-            selectedTag: selectedTag.value,
-        });
-    } else {
-        Inertia.get(route('spots.index'), {
-            tag: tag,
-        });
-    }
-};
-
 // カテゴリーの表示・非表示を切り替える
 if (props.categories) {
     props.categories.forEach((category) => {
@@ -80,31 +68,34 @@ const deleteSpotDialog = ref(false);
 </script>
 
 <template>
+    <!-- カテゴリーヘッダー -->
+    <CategoryHeader :category="category" :showCategory="showCategory" :filteredSpots="filteredSpots" />
     <v-expand-transition>
         <v-col cols="11" v-if="showCategory[category.id]">
             <div class="flex flex-wrap mx-auto gap-4">
                 <v-slide-group selected-class="bg-success" show-arrows>
-                    <v-slide-group-item v-for="spot in props.spots" :key="spot.id">
-                        <div v-if="spot.category_id === category.id" class="flex flex-col items-center mb-4 bg-white rounded shadow mr-5">
-                            <div v-if="(!props.mapId && !props.characterId) || (spot.map_id == props.mapId && spot.character_id == props.characterId)">
+                    <div v-if="filteredSpots.length === 0" class="text-white text-center text-lg font-bold">無し</div>
+                    <v-slide-group-item v-for="spot in filteredSpots" :key="spot.id">
+                        <div class="flex flex-col items-center mb-4 rounded shadow mr-5">
+                            <div>
                                 <!-- spot画像 -->
                                 <Link :href="spot.show_url">
-                                    <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="サムネイル画像" />
+                                    <img :width="300" cover class="rounded-t" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy" />
                                 </Link>
-                                <div class="p-2">
+                                <div class="p-2 bg-neutral-800 mt-[-7px]">
                                     <!-- マップとキャラクター -->
                                     <div class="flex justify-between">
                                         <div>
-                                            <p class="text-sm text-gray-700 mx-3">
+                                            <p class="text-sm text-gray-700 text-white">
                                                 map: <span class="font-bold">{{ spot.map.name }}</span>
                                             </p>
-                                            <p class="text-sm text-gray-700">
+                                            <p class="text-sm text-gray-700 text-white">
                                                 character: <span class="font-bold">{{ spot.character.name }}</span>
                                             </p>
                                         </div>
                                         <v-menu>
                                             <template v-slot:activator="{ props }">
-                                                <v-icon v-bind="props" class="ml-5 text-gray-600">mdi-dots-vertical</v-icon>
+                                                <v-icon v-bind="props" class="ml-5 text-white">mdi-dots-vertical</v-icon>
                                             </template>
                                             <v-list>
                                                 <v-list-item>
@@ -127,23 +118,12 @@ const deleteSpotDialog = ref(false);
                                             </v-card>
                                         </v-dialog>
                                     </div>
-                                    <p class="text-sm text-gray-700 text-center spot-title">
+                                    <p class="text-sm text-gray-700 text-center spot-title text-white">
                                         title: <span class="font-bold">{{ spot.title }}</span>
                                     </p>
                                     <!-- タグの名前をすべて表示 -->
                                     <div class="flex flex-wrap justify-center">
-                                        <div
-                                            v-for="(tag, index) in spot.tags"
-                                            :key="index"
-                                            @click="filterSpotsByTag(tag.name)"
-                                            :class="{
-                                                'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 cursor-pointer hover:text-white hover:bg-cyan-500':
-                                                    !selectedTag.value,
-                                                'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
-                                            }"
-                                        >
-                                            <div>{{ tag.name }}</div>
-                                        </div>
+                                        <SpotTags :tags="spot.tags" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'spots.index'" />
                                     </div>
                                 </div>
                             </div>

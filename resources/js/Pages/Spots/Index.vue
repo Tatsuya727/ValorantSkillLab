@@ -1,13 +1,9 @@
 <script setup>
 import NavBar from '@/Components/original/NavBar.vue';
-import StoreCategory from '@/Components/original/StoreCategory.vue';
-import CategoryHeader from '@/Components/original/CategoryHeader.vue';
-import CategoryControls from '@/Components/original/CategoryControls.vue';
-import FilterControls from '@/Components/original/FilterControls.vue';
+import FlashMessage from '@/Components/original/FlashMessage.vue';
+import SpotHeader from '@/Components/original/SpotHeader.vue';
 import SpotList from '@/Components/original/SpotList.vue';
-import { defineProps, reactive, ref } from 'vue';
-import { Link } from '@inertiajs/inertia-vue3';
-import { Inertia } from '@inertiajs/inertia';
+import { defineProps, onMounted, reactive, ref } from 'vue';
 
 const props = defineProps({
     spots: {
@@ -18,19 +14,11 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-    mapName: {
-        type: String,
-        required: false,
-    },
-    mapId: {
+    selectedMap: {
         type: Number,
         required: false,
     },
-    characterName: {
-        type: String,
-        required: false,
-    },
-    characterId: {
+    selectedCharacter: {
         type: Number,
         required: false,
     },
@@ -46,9 +34,23 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    flash: Object,
+});
+
+// フラッシュメッセージをコンソールに出力する
+onMounted(() => {
+    console.log(props.flash);
 });
 
 const showCategory = reactive({});
+
+const selectedTag = ref(localStorage.getItem('selectedTag') || '');
+
+// ページを離れるときにローカルストレージから選択されたタグを削除する
+window.addEventListener('beforeunload', () => {
+    selectedTag.value = '';
+    localStorage.removeItem('selectedTag');
+});
 
 // カテゴリーの表示・非表示を切り替える
 if (props.categories) {
@@ -56,30 +58,6 @@ if (props.categories) {
         showCategory[category.id] = true;
     });
 }
-
-// ページがロードされるたびにローカルストレージから選択されたタグを読み込む
-const selectedTag = ref(localStorage.getItem('selectedTag') || '');
-
-// ページを離れるときにローカルストレージから選択されたタグを削除する
-window.addEventListener('beforeunload', () => {
-    localStorage.removeItem('selectedTag');
-});
-
-// 画面上部に表示されたタグをクリックすると、タグの絞り込みを解除する
-const resetSelectedTag = () => {
-    selectedTag.value = '';
-    localStorage.removeItem('selectedTag');
-    if (props.mapName && props.mapId && props.characterName && props.characterId) {
-        Inertia.get(route('spots.index'), {
-            mapName: props.mapName,
-            mapId: props.mapId,
-            characterName: props.characterName,
-            characterId: props.characterId,
-        });
-    } else {
-        Inertia.get(route('spots.index'));
-    }
-};
 </script>
 
 <template>
@@ -88,42 +66,30 @@ const resetSelectedTag = () => {
         <v-main class="bg-zinc-900">
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
-                    <v-row justify="center" class="mt-4">
-                        <v-col cols="10">
-                            <v-row>
-                                <div class="w-full md:w-1/5">
-                                    <CategoryControls :categories="categories" :showCategory="showCategory" />
-                                </div>
-
-                                <FilterControls :selectedTag="selectedTag" :maps="maps" :characters="characters" :tags="tags" :mapId="mapId" :characterId="characterId" />
-                                <v-col col="2">
-                                    <div>
-                                        タグ:
-                                        <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
-                                    </div>
-                                </v-col>
-                                <v-col col="2">
-                                    <div class="text-right">
-                                        <StoreCategory />
-                                    </div>
-                                </v-col>
-                            </v-row>
-                        </v-col>
-                    </v-row>
+                    <FlashMessage :flash="flash" />
+                    <!-- <div v-if="$page.props.flash" class="alert alert-success">{{ $page.props.flash.message }}</div> -->
+                    <SpotHeader
+                        :maps="maps"
+                        :characters="characters"
+                        :tags="tags"
+                        :selectedMap="selectedMap"
+                        :selectedCharacter="selectedCharacter"
+                        :showCategory="showCategory"
+                        :categories="categories"
+                    />
                     <v-row justify="start" v-if="props.spots" class="mx-15">
                         <template v-for="(category, index) in props.categories" :key="category.id">
-                            <!-- カテゴリーヘッダー -->
-                            <CategoryHeader :category="category" :showCategory="showCategory" :toggleCategory="toggleCategory" :openUpdateDialog="openUpdateDialog" :deleteCategory="deleteCategory" />
                             <!-- spot -->
                             <SpotList
                                 :selectedTag="selectedTag"
                                 :showCategory="showCategory"
                                 :spots="props.spots"
                                 :category="category"
-                                :mapName="props.mapName"
-                                :mapId="props.mapId"
-                                :characterName="props.characterName"
-                                :characterId="props.characterId"
+                                :selectedMap="props.selectedMap"
+                                :selectedCharacter="props.selectedCharacter"
+                                :toggleCategory="toggleCategory"
+                                :openUpdateDialog="openUpdateDialog"
+                                :deleteCategory="deleteCategory"
                             />
                         </template>
                     </v-row>

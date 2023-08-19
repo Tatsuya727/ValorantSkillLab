@@ -7,7 +7,10 @@ use Inertia\Inertia;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\SpotController;
+use App\Http\Controllers\ShareSpotController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\TagController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\GoogleLoginController;
@@ -38,7 +41,22 @@ Route::resource("characters", CharacterController::class)
 Route::resource("spots", SpotController::class)
 ->middleware(['auth', 'check.verified']);
 
+Route::get("/sharespots", [ShareSpotController::class, 'index'])
+->name('sharespots.index');
+
+Route::post('/spots/{spot}/like', [LikeController::class, 'store'])
+->name('likes.store')
+->middleware(['auth', 'check.verified']);
+
+Route::delete('/spots/{spot}/like', [LikeController::class, 'destroy'])
+->name('likes.destroy')
+->middleware(['auth', 'check.verified']);
+
+
 Route::resource('/categories', CategoryController::class)
+->middleware(['auth', 'check.verified']);
+
+Route::resource('/tags', TagController::class)
 ->middleware(['auth', 'check.verified']);
 
 Route::get('/', function () {

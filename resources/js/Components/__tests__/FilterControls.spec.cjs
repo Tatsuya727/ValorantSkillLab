@@ -6,8 +6,8 @@ import { Inertia } from '@inertiajs/inertia';
 describe('FilterControls', () => {
     const propsData = {
         selectedTag: 'Test Tag',
-        mapId: 1,
-        characterId: 2,
+        selectedMap: 1,
+        selectedCharacter: 2,
         tags: [{ name: 'Tag1' }, { name: 'Tag2' }],
         maps: [
             { id: 1, name: 'Map1' },
@@ -39,8 +39,8 @@ describe('FilterControls', () => {
     });
 
     it('選択されたマップとキャラクターが正しく表示される', () => {
-        expect(wrapper.vm.selectedMap).toBe(propsData.mapId);
-        expect(wrapper.vm.selectedCharacter).toBe(propsData.characterId);
+        expect(wrapper.vm.selectedMap).toBe(propsData.selectedMap);
+        expect(wrapper.vm.selectedCharacter).toBe(propsData.selectedCharacter);
     });
 
     it('タグが正しく選択される', async () => {

@@ -70,8 +70,8 @@ const removeImageForm = (index) => {
 <template>
     <v-app id="inspire">
         <NavBar />
-        <v-main class="bg-grey-lighten-2 flex justify-center min-h-screen mt-15">
-            <v-form @submit.prevent="updateSpot(form.id)" class="w-full max-w-6xl">
+        <v-main class="bg-zinc-900 flex justify-center min-h-screen mt-10">
+            <v-form @submit.prevent="updateSpot(form.id)" class="w-full max-w-7xl bg-neutral-700 p-10 rounded">
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
                         <label for="title" class="block text-sm font-medium text-gray-700">タイトル<span class="text-red-500">*</span></label>

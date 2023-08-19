@@ -38,6 +38,7 @@ class StoreSpotRequest extends FormRequest
             'title.required' => 'タイトルは必須です',
             'title.max' => 'タイトルは150文字以内で入力してください',
             'description.max' => '説明は255文字以内で入力してください',
+            'description.required' => '説明は必須です',
             'map_id.required' => 'マップを選択してください',
             'map_id.exists' => 'マップが存在しません',
             'character_id.required' => 'キャラクターを選択してください',

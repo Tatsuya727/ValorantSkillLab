@@ -9,6 +9,8 @@ const links = [
     ['mdi-account', 'Character', 'characters.index', 'Characters/Index'],
     ['mdi-spotlight', 'Spot', 'spots.index', 'Spots/Index'],
     ['mdi-plus-box', 'Create', 'spots.create', 'Spots/Create'],
+    // post
+    ['mdi-plus-bo', 'Post', 'sharespots.index', 'ShareSpots/Index'],
 ];
 </script>
 
@@ -22,6 +24,7 @@ const links = [
         <Link :href="route('characters.index')" class="mr-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Character</Link>
         <Link :href="route('spots.index')" class="mr-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Spot</Link>
         <Link :href="route('spots.create')" class="mr-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">作成</Link>
+        <Link :href="route('sharespots.index')" class="mr-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Post</Link>
 
         <v-spacer></v-spacer>
     </v-app-bar>
@@ -31,13 +34,13 @@ const links = [
 
             <div v-if="$page.props.auth.user" class="username">{{ $page.props.auth.user.name }}</div>
             <div v-else>
-                <v-btn>
-                    <Link :href="route('login')">ログイン</Link>
-                </v-btn>
+                <Link :href="route('login')">
+                    <v-btn>ログイン </v-btn>
+                </Link>
 
-                <v-btn class="ml-2">
-                    <Link :href="route('register')">新規登録 </Link>
-                </v-btn>
+                <Link :href="route('register')">
+                    <v-btn class="ml-2">新規登録</v-btn>
+                </Link>
             </div>
         </v-sheet>
 

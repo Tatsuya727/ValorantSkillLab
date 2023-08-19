@@ -4,8 +4,8 @@ import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
     selectedTag: String,
-    mapId: Number,
-    characterId: Number,
+    selectedMap: Array,
+    selectedCharacter: Array,
     tags: Array,
     maps: Array,
     characters: Array,
@@ -19,8 +19,8 @@ const openFilterDialog = () => {
     filterDialog.value = true;
 };
 
-const selectedMap = ref(props.mapId);
-const selectedCharacter = ref(props.characterId);
+const selectedMap = ref(props.selectedMap);
+const selectedCharacter = ref(props.selectedCharacter);
 
 const selectTag = (tagName) => {
     selectedTag.value = tagName;
@@ -28,7 +28,7 @@ const selectTag = (tagName) => {
 };
 
 const filterSpots = () => {
-    Inertia.get(route('spots.index'), { mapId: selectedMap.value, characterId: selectedCharacter.value, tag: selectedTag.value });
+    Inertia.get(route('spots.index'), { selectedMap: selectedMap.value, selectedCharacter: selectedCharacter.value, tag: selectedTag.value });
 };
 
 const resetSpots = () => {
@@ -57,26 +57,12 @@ const resetFilter = () => {
         <v-card>
             <v-col col="2">
                 <div>
-                    <label for="map-select" class="mr-2">マップ</label>
-                    <select
-                        id="map-select"
-                        v-model="selectedMap"
-                        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                    >
-                        <option v-for="map in maps" :key="map.id" :value="map.id">{{ map.name }}</option>
-                    </select>
+                    <v-autocomplete label="マップ" v-model="selectedMap" :items="maps" item-title="name" item-value="id" variant="outlined"></v-autocomplete>
                 </div>
             </v-col>
             <v-col col="2">
                 <div>
-                    <label for="character-select" class="mr-2">キャラクター</label>
-                    <select
-                        id="character-select"
-                        v-model="selectedCharacter"
-                        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                    >
-                        <option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }}</option>
-                    </select>
+                    <v-autocomplete label="キャラクター" v-model="selectedCharacter" :items="characters" item-title="name" item-value="id" variant="outlined"> </v-autocomplete>
                 </div>
             </v-col>
             <div class="flex flex-wrap m-3">
@@ -95,7 +81,7 @@ const resetFilter = () => {
                 </v-col>
             </v-row>
             <v-card-actions>
-                <v-btn type="button" color="primary" block @click="filterDialog = false">閉じる</v-btn>
+                <v-btn type="button" block @click="filterDialog = false">閉じる</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
