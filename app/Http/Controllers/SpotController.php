@@ -246,6 +246,8 @@ class SpotController extends Controller
 
         $spot->delete();
 
-        return redirect()->route('spots.index');
+        session()->flash('message', '削除しました');
+
+        return to_route('spots.index');
     }
 }
