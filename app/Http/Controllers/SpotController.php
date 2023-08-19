@@ -29,11 +29,13 @@ class SpotController extends Controller
         $tags = Tag::all();
         
         $tag = $request->query('tag');
+        $search = $request->query('search');
         $selectedMap = $request->query('selectedMap');
         $selectedCharacter = $request->query('selectedCharacter');
         
         // ユーザーごとのスポットを取得
         $spots = Spot::with(['images', 'map', 'character', 'tags'])
+            ->searchSpot($search)
             ->where('user_id', auth()->id())
             ->when($tag, function ($query, $tag) {
                 return $query->whereHas('tags', function ($query) use ($tag) {
