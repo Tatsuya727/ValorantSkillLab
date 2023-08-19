@@ -24,11 +24,13 @@ class SpotController extends Controller
      */
     public function index(Request $request)
     {
+        $characters = Character::all();
+        $maps = Map::all();
+        $tags = Tag::all();
+        
         $tag = $request->query('tag');
-        $mapName = $request->query('mapName');
-        $mapId = $request->query('mapId');
-        $characterName = $request->query('characterName');
-        $characterId = $request->query('characterId');
+        $selectedMap = $request->query('selectedMap');
+        $selectedCharacter = $request->query('selectedCharacter');
 
         // ユーザーごとのスポットを取得
         $spots = Spot::with(['images', 'map', 'character', 'tags'])
@@ -38,14 +40,15 @@ class SpotController extends Controller
                     $query->where('name', $tag);
                 });
             })
-            ->when($mapName, function ($query, $mapName) {
-                return $query->whereHas('map', function ($query) use ($mapName) {
-                    $query->where('name', $mapName);
+
+            ->when($selectedMap, function ($query, $selectedMap) {
+                return $query->whereHas('map', function ($query) use ($selectedMap) {
+                    $query->where('id', $selectedMap['id']);
                 });
             })
-            ->when($mapId, function ($query, $mapId) {
-                return $query->whereHas('map', function ($query) use ($mapId) {
-                    $query->where('id', $mapId);
+            ->when($selectedCharacter, function ($query, $selectedCharacter) {
+                return $query->whereHas('character', function ($query) use ($selectedCharacter) {
+                    $query->where('id', $selectedCharacter['id']);
                 });
             })
             ->get();
@@ -60,23 +63,17 @@ class SpotController extends Controller
         
 
 
-        $characters = Character::all();
-        $maps = Map::all();
-        $tags = Tag::all();
 
         return Inertia::render('Spots/Index', [
             'spots' => $spots,
             'categories' => $categories,
-            'mapName' => $mapName,
-            'mapId' => $mapId,
-            'characterName' => $characterName,
-            'characterId' => $characterId,
+            'selectedMap' => $selectedMap,
+            'selectedCharacter' => $selectedCharacter,
             'characters' => $characters,
             'maps' => $maps,
             'tags' => $tags,
         ]);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -86,7 +83,15 @@ class SpotController extends Controller
         $maps = Map::all();
         $characters = Character::all();
         $categories = Category::where('user_id', auth()->id())->get();
+        
         $tags = Tag::all();
+
+        // tagにそのタグを持つspotの数を追加
+        foreach ($tags as $tag) {
+            $tag->spotCount = Spot::whereHas('tags', function ($query) use ($tag) {
+                $query->where('name', $tag->name);
+            })->count();
+        }
 
         return Inertia::render('Spots/Create', [
             'maps' => $maps,
@@ -112,8 +117,10 @@ class SpotController extends Controller
             ]);
 
             // タグの保存
-            foreach ($request->tags as $tagId) {
-                $spot->tags()->attach($tagId);
+            if($request->tags) {
+                foreach ($request->tags as $tagId) {
+                    $spot->tags()->attach($tagId);
+                }
             }
         
             foreach ($request->images as $image) {
@@ -135,8 +142,10 @@ class SpotController extends Controller
                 ]);
             }
         });
+
+        session()->flash('message', '作成しました');
         
-        return redirect()->route('spots.index');
+        return to_route('spots.index');
     }
 
 

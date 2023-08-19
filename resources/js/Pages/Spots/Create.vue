@@ -3,6 +3,8 @@ import { reactive, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import NavBar from '@/Components/original/NavBar.vue';
 import StoreCategory from '@/Components/original/StoreCategory.vue';
+import StoreTag from '@/Components/original/StoreTag.vue';
+import { defineProps, computed, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
     maps: {
@@ -131,6 +133,29 @@ const addImageForm = () => {
 const removeImageForm = (index) => {
     form.images.splice(index, 1);
 };
+
+const searchQuery = ref(''); // タグの検索クエリ
+const filteredTags = computed(() => {
+    return props.tags.filter((tag) => tag.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
+});
+
+const showDropdown = ref(false); // ドロップダウンを表示するかどうかを制御するための変数
+
+const handleClickOutside = (event) => {
+    if (!dropdownRef.value.contains(event.target)) {
+        showDropdown.value = false;
+    }
+};
+
+const dropdownRef = ref(null); // ドロップダウンの参照
+
+onMounted(() => {
+    document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+    document.removeEventListener('click', handleClickOutside);
+});
 </script>
 
 <template>
@@ -201,26 +226,40 @@ const removeImageForm = (index) => {
 
                     <!-- タグ -->
                     <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
-                        <div class="w-full px-3">
+                        <div class="w-full px-3" ref="dropdownRef">
                             <div class="flex flex-wrap">
                                 <label for="tags" class="block text-sm font-medium text-white">タグ<span>(3つまで選択可)</span></label>
                                 <!-- 選択したタグを表示 -->
                                 <div v-for="tagId in form.tags" :key="tagId" class="ml-2">
                                     <v-chip color="light-blue-lighten-5" close closable @click="removeTag(tagId)">
-                                        {{ tags.find((tag) => tag.id === tagId).name }}
+                                        {{ props.tags.find((tag) => tag.id === tagId).name }}
                                     </v-chip>
                                 </div>
                             </div>
-                            <select
-                                name="tags"
-                                v-model="selectedTag"
-                                @change="addTag"
-                                class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                            >
-                                <option disabled value="">タグを選択</option>
-                                <option v-for="tag in tags" :key="tag.id" :value="tag">{{ tag.name }}</option>
-                            </select>
+                            <input
+                                type="text"
+                                v-model="searchQuery"
+                                @focus="showDropdown = true"
+                                placeholder="タグを検索..."
+                                class="mt-2 block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                            />
+                            <ul v-if="filteredTags.length && showDropdown" class="dropdown-list">
+                                <li
+                                    v-for="tag in filteredTags"
+                                    :key="tag.id"
+                                    @click="
+                                        selectedTag = tag;
+                                        addTag();
+                                    "
+                                    class="cursor-pointer hover:bg-gray-200 p-2"
+                                >
+                                    {{ tag.name }} ({{ tag.spotCount }})
+                                </li>
+                            </ul>
                             <div v-if="errors.tags" class="text-red-500">{{ errors.tags }}</div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <StoreTag />
                         </div>
                     </div>
                 </div>
@@ -280,3 +319,25 @@ const removeImageForm = (index) => {
         </v-main>
     </v-app>
 </template>
+
+<style scoped>
+ul {
+    border: 1px solid #ccc;
+    max-height: 100px;
+    margin-left: 3px;
+    overflow-y: auto;
+    background-color: white;
+    position: absolute;
+    width: 40%;
+    z-index: 1000;
+    border-radius: 3px;
+}
+li:hover {
+    background-color: #eee;
+}
+
+.dropdown-list {
+    max-height: 250px;
+    overflow-y: auto;
+}
+</style>

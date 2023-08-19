@@ -5,6 +5,7 @@ import { Inertia } from '@inertiajs/inertia';
 const props = defineProps({
     category: Object,
     showCategory: Object,
+    filteredSpots: Array,
 });
 
 const updateDialog = ref(false);
@@ -38,7 +39,10 @@ const deleteCategory = (id) => {
             <div class="flex items-center text-black">
                 <v-icon v-if="showCategory[category.id]" class="text-primary">mdi-chevron-down</v-icon>
                 <v-icon v-else class="text-secondary">mdi-chevron-right</v-icon>
-                <span class="ml-2 categoryname">{{ category.name }}</span>
+                <span class="ml-2 categoryname">
+                    {{ category.name }}
+                    <span>({{ filteredSpots.length }})</span>
+                </span>
             </div>
             <v-menu>
                 <template v-slot:activator="{ props }">

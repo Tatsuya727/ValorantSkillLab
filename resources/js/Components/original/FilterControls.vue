@@ -4,8 +4,8 @@ import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
     selectedTag: String,
-    mapId: Number,
-    characterId: Number,
+    selectedMap: Array,
+    selectedCharacter: Array,
     tags: Array,
     maps: Array,
     characters: Array,
@@ -19,8 +19,8 @@ const openFilterDialog = () => {
     filterDialog.value = true;
 };
 
-const selectedMap = ref(props.mapId);
-const selectedCharacter = ref(props.characterId);
+const selectedMap = ref(props.selectedMap);
+const selectedCharacter = ref(props.selectedCharacter);
 
 const selectTag = (tagName) => {
     selectedTag.value = tagName;
@@ -28,7 +28,7 @@ const selectTag = (tagName) => {
 };
 
 const filterSpots = () => {
-    Inertia.get(route('spots.index'), { mapId: selectedMap.value, characterId: selectedCharacter.value, tag: selectedTag.value });
+    Inertia.get(route('spots.index'), { selectedMap: selectedMap.value, selectedCharacter: selectedCharacter.value, tag: selectedTag.value });
 };
 
 const resetSpots = () => {

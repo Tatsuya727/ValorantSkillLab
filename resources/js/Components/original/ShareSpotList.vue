@@ -4,6 +4,10 @@ import { defineProps, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import Pagination from '@/Components/original/Pagination.vue';
 import LikeButton from '@/Components/original/LikeButton.vue';
+
+import ShareSpotMenu from '@/Components/original/ShareSpotMenu.vue';
+import SpotTags from '@/Components/original/SpotTags.vue';
+
 import dayjs from 'dayjs';
 
 const props = defineProps({
@@ -11,7 +15,9 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-    category: {
+
+    categories: {
+
         type: Object,
         required: true,
     },
@@ -27,52 +33,21 @@ const props = defineProps({
         type: Number,
         required: true,
     },
-    // mapId: {
-    //     type: Number,
-    //     required: false,
-    // },
-    // characterId: {
-    //     type: Number,
-    //     required: false,
-    // },
+
+    userCategories: {
+        type: Array,
+        required: false,
+    },
+    selectedMap: {
+        type: Array,
+        required: false,
+    },
+    selectedCharacter: {
+        type: Array,
+        required: false,
+    },
 });
 
-const selectedTag = ref(localStorage.getItem('selectedTag') || '');
-
-// タグを選択するとそのタグのスポットのみ表示する
-const filterSpotsByTag = (tag) => {
-    selectedTag.value = tag;
-    localStorage.setItem('selectedTag', tag);
-    if (props.mapName && props.mapId && props.characterName && props.characterId) {
-        Inertia.get(route('sharespots.index'), {
-            tag: tag,
-            mapName: props.mapName,
-            mapId: props.mapId,
-            characterName: props.characterName,
-            characterId: props.characterId,
-            selectedTag: selectedTag.value,
-        });
-    } else if (props.mapName && props.mapId) {
-        Inertia.get(route('sharespots.index'), {
-            tag: tag,
-            mapName: props.mapName,
-            mapId: props.mapId,
-            selectedTag: selectedTag.value,
-        });
-    } else if (props.characterName && props.characterId) {
-        Inertia.get(route('sharespots.index'), {
-            tag: tag,
-            characterName: props.characterName,
-            characterId: props.characterId,
-            selectedTag: selectedTag.value,
-        });
-    } else {
-        Inertia.get(route('sharespots.index'), {
-            tag: tag,
-            selectedTag: selectedTag.value,
-        });
-    }
-};
 </script>
 
 <template>
@@ -90,55 +65,44 @@ const filterSpotsByTag = (tag) => {
         </div>
     </div>
     <Pagination class="mt-5 text-white" :links="props.spots.links"></Pagination>
-    <v-row justify="center">
-        <v-col v-for="spot in props.spots.data" :key="spot.id" cols="5" class="mt-10">
-            <div class="flex border border-gray-500 rounded overflow-hidden relative">
-                <Link :href="spot.show_url">
-                    <div><img cover class="w-full h-auto" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy" /></div>
+
+    <v-row justify="center" class="mx-3">
+        <v-col v-for="spot in props.spots.data" :key="spot.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
+            <div class="flex flex-col rounded overflow-hidden relative h-full">
+                <!-- 画像 -->
+                <Link :href="spot.show_url" class="flex-grow">
+                    <v-img cover class="cursor-pointer h-full" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy"></v-img>
                 </Link>
-                <div class="p-4 bg-neutral-800 w-full">
-                    <Link :href="spot.show_url">
-                        <h1 class="text-2xl font-bold text-white">{{ spot.title }}</h1>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-400">
-                                map: <span class="font-bold text-white">{{ spot.map.name }}</span>
-                            </p>
-                            <p class="text-sm text-gray-400">
-                                character: <span class="font-bold text-white">{{ spot.character.name }}</span>
-                            </p>
-                        </div>
-                    </Link>
-                    <!-- タグの名前をすべて表示 -->
-                    <div class="flex flex-wrap mt-4">
-                        <div v-for="(tag, index) in spot.tags" :key="index">
-                            <v-chip
-                                v-if="selectedTag && selectedTag === tag.name"
-                                :class="'cursor-pointer hover:bg-cyan-600 active:bg-indigo-500'"
-                                @click="filterSpotsByTag(tag.name)"
-                                class="ma-2"
-                                color="light-blue-lighten-4"
-                                label
-                            >
-                                {{ tag.name }}
-                            </v-chip>
-                            <v-chip v-else :class="'cursor-pointer hover:bg-cyan-900 active:bg-indigo-500'" @click="filterSpotsByTag(tag.name)" class="ma-2" color="indigo-accent-4 " label>
-                                {{ tag.name }}
-                            </v-chip>
-                            <!-- <div
-                                @click="filterSpotsByTag(tag.name)"
-                                :class="{
-                                    'border-2 border-cyan-500 rounded-lg px-3 py-1 text-sm font-semibold text-white mr-2 mb-2 cursor-pointer hover:bg-cyan-600': !selectedTag.value,
-                                    'bg-cyan-500 text-white': selectedTag && selectedTag === tag.name,
-                                }"
-                            >
-                                {{ tag.name }}
-                            </div> -->
+                <!-- 情報 -->
+                <div class="p-4 bg-neutral-800">
+                    <div class="absolute top-0 right-0 mt-2 mr-2 flex cursor-pointer">
+                        <ShareSpotMenu :spot="spot" :userCategories="userCategories" />
+                    </div>
+                    <div class="flex mb-2">
+                        <Link :href="spot.show_url">
+                            <h1 class="text-2xl font-bold text-white">{{ spot.title }}</h1>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-400">
+                                    category: <span class="font-bold text-white">{{ spot.category.name }}</span>
+                                </p>
+                                <p class="text-sm text-gray-400">
+                                    map: <span class="font-bold text-white">{{ spot.map.name }}</span>
+                                </p>
+                                <p class="text-sm text-gray-400">
+                                    character: <span class="font-bold text-white">{{ spot.character.name }}</span>
+                                </p>
+                            </div>
+                        </Link>
+                        <!-- タグの名前をすべて表示 -->
+                        <div class="flex flex-wrap mt-7">
+                            <SpotTags :tags="spot.tags" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'sharespots.index'" />
                         </div>
                     </div>
+                    <LikeButton :spot="spot" />
                     <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
-                        <LikeButton :spot="spot" />
-
                         <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
+                        <!-- ユーザーネーム -->
+
                         <div class="text-green">{{ spot.user.name }}</div>
                     </div>
                 </div>

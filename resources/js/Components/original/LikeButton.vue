@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+
 import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
@@ -21,15 +21,17 @@ const toggleLike = (spot) => {
 
 <template>
     <div class="text-white">
-        <div @click="toggleLike(spot)">
-            <template v-if="spot.is_liked_by_user">
-                <v-icon class="cursor-pointer" color="pink">mdi-heart</v-icon>
+
+        <div>
+            <div v-if="spot.is_liked_by_user" @click="toggleLike(spot)" class="cursor-pointer">
+                <v-icon color="pink">mdi-heart</v-icon>
                 {{ spot.liked_by_count }}
-            </template>
-            <template v-else>
-                <v-icon class="cursor-pointer">mdi-heart-outline</v-icon>
+            </div>
+            <div v-else @click="toggleLike(spot)" class="cursor-pointer">
+                <v-icon>mdi-heart-outline</v-icon>
                 {{ spot.liked_by_count }}
-            </template>
+            </div>
+
         </div>
     </div>
 </template>

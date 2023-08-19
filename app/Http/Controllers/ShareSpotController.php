@@ -16,8 +16,18 @@ class ShareSpotController extends Controller
     {
         $tag = $request->query('tag');
         $search = $request->query('search');
+        $selectedMap = $request->query('selectedMap');
+        $selectedCharacter = $request->query('selectedCharacter');
 
-        $spots = Spot::with(['images', 'map', 'character', 'tags', 'user'])
+        // if ($tag) {
+        //     dd($tag);
+        // }
+
+        // if ($selectedMap) {
+        //     dd($selectedMap);
+        // }
+
+        $spots = Spot::with(['images', 'map', 'character', 'tags', 'user', 'category'])
             ->withCount('likedBy')
             ->searchSpot($search)
             ->when($tag, function ($query, $tag) {
@@ -25,22 +35,51 @@ class ShareSpotController extends Controller
                     $query->where('name', $tag);
                 });
             })
-            ->paginate(10);
+            ->when($selectedMap, function ($query, $selectedMap) {
+                return $query->whereHas('map', function ($query) use ($selectedMap) {
+                    $query->where('id', $selectedMap['id']);
+                });
+            })
+            ->when($selectedCharacter, function ($query, $selectedCharacter) {
+                return $query->whereHas('character', function ($query) use ($selectedCharacter) {
+                    $query->where('id', $selectedCharacter['id']);
+                });
+            })
+            ->paginate(12)
+            ->appends($request->all());
 
         // 各spotにis_liked_by_userプロパティを追加
         foreach ($spots as $spot) {
             $spot->is_liked_by_user = $spot->likedBy->contains(auth()->id());
         }
 
-        $allSpots = Spot::with(['images', 'map', 'character', 'tags'])
+        // 検索条件に合致する全てのspotを取得
+        $allSpots = Spot::with(['images', 'map', 'character', 'tags', 'category', 'user'])
             ->searchSpot($search)
             ->when($tag, function ($query, $tag) {
                 return $query->whereHas('tags', function ($query) use ($tag) {
                     $query->where('name', $tag);
                 });
             })
+            ->when($selectedMap, function ($query, $selectedMap) {
+                return $query->whereHas('map', function ($query) use ($selectedMap) {
+                    $query->where('id', $selectedMap['id']);
+                });
+            })
+            ->when($selectedCharacter, function ($query, $selectedCharacter) {
+                return $query->whereHas('character', function ($query) use ($selectedCharacter) {
+                    $query->where('id', $selectedCharacter['id']);
+                });
+            })
             ->get();
 
+        // ログインしているユーザーのカテゴリーを取得
+        if(auth()->check()) {
+            $userCategories = auth()->user()->categories;
+        } else {
+            $userCategories = null;
+        }
+      
         // Spotの合計数
         $allSpotsCount = Spot::count();
 
@@ -65,6 +104,9 @@ class ShareSpotController extends Controller
             'tags' => $tags,
             'allSpotsCount' => $allSpotsCount,
             'spotsCount' => $spotsCount,
+            'userCategories' => $userCategories,
+            'selectedMap' => $selectedMap,
+            'selectedCharacter' => $selectedCharacter,
         ]);
     }
 }
