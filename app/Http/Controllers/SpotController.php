@@ -32,6 +32,7 @@ class SpotController extends Controller
         $search = $request->query('search');
         $selectedMap = $request->query('selectedMap');
         $selectedCharacter = $request->query('selectedCharacter');
+        $selectedCategory = $request->query('selectedCategory');
 
 
         // ユーザーごとにカテゴリーを取得
@@ -46,7 +47,6 @@ class SpotController extends Controller
                     $query->where('name', $tag);
                 });
             })
-
             ->when($selectedMap, function ($query, $selectedMap) {
                 return $query->whereHas('map', function ($query) use ($selectedMap) {
                     $query->where('id', $selectedMap['id']);
@@ -55,6 +55,11 @@ class SpotController extends Controller
             ->when($selectedCharacter, function ($query, $selectedCharacter) {
                 return $query->whereHas('character', function ($query) use ($selectedCharacter) {
                     $query->where('id', $selectedCharacter['id']);
+                });
+            })
+            ->when($selectedCategory, function ($query, $selectedCategory) {
+                return $query->whereHas('category', function ($query) use ($selectedCategory) {
+                    $query->where('id', $selectedCategory['id']);
                 });
             })
             ->get();
