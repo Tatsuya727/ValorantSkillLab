@@ -75,7 +75,7 @@ const props = defineProps({
                 </Link>
                 <!-- 情報 -->
                 <div class="p-4 bg-neutral-800">
-                    <div class="absolute top-0 right-0 mt-2 mr-2 flex cursor-pointer">
+                    <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
                         <ShareSpotMenu :spot="spot" :userCategories="userCategories" />
                     </div>
                     <div class="flex mb-2">

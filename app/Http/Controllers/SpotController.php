@@ -29,11 +29,17 @@ class SpotController extends Controller
         $tags = Tag::all();
         
         $tag = $request->query('tag');
+        $search = $request->query('search');
         $selectedMap = $request->query('selectedMap');
         $selectedCharacter = $request->query('selectedCharacter');
 
+
+        // ユーザーごとにカテゴリーを取得
+        $categories = Category::where('user_id', auth()->id())->get();
+        
         // ユーザーごとのスポットを取得
         $spots = Spot::with(['images', 'map', 'character', 'tags'])
+            ->searchSpot($search)
             ->where('user_id', auth()->id())
             ->when($tag, function ($query, $tag) {
                 return $query->whereHas('tags', function ($query) use ($tag) {
@@ -53,16 +59,11 @@ class SpotController extends Controller
             })
             ->get();
 
-        // ユーザーごとにカテゴリーを取得
-        $categories = Category::where('user_id', auth()->id())->get();
-
         // 各spotにshow_urlプロパティを追加
         foreach ($spots as $spot) {
             $spot->show_url = route('spots.show', ['spot' => $spot->id]);
         }
         
-
-
 
         return Inertia::render('Spots/Index', [
             'spots' => $spots,
@@ -246,6 +247,8 @@ class SpotController extends Controller
 
         $spot->delete();
 
-        return redirect()->route('spots.index');
+        session()->flash('message', '削除しました');
+
+        return to_route('spots.index');
     }
 }

@@ -41,7 +41,7 @@ const deleteCategory = (id) => {
                 <v-icon v-else class="text-secondary">mdi-chevron-right</v-icon>
                 <span class="ml-2 categoryname">
                     {{ category.name }}
-                    <span>({{ filteredSpots.length }})</span>
+                    <span v-if="filteredSpots">({{ filteredSpots.length }})</span>
                 </span>
             </div>
             <v-menu>

@@ -47,7 +47,7 @@ const filterSpotsByTag = (tag) => {
             v-if="selectedTag && selectedTag === tag.name"
             :class="'cursor-pointer hover:bg-cyan-600 active:bg-indigo-500'"
             @click="filterSpotsByTag(tag.name)"
-            class="ma-2"
+            class="m-2"
             color="light-blue-lighten-4"
             label
         >
