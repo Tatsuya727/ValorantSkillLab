@@ -32,8 +32,7 @@ class SpotController extends Controller
         $search = $request->query('search');
         $selectedMap = $request->query('selectedMap');
         $selectedCharacter = $request->query('selectedCharacter');
-        $selectedCategory = $request->query('selectedCategory');
-
+        $category = $request->query('category');
 
         // ユーザーごとにカテゴリーを取得
         $categories = Category::where('user_id', auth()->id())->get();
@@ -57,11 +56,12 @@ class SpotController extends Controller
                     $query->where('id', $selectedCharacter['id']);
                 });
             })
-            // ->when($selectedCategory, function ($query, $selectedCategory) {
-            //     return $query->whereHas('category', function ($query) use ($selectedCategory) {
-            //         $query->where('id', $selectedCategory['id']);
-            //     });
-            // })
+            ->when($category, function ($query, $category) {
+                return $query->whereHas('categories', function ($query) use ($category) {
+                    $query->where('categories.id', $category);
+                });
+            })
+            
             ->get();
 
         // 各spotにshow_urlプロパティを追加
