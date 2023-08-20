@@ -3,6 +3,7 @@ import { defineProps, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import NavBar from '@/Components/original/NavBar.vue';
 import SpotHeader from '@/Components/original/SpotHeader.vue';
+import CategoryMenu from '@/Components/original/CategoryMenu.vue';
 
 const props = defineProps({
     categories: {
@@ -55,13 +56,23 @@ const getSpotCountForCategory = (categoryId) => {
                     <v-row class="mx-5">
                         <v-col v-for="category in props.categories" :key="category.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
                             <!-- そのカテゴリーを持つ最初のspotを表示 -->
-                            <div class="ml-4 cursor-pointer text-center flex items-center justify-center relative" @click="selectCategory(category)">
+                            <div class="ml-4 cursor-pointer text-center flex items-center justify-center relative group" @click="selectCategory(category)">
+                                <!-- 画像 -->
                                 <template v-if="getFirstSpotForCategory(category.id)">
-                                    <v-img :src="getFirstSpotForCategory(category.id)" class="min-w-full min-h-52 mr-4 rounded blur"></v-img>
+                                    <v-img :src="getFirstSpotForCategory(category.id)" class="min-w-full min-h-52 mr-4 rounded blur hover:brightness-125 hover:opacity-80"></v-img>
+                                    <!-- カテゴリーメニュー -->
+                                    <div class="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <CategoryMenu :category="category" />
+                                    </div>
                                 </template>
                                 <template v-else>
                                     <div class="w-full h-52 bg-gray-400 mr-4 rounded"></div>
+                                    <!-- カテゴリーメニュー -->
+                                    <div class="absolute top-2 right-5 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <CategoryMenu :category="category" />
+                                    </div>
                                 </template>
+                                <!-- 名前 -->
                                 <div class="absolute cursor-pointer text-white text-xl font-bold font-sans">{{ category.name }} ({{ getSpotCountForCategory(category.id) }})</div>
                             </div>
                         </v-col>

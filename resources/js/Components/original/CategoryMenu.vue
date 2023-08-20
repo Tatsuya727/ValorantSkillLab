@@ -31,7 +31,7 @@ const deleteCategory = (id) => {
 <template>
     <v-menu>
         <template v-slot:activator="{ props }">
-            <v-icon v-bind="props" class="text-gray-600">mdi-dots-vertical</v-icon>
+            <v-icon v-bind="props" class="text-white">mdi-dots-vertical</v-icon>
         </template>
 
         <v-list>

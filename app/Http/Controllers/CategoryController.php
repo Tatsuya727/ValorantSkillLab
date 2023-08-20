@@ -43,13 +43,13 @@ class CategoryController extends Controller
             'name' => $request->name,
         ]);
 
-        return redirect()->route('spots.index');
+        return redirect()->route('categories.index');
     }
 
     public function destroy(Category $category)
     {
         $category->delete();
 
-        return redirect()->route('spots.index');
+        return redirect()->route('categories.index');
     }
 }
