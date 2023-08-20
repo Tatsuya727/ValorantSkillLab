@@ -35,7 +35,9 @@ const selectedCategoryId = props.selectedCategory;
 
 const currentCategoryName = computed(() => {
     const categoryId = Number(selectedCategoryId);
-    return props.categories.find((category) => category.id === categoryId).name;
+    if (categoryId) {
+        return props.categories.find((category) => category.id === categoryId).name;
+    }
 });
 </script>
 
