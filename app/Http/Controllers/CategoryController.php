@@ -33,7 +33,7 @@ class CategoryController extends Controller
         if ($redirectToCreate) {
             return redirect()->route('spots.create');
         } else {
-            return redirect()->route('spots.index');
+            return redirect()->route('categories.index');
         }
     }
 

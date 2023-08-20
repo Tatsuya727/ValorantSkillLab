@@ -2,7 +2,6 @@
 import { Link } from '@inertiajs/inertia-vue3';
 import { defineEmits, ref, computed } from 'vue';
 import SpotTags from '@/Components/original/SpotTags.vue';
-import CategoryHeader from '@/Components/original/CategoryHeader.vue';
 import SpotMenu from '@/Components/original/SpotMenu.vue';
 
 const props = defineProps({
@@ -31,26 +30,9 @@ const props = defineProps({
         required: false,
     },
 });
-
-// // category.id と一致する spot のみをフィルタリングする computed property
-// const filteredSpots = computed(() => {
-//     return props.spots.filter((spot) => spot.category_id === props.category.id);
-// });
-
-// 親コンポーネントにfilteredSpotsを返す
-// const emits = defineEmits(['filteredSpots']);
-
-// カテゴリーの表示・非表示を切り替える
-// if (props.categories) {
-//     props.categories.forEach((category) => {
-//         showCategory[category.id] = true;
-//     });
-// }
 </script>
 
 <template>
-    <!-- カテゴリーヘッダー -->
-    <!-- <CategoryHeader :category="category" :showCategory="showCategory" :filteredSpots="filteredSpots" /> -->
     <v-expand-transition>
         <v-col cols="11">
             <v-row justify="center" class="mx-3">
