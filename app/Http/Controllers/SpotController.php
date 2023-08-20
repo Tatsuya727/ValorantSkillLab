@@ -157,7 +157,7 @@ class SpotController extends Controller
 
         session()->flash('message', '作成しました');
         
-        return to_route('spots.index');
+        return to_route('categories.index');
     }
 
 
