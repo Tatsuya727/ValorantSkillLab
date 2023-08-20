@@ -4,9 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Inertia\Inertia;
+use App\Models\Spot;
 
 class CategoryController extends Controller
 {
+    public function index()
+    {
+        $categories = Category::where('user_id', auth()->user()->id)->get();
+        $spots = Spot::with(['images'])
+        ->where('user_id', auth()->user()->id)->get();
+
+        return Inertia::render('Categories/Index', [
+            'categories' => $categories,
+            'spots' => $spots,
+        ]);
+    }
+
     public function store(Request $request)
     {
         Category::create([

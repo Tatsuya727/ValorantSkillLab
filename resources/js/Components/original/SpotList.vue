@@ -10,8 +10,8 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-    category: {
-        type: Object,
+    categories: {
+        type: Array,
         required: true,
     },
     showCategory: {
@@ -32,32 +32,30 @@ const props = defineProps({
     },
 });
 
-// category.id と一致する spot のみをフィルタリングする computed property
-const filteredSpots = computed(() => {
-    return props.spots.filter((spot) => spot.category_id === props.category.id);
-});
+// // category.id と一致する spot のみをフィルタリングする computed property
+// const filteredSpots = computed(() => {
+//     return props.spots.filter((spot) => spot.category_id === props.category.id);
+// });
 
 // 親コンポーネントにfilteredSpotsを返す
-const emits = defineEmits(['filteredSpots']);
-
+// const emits = defineEmits(['filteredSpots']);
 
 // カテゴリーの表示・非表示を切り替える
-if (props.categories) {
-    props.categories.forEach((category) => {
-        showCategory[category.id] = true;
-    });
-}
+// if (props.categories) {
+//     props.categories.forEach((category) => {
+//         showCategory[category.id] = true;
+//     });
+// }
 </script>
 
 <template>
     <!-- カテゴリーヘッダー -->
-    <CategoryHeader :category="category" :showCategory="showCategory" :filteredSpots="filteredSpots" />
+    <!-- <CategoryHeader :category="category" :showCategory="showCategory" :filteredSpots="filteredSpots" /> -->
     <v-expand-transition>
-        <v-col cols="11" v-if="showCategory[category.id]">
-
+        <v-col cols="11">
             <v-row justify="center" class="mx-3">
-                <v-col v-if="filteredSpots.length === 0" cols="12" class="text-white text-center text-lg font-bold">無し</v-col>
-                <v-col v-for="spot in filteredSpots" :key="spot.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
+                <v-col v-if="spots.length === 0" cols="12" class="text-white text-center text-lg font-bold">無し</v-col>
+                <v-col v-for="spot in spots" :key="spot.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
                     <div class="flex flex-col rounded overflow-hidden relative h-full">
                         <!-- 画像 -->
                         <Link :href="spot.show_url" class="flex-grow">
@@ -78,7 +76,6 @@ if (props.categories) {
                                     </p>
                                     <p class="text-sm text-gray-700 text-white">
                                         character: <span class="font-bold">{{ spot.character.name }}</span>
-
                                     </p>
                                 </div>
 

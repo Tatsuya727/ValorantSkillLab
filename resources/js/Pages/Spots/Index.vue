@@ -52,14 +52,12 @@ window.addEventListener('beforeunload', () => {
     localStorage.removeItem('selectedTag');
 });
 
-
-// カテゴリーの表示・非表示を切り替える
-if (props.categories) {
-    props.categories.forEach((category) => {
-        showCategory[category.id] = true;
-    });
-}
-
+// // カテゴリーの表示・非表示を切り替える
+// if (props.categories) {
+//     props.categories.forEach((category) => {
+//         showCategory[category.id] = true;
+//     });
+// }
 </script>
 
 <template>
@@ -68,7 +66,6 @@ if (props.categories) {
         <v-main class="bg-zinc-900">
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
-
                     <FlashMessage :flash="flash" />
                     <!-- <div v-if="$page.props.flash" class="alert alert-success">{{ $page.props.flash.message }}</div> -->
                     <SpotHeader
@@ -82,22 +79,21 @@ if (props.categories) {
                     />
 
                     <v-row justify="start" v-if="props.spots" class="mx-15">
-                        <template v-for="(category, index) in props.categories" :key="category.id">
-                            <!-- spot -->
+                        <!-- <template v-for="(category, index) in props.categories" :key="category.id"> -->
+                        <!-- spot -->
 
-                            <SpotList
-                                :selectedTag="selectedTag"
-                                :showCategory="showCategory"
-                                :spots="props.spots"
-                                :category="category"
-                                :selectedMap="props.selectedMap"
-                                :selectedCharacter="props.selectedCharacter"
-                                :toggleCategory="toggleCategory"
-                                :openUpdateDialog="openUpdateDialog"
-                                :deleteCategory="deleteCategory"
-                            />
-
-                        </template>
+                        <SpotList
+                            :selectedTag="selectedTag"
+                            :showCategory="showCategory"
+                            :spots="spots"
+                            :categories="categories"
+                            :selectedMap="selectedMap"
+                            :selectedCharacter="selectedCharacter"
+                            :toggleCategory="toggleCategory"
+                            :openUpdateDialog="openUpdateDialog"
+                            :deleteCategory="deleteCategory"
+                        />
+                        <!-- </template> -->
                     </v-row>
                 </div>
             </v-container>

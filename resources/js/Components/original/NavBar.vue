@@ -11,6 +11,8 @@ const links = [
     ['mdi-plus-box', 'Create', 'spots.create', 'Spots/Create'],
     // post
     ['mdi-plus-bo', 'Post', 'sharespots.index', 'ShareSpots/Index'],
+    // category
+    ['mdi-plus-bo', 'Category', 'categories.index', 'Categories/Index'],
 ];
 </script>
 
@@ -25,6 +27,7 @@ const links = [
         <Link :href="route('spots.index')" class="mr-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Spot</Link>
         <Link :href="route('spots.create')" class="mr-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">作成</Link>
         <Link :href="route('sharespots.index')" class="mr-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Post</Link>
+        <Link :href="route('categories.index')" class="mr-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Category</Link>
 
         <v-spacer></v-spacer>
     </v-app-bar>
