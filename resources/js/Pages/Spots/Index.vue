@@ -15,10 +15,14 @@ const props = defineProps({
         required: true,
     },
     selectedMap: {
-        type: Number,
+        type: Object,
         required: false,
     },
     selectedCharacter: {
+        type: Object,
+        required: false,
+    },
+    selectedCategory: {
         type: Number,
         required: false,
     },
@@ -37,13 +41,6 @@ const props = defineProps({
     flash: Object,
 });
 
-// フラッシュメッセージをコンソールに出力する
-onMounted(() => {
-    console.log(props.flash);
-});
-
-const showCategory = reactive({});
-
 const selectedTag = ref(localStorage.getItem('selectedTag') || '');
 
 // ページを離れるときにローカルストレージから選択されたタグを削除する
@@ -51,13 +48,6 @@ window.addEventListener('beforeunload', () => {
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
 });
-
-// // カテゴリーの表示・非表示を切り替える
-// if (props.categories) {
-//     props.categories.forEach((category) => {
-//         showCategory[category.id] = true;
-//     });
-// }
 </script>
 
 <template>
@@ -67,33 +57,27 @@ window.addEventListener('beforeunload', () => {
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
                     <FlashMessage :flash="flash" />
-                    <!-- <div v-if="$page.props.flash" class="alert alert-success">{{ $page.props.flash.message }}</div> -->
                     <SpotHeader
                         :maps="maps"
                         :characters="characters"
                         :tags="tags"
                         :selectedMap="selectedMap"
                         :selectedCharacter="selectedCharacter"
-                        :showCategory="showCategory"
+                        :selectedCategory="selectedCategory"
                         :categories="categories"
                     />
 
-                    <v-row justify="start" v-if="props.spots" class="mx-15">
-                        <!-- <template v-for="(category, index) in props.categories" :key="category.id"> -->
-                        <!-- spot -->
-
+                    <v-row justify="start" class="mx-15">
                         <SpotList
                             :selectedTag="selectedTag"
-                            :showCategory="showCategory"
                             :spots="spots"
                             :categories="categories"
                             :selectedMap="selectedMap"
                             :selectedCharacter="selectedCharacter"
-                            :toggleCategory="toggleCategory"
+                            :selectedCategory="selectedCategory"
                             :openUpdateDialog="openUpdateDialog"
                             :deleteCategory="deleteCategory"
                         />
-                        <!-- </template> -->
                     </v-row>
                 </div>
             </v-container>
