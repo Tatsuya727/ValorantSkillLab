@@ -30,6 +30,10 @@ const getFirstSpotForCategory = (categoryId) => {
         return relatedSpot.images[0].image_path;
     }
 };
+
+const getSpotCountForCategory = (categoryId) => {
+    return props.spots.filter((spot) => spot.categories && spot.categories.some((cat) => cat.id === categoryId)).length;
+};
 </script>
 
 <template>
@@ -40,14 +44,14 @@ const getFirstSpotForCategory = (categoryId) => {
                 <v-row class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
                     <v-col v-for="category in props.categories" :key="category.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
                         <!-- そのカテゴリーを持つ最初のspotを表示 -->
-                        <div class="ml-4 cursor-pointer text-center" @click="selectCategory(category)">
+                        <div class="ml-4 cursor-pointer text-center flex items-center justify-center relative" @click="selectCategory(category)">
                             <template v-if="getFirstSpotForCategory(category.id)">
-                                <v-img :src="getFirstSpotForCategory(category.id)" class="min-w-full min-h-52 mr-4 rounded"></v-img>
+                                <v-img :src="getFirstSpotForCategory(category.id)" class="min-w-full min-h-52 mr-4 rounded blur"></v-img>
                             </template>
                             <template v-else>
                                 <div class="w-full h-52 bg-gray-400 mr-4 rounded"></div>
                             </template>
-                            <div class="cursor-pointer">{{ category.name }}</div>
+                            <div class="absolute cursor-pointer text-white text-xl font-bold font-sans">{{ category.name }} ({{ getSpotCountForCategory(category.id) }})</div>
                         </div>
                     </v-col>
                 </v-row>
@@ -55,3 +59,9 @@ const getFirstSpotForCategory = (categoryId) => {
         </v-main>
     </v-app>
 </template>
+
+<style scoped>
+.blur {
+    filter: blur(2px);
+}
+</style>
