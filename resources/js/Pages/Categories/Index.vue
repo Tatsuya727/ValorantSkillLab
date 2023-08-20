@@ -1,7 +1,8 @@
 <script setup>
-import NavBar from '@/Components/original/NavBar.vue';
 import { defineProps, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+import NavBar from '@/Components/original/NavBar.vue';
+import SpotHeader from '@/Components/original/SpotHeader.vue';
 
 const props = defineProps({
     categories: {
@@ -41,20 +42,31 @@ const getSpotCountForCategory = (categoryId) => {
         <NavBar />
         <v-main class="bg-zinc-900">
             <v-container fluid>
-                <v-row class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
-                    <v-col v-for="category in props.categories" :key="category.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
-                        <!-- そのカテゴリーを持つ最初のspotを表示 -->
-                        <div class="ml-4 cursor-pointer text-center flex items-center justify-center relative" @click="selectCategory(category)">
-                            <template v-if="getFirstSpotForCategory(category.id)">
-                                <v-img :src="getFirstSpotForCategory(category.id)" class="min-w-full min-h-52 mr-4 rounded blur"></v-img>
-                            </template>
-                            <template v-else>
-                                <div class="w-full h-52 bg-gray-400 mr-4 rounded"></div>
-                            </template>
-                            <div class="absolute cursor-pointer text-white text-xl font-bold font-sans">{{ category.name }} ({{ getSpotCountForCategory(category.id) }})</div>
-                        </div>
-                    </v-col>
-                </v-row>
+                <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
+                    <SpotHeader
+                        :maps="maps"
+                        :characters="characters"
+                        :tags="tags"
+                        :selectedMap="selectedMap"
+                        :selectedCharacter="selectedCharacter"
+                        :showCategory="showCategory"
+                        :categories="categories"
+                    />
+                    <v-row class="mx-5">
+                        <v-col v-for="category in props.categories" :key="category.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
+                            <!-- そのカテゴリーを持つ最初のspotを表示 -->
+                            <div class="ml-4 cursor-pointer text-center flex items-center justify-center relative" @click="selectCategory(category)">
+                                <template v-if="getFirstSpotForCategory(category.id)">
+                                    <v-img :src="getFirstSpotForCategory(category.id)" class="min-w-full min-h-52 mr-4 rounded blur"></v-img>
+                                </template>
+                                <template v-else>
+                                    <div class="w-full h-52 bg-gray-400 mr-4 rounded"></div>
+                                </template>
+                                <div class="absolute cursor-pointer text-white text-xl font-bold font-sans">{{ category.name }} ({{ getSpotCountForCategory(category.id) }})</div>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </div>
             </v-container>
         </v-main>
     </v-app>
