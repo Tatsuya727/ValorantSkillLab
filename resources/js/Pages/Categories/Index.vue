@@ -1,7 +1,6 @@
 <script setup>
 import NavBar from '@/Components/original/NavBar.vue';
 import { defineProps, ref } from 'vue';
-import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
@@ -22,17 +21,36 @@ const selectCategory = (category) => {
     selectedCategory.value = category.id;
     Inertia.get(route('spots.index'), { category: selectedCategory.value });
 };
+
+// カテゴリーに関連する最初のスポットを取得
+const getFirstSpotForCategory = (categoryId) => {
+    const relatedSpot = props.spots.find((spot) => spot.categories && spot.categories[0].id === categoryId);
+
+    if (relatedSpot) {
+        return relatedSpot.images[0].image_path;
+    }
+};
 </script>
+
 <template>
     <v-app id="inspire">
         <NavBar />
         <v-main class="bg-zinc-900">
             <v-container fluid>
-                <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
-                    <div v-for="category in props.categories" :key="category.id">
-                        <div @click="selectCategory(category)" class="cursor-pointer">{{ category.name }}</div>
-                    </div>
-                </div>
+                <v-row class="bg-neutral-700 pt-5 pb-10 mt-3 mx-3 rounded">
+                    <v-col v-for="category in props.categories" :key="category.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
+                        <!-- そのカテゴリーを持つ最初のspotを表示 -->
+                        <div class="ml-4 cursor-pointer d-flex align-items-center" @click="selectCategory(category)">
+                            <template v-if="getFirstSpotForCategory(category.id)">
+                                <v-img width="300px" :src="getFirstSpotForCategory(category.id)" class="mr-4 rounded"></v-img>
+                            </template>
+                            <template v-else>
+                                <v-card class="mr-4 bg-gray-400" style="width: 300px; height: 169px"></v-card>
+                            </template>
+                            <div class="cursor-pointer">{{ category.name }}</div>
+                        </div>
+                    </v-col>
+                </v-row>
             </v-container>
         </v-main>
     </v-app>

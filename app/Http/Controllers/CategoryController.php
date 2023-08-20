@@ -12,7 +12,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::where('user_id', auth()->user()->id)->get();
-        $spots = Spot::with(['images'])
+        $spots = Spot::with(['images', 'map', 'character', 'tags', 'categories'])
         ->where('user_id', auth()->user()->id)->get();
 
         return Inertia::render('Categories/Index', [
