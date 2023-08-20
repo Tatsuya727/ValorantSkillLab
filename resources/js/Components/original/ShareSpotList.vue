@@ -4,10 +4,8 @@ import { defineProps, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import Pagination from '@/Components/original/Pagination.vue';
 import LikeButton from '@/Components/original/LikeButton.vue';
-
 import ShareSpotMenu from '@/Components/original/ShareSpotMenu.vue';
 import SpotTags from '@/Components/original/SpotTags.vue';
-
 import dayjs from 'dayjs';
 
 const props = defineProps({
@@ -15,9 +13,7 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-
     categories: {
-
         type: Object,
         required: true,
     },
@@ -33,7 +29,6 @@ const props = defineProps({
         type: Number,
         required: true,
     },
-
     userCategories: {
         type: Array,
         required: false,
@@ -47,7 +42,6 @@ const props = defineProps({
         required: false,
     },
 });
-
 </script>
 
 <template>
@@ -83,7 +77,7 @@ const props = defineProps({
                             <h1 class="text-2xl font-bold text-white">{{ spot.title }}</h1>
                             <div class="mt-2">
                                 <p class="text-sm text-gray-400">
-                                    category: <span class="font-bold text-white">{{ spot.category.name }}</span>
+                                    category: <span class="font-bold text-white">{{ spot.categories.name }}</span>
                                 </p>
                                 <p class="text-sm text-gray-400">
                                     map: <span class="font-bold text-white">{{ spot.map.name }}</span>

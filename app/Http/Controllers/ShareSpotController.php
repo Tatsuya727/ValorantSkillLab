@@ -19,15 +19,7 @@ class ShareSpotController extends Controller
         $selectedMap = $request->query('selectedMap');
         $selectedCharacter = $request->query('selectedCharacter');
 
-        // if ($tag) {
-        //     dd($tag);
-        // }
-
-        // if ($selectedMap) {
-        //     dd($selectedMap);
-        // }
-
-        $spots = Spot::with(['images', 'map', 'character', 'tags', 'user', 'category'])
+        $spots = Spot::with(['images', 'map', 'character', 'tags', 'user', 'categories'])
             ->withCount('likedBy')
             ->searchSpot($search)
             ->when($tag, function ($query, $tag) {
@@ -54,7 +46,7 @@ class ShareSpotController extends Controller
         }
 
         // 検索条件に合致する全てのspotを取得
-        $allSpots = Spot::with(['images', 'map', 'character', 'tags', 'category', 'user'])
+        $allSpots = Spot::with(['images', 'map', 'character', 'tags', 'categories', 'user'])
             ->searchSpot($search)
             ->when($tag, function ($query, $tag) {
                 return $query->whereHas('tags', function ($query) use ($tag) {

@@ -13,4 +13,11 @@ class Category extends Model
         'name',
         'user_id'
     ];
+
+
+    public function spots()
+    {
+        return $this->belongsToMany(Spot::class);
+    }
+
 }

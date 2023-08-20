@@ -15,7 +15,6 @@ class Spot extends Model
         'user_id',
         'map_id',
         'character_id',
-        'category_id',
     ];
 
     public function scopeSearchSpot($query, $search)
@@ -25,9 +24,9 @@ class Spot extends Model
             ->orWhereHas('tags', function ($query) use ($search) {
                 $query->where('name', 'LIKE', "%$search%");
             })
-            ->orWhereHas('category', function ($query) use ($search) {
-                $query->where('name', 'LIKE', "%$search%");
-            })
+            // ->orWhereHas('category', function ($query) use ($search) {
+            //     $query->where('name', 'LIKE', "%$search%");
+            // })
             ->orWhereHas('character', function ($query) use ($search) {
                 $query->where('name', 'LIKE', "%$search%");
             })
@@ -39,10 +38,11 @@ class Spot extends Model
             });
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class);
     }
+
     
     public function images()
     {

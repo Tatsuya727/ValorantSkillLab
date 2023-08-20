@@ -57,11 +57,11 @@ class SpotController extends Controller
                     $query->where('id', $selectedCharacter['id']);
                 });
             })
-            ->when($selectedCategory, function ($query, $selectedCategory) {
-                return $query->whereHas('category', function ($query) use ($selectedCategory) {
-                    $query->where('id', $selectedCategory['id']);
-                });
-            })
+            // ->when($selectedCategory, function ($query, $selectedCategory) {
+            //     return $query->whereHas('category', function ($query) use ($selectedCategory) {
+            //         $query->where('id', $selectedCategory['id']);
+            //     });
+            // })
             ->get();
 
         // 各spotにshow_urlプロパティを追加
@@ -112,6 +112,8 @@ class SpotController extends Controller
      */
     public function store(StoreSpotRequest $request)
     {
+
+        dd($request->all());
         DB::transaction(function () use ($request) {
             $spot = Spot::create([
                 'title' => $request->title,
@@ -119,8 +121,10 @@ class SpotController extends Controller
                 'user_id' => auth()->id(),
                 'map_id' => $request->map_id,
                 'character_id' => $request->character_id,
-                'category_id' => $request->category_id,
             ]);
+
+            // カテゴリーの保存
+            $spot->categories()->attach($request->categories);
 
             // タグの保存
             if($request->tags) {
