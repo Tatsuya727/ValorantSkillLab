@@ -39,7 +39,7 @@ class SpotController extends Controller
         $categories = Category::where('user_id', auth()->id())->get();
         
         // ユーザーごとのスポットを取得
-        $spots = Spot::with(['images', 'map', 'character', 'tags'])
+        $spots = Spot::with(['images', 'map', 'character', 'tags' , 'categories'])
             ->searchSpot($search)
             ->where('user_id', auth()->id())
             ->when($tag, function ($query, $tag) {
@@ -68,6 +68,7 @@ class SpotController extends Controller
         foreach ($spots as $spot) {
             $spot->show_url = route('spots.show', ['spot' => $spot->id]);
         }
+
         
 
         return Inertia::render('Spots/Index', [
@@ -113,7 +114,6 @@ class SpotController extends Controller
     public function store(StoreSpotRequest $request)
     {
 
-        dd($request->all());
         DB::transaction(function () use ($request) {
             $spot = Spot::create([
                 'title' => $request->title,
@@ -123,14 +123,16 @@ class SpotController extends Controller
                 'character_id' => $request->character_id,
             ]);
 
-            // カテゴリーの保存
-            $spot->categories()->attach($request->categories);
-
             // タグの保存
             if($request->tags) {
                 foreach ($request->tags as $tagId) {
                     $spot->tags()->attach($tagId);
                 }
+            }
+
+            // カテゴリーの保存
+            if ($request->categories) {
+                $spot->categories()->sync($request->categories);
             }
         
             foreach ($request->images as $image) {
@@ -197,7 +199,6 @@ class SpotController extends Controller
      */
     public function update(UpdateSpotRequest $request, Spot $spot)
     {
-        dd($request->title);
         
         // DB::transaction(function () use ($request, $spot) {
         //     $spot->update([

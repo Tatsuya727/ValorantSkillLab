@@ -4,6 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Category;
+use App\Models\Image;
+use App\Models\Map;
+use App\Models\Character;
+use App\Models\Tag;
+use App\Models\User;
 
 class Spot extends Model
 {
