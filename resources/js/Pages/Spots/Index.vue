@@ -67,18 +67,16 @@ window.addEventListener('beforeunload', () => {
                         :categories="categories"
                     />
 
-                    <v-row justify="start" class="mx-15">
-                        <SpotList
-                            :selectedTag="selectedTag"
-                            :spots="spots"
-                            :categories="categories"
-                            :selectedMap="selectedMap"
-                            :selectedCharacter="selectedCharacter"
-                            :selectedCategory="selectedCategory"
-                            :openUpdateDialog="openUpdateDialog"
-                            :deleteCategory="deleteCategory"
-                        />
-                    </v-row>
+                    <SpotList
+                        :selectedTag="selectedTag"
+                        :spots="spots"
+                        :categories="categories"
+                        :selectedMap="selectedMap"
+                        :selectedCharacter="selectedCharacter"
+                        :selectedCategory="selectedCategory"
+                        :openUpdateDialog="openUpdateDialog"
+                        :deleteCategory="deleteCategory"
+                    />
                 </div>
             </v-container>
         </v-main>

@@ -70,8 +70,9 @@ const deleteCategory = (id) => {
 
     <!-- 削除の確認ダイアログ -->
     <v-dialog v-model="deleteCategoryDialog" width="auto">
-        <v-card>
-            <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
+        <v-card class="text-center">
+            <v-card-title class="font-bold text-red">本当に削除しますか？</v-card-title>
+            <v-card-text class="font-bold mb-10">このカテゴリーを削除するとカテゴリーの中身もすべて消えてしまいます。</v-card-text>
             <v-card-actions>
                 <v-btn variant="outlined" color="error" block @click="deleteCategory(category.id)">削除する</v-btn>
             </v-card-actions>
