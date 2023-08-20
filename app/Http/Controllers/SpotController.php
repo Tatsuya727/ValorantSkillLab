@@ -61,8 +61,8 @@ class SpotController extends Controller
                     $query->where('categories.id', $selectedCategory);
                 });
             })
-            
-            ->get();
+            ->paginate(12)
+            ->appends($request->all());
 
         // 各spotにshow_urlプロパティを追加
         foreach ($spots as $spot) {

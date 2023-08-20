@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use Inertia\Inertia;
 use App\Models\Spot;
+use App\Models\Tag;
+use App\Models\Map;
+use App\Models\Character;
 
 class CategoryController extends Controller
 {
@@ -15,9 +18,16 @@ class CategoryController extends Controller
         $spots = Spot::with(['images', 'map', 'character', 'tags', 'categories'])
         ->where('user_id', auth()->user()->id)->get();
 
+        $tags = Tag::all();
+        $maps = Map::all();
+        $characters = Character::all();
+
         return Inertia::render('Categories/Index', [
             'categories' => $categories,
             'spots' => $spots,
+            'tags' => $tags,
+            'maps' => $maps,
+            'characters' => $characters,
         ]);
     }
 

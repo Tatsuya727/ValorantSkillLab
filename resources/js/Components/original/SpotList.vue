@@ -48,7 +48,7 @@ const currentCategoryName = computed(() => {
             <v-col cols="11">
                 <v-row justify="center" class="mx-3">
                     <v-col v-if="spots.length === 0" cols="12" class="text-white text-center text-lg font-bold">無し</v-col>
-                    <v-col v-for="spot in spots" :key="spot.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
+                    <v-col v-for="spot in props.spots.data" :key="spot.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
                         <div class="flex flex-col rounded overflow-hidden relative h-full">
                             <!-- 画像 -->
                             <Link :href="spot.show_url" class="flex-grow">

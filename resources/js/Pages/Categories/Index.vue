@@ -14,6 +14,18 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    maps: {
+        type: Array,
+        required: false,
+    },
+    characters: {
+        type: Array,
+        required: false,
+    },
+    tags: {
+        type: Array,
+        required: false,
+    },
 });
 
 const selectedCategory = ref(null);
