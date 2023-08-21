@@ -31,7 +31,7 @@ const deleteCategory = (id) => {
 <template>
     <v-menu>
         <template v-slot:activator="{ props }">
-            <v-icon v-bind="props" class="text-white">mdi-dots-vertical</v-icon>
+            <v-icon v-bind="props" class="text-white hover:text-gray-400 text-xl">mdi-dots-vertical</v-icon>
         </template>
 
         <v-list>
@@ -51,7 +51,7 @@ const deleteCategory = (id) => {
             <v-form @submit.prevent="updateCategory">
                 <v-card-text>
                     <div class="text-center">
-                        <label for="name" class="m-5 block text-lg font-medium text-gray-700">カテゴリー名</label>
+                        <label for="name" class="mb-5 block text-lg font-medium text-gray-700">カテゴリー名</label>
                         <input
                             type="text"
                             name="name"
@@ -61,7 +61,7 @@ const deleteCategory = (id) => {
                         <v-btn type="submit" color="success" block class="mt-5">更新</v-btn>
                     </div>
                 </v-card-text>
-                <v-card-actions>
+                <v-card-actions class="justify-center">
                     <v-btn class="close-update-dialog" type="button" color="primary" block @click="updateDialog = false">閉じる</v-btn>
                 </v-card-actions>
             </v-form>
@@ -71,13 +71,11 @@ const deleteCategory = (id) => {
     <!-- 削除の確認ダイアログ -->
     <v-dialog v-model="deleteCategoryDialog" width="auto">
         <v-card class="text-center">
-            <v-card-title class="font-bold text-red">本当に削除しますか？</v-card-title>
-            <v-card-text class="font-bold mb-10">このカテゴリーを削除するとカテゴリーの中身もすべて消えてしまいます。</v-card-text>
-            <v-card-actions>
-                <v-btn variant="outlined" color="error" block @click="deleteCategory(category.id)">削除する</v-btn>
-            </v-card-actions>
-            <v-card-actions>
-                <v-btn class="cancel-delete-dialog" variant="outlined" color="primary" block @click="deleteCategoryDialog = false">キャンセル</v-btn>
+            <v-card-title class="font-bold text-red mb-5">本当に削除しますか？</v-card-title>
+            <v-card-text class="font-medium mb-10">このカテゴリーを削除するとカテゴリーの中身もすべて消えてしまいます。</v-card-text>
+            <v-card-actions class="justify-center">
+                <v-btn variant="outlined" color="error" class="mr-2" @click="deleteCategory(category.id)">削除する</v-btn>
+                <v-btn class="cancel-delete-dialog" variant="outlined" color="primary" @click="deleteCategoryDialog = false">キャンセル</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
