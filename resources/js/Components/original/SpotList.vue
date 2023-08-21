@@ -43,7 +43,7 @@ const currentCategoryName = computed(() => {
 
 <template>
     <v-divider></v-divider>
-    <v-row justify="start" class="mx-15">
+    <v-row justify="center" class="">
         <v-col cols="12">
             <h1 class="mt-5 text-white text-center font-bold">{{ currentCategoryName }}</h1>
         </v-col>
@@ -62,21 +62,18 @@ const currentCategoryName = computed(() => {
                                 <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
                                     <SpotMenu :spot="spot" />
                                 </div>
-                                <div class="flex mb-2">
-                                    <div>
-                                        <p class="text-sm text-gray-700 text-white">
-                                            title: <span class="font-bold display-block">{{ spot.title }}</span>
-                                        </p>
-                                        <p class="text-sm text-gray-700 text-white">
-                                            map: <span class="font-bold">{{ spot.map.name }}</span>
-                                        </p>
-                                        <p class="text-sm text-gray-700 text-white">
-                                            character: <span class="font-bold">{{ spot.character.name }}</span>
-                                        </p>
-                                    </div>
-
+                                <div>
+                                    <h2 class="text-gray-700 text-white">
+                                        {{ spot.title }}
+                                    </h2>
+                                    <p class="text-sm text-gray-700 text-grey">
+                                        map: <span class="font-bold text-white">{{ spot.map.name }}</span>
+                                    </p>
+                                    <p class="text-sm text-gray-700 text-grey">
+                                        character: <span class="font-bold text-white">{{ spot.character.name }}</span>
+                                    </p>
                                     <!-- タグの名前をすべて表示 -->
-                                    <div class="flex flex-wrap mt-7">
+                                    <div class="flex flex-wrap mt-2">
                                         <SpotTags :tags="spot.tags" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'sharespots.index'" />
                                     </div>
                                 </div>

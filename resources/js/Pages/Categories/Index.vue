@@ -78,7 +78,6 @@ const inCategory = true;
                             </div>
                         </v-col>
 
-                        <!-- 既存のカテゴリーカード -->
                         <v-col v-for="category in props.categories" :key="category.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
                             <div class="ml-4 cursor-pointer text-center flex items-center justify-center relative" @click="selectCategory(category)">
                                 <!-- 画像 -->
