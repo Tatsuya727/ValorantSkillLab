@@ -48,6 +48,9 @@ const getFirstSpotForCategory = (categoryId) => {
 const getSpotCountForCategory = (categoryId) => {
     return props.spots.filter((spot) => spot.categories && spot.categories.some((cat) => cat.id === categoryId)).length;
 };
+
+// ここがカテゴリー一覧ページであることを示すフラグ
+const inCategory = true;
 </script>
 
 <template>
@@ -64,6 +67,7 @@ const getSpotCountForCategory = (categoryId) => {
                         :selectedCharacter="selectedCharacter"
                         :showCategory="showCategory"
                         :categories="categories"
+                        :inCategory="inCategory"
                     />
                     <v-row class="mx-5">
                         <v-col v-for="category in props.categories" :key="category.id" cols="12" sm="6" md="4" lg="3" class="mt-10">

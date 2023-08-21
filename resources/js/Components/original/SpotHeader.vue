@@ -41,6 +41,10 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    inCategory: {
+        type: Boolean,
+        required: true,
+    },
 });
 
 const selectedTag = ref(localStorage.getItem('selectedTag') || '');
@@ -75,7 +79,7 @@ const resetSpots = () => {
         <v-col cols="6" class="flex">
             <v-text-field data-test="search-input" id="name" label="検索" v-model="search" class="ml-5 text-white search-spots" @keyup.enter="searchSpots"></v-text-field>
             <v-btn @click="searchSpots" class="search-button ml-5 mt-3">検索</v-btn>
-            <v-btn @click="resetSpots" class="ml-2 mt-3">リセット</v-btn>
+            <v-btn v-if="!inCategory" @click="resetSpots" class="ml-2 mt-3">リセット</v-btn>
             <SpotFilter
                 :maps="maps"
                 :characters="characters"
