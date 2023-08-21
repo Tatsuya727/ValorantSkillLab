@@ -50,13 +50,13 @@ const noSelected = computed(() => {
     <v-divider></v-divider>
     <v-row justify="center" class="">
         <v-col cols="12">
-            <h1 class="mt-5 text-white text-center font-bold">{{ currentCategoryName }}</h1>
-            <h1 v-if="noSelected" class="mt-5 text-white text-center font-bold">すべて表示</h1>
+            <h1 class="mt-5 text-white text-center font-bold">{{ currentCategoryName }}({{ spots.data.length }})</h1>
+            <h1 v-if="noSelected" class="mt-5 text-white text-center font-bold">すべて表示({{ spots.data.length }})</h1>
         </v-col>
         <v-expand-transition>
             <v-col cols="11">
                 <v-row justify="center" class="mx-3">
-                    <v-col v-if="spots.length === 0" cols="12" class="text-white text-center text-lg font-bold">無し</v-col>
+                    <v-col v-if="spots.data.length === 0" cols="12" class="text-white text-center text-lg font-bold">無し</v-col>
                     <v-col v-for="spot in props.spots.data" :key="spot.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
                         <div class="flex flex-col rounded overflow-hidden relative h-full">
                             <!-- 画像 -->
