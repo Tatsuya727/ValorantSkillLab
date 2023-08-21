@@ -42,8 +42,11 @@ const currentCategoryName = computed(() => {
 </script>
 
 <template>
+    <v-divider></v-divider>
     <v-row justify="start" class="mx-15">
-        <v-col cols="12" class="text-white text-center text-lg font-bold">{{ currentCategoryName }}</v-col>
+        <v-col cols="12">
+            <h1 class="mt-5 text-white text-center font-bold">{{ currentCategoryName }}</h1>
+        </v-col>
         <v-expand-transition>
             <v-col cols="11">
                 <v-row justify="center" class="mx-3">
