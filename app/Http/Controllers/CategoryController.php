@@ -56,10 +56,28 @@ class CategoryController extends Controller
         return redirect()->route('categories.index');
     }
 
-    public function destroy(Category $category)
+    public function destroy($id)
     {
+        $category = Category::find($id);
+
+        // そのカテゴリーと関連するすべてのスポットを取得
+        $spots = $category->spots;
+
+        foreach ($spots as $spot) {
+            // スポットが他のカテゴリーと関係を持っているか確認
+            if ($spot->categories->count() > 1) {
+                // そのカテゴリーとの中間テーブルでのつながりのみを削除
+                $spot->categories()->detach($category->id);
+            } else {
+                // スポットを削除
+                $spot->delete();
+            }
+        }
+
+        // カテゴリーを削除
         $category->delete();
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'カテゴリーを削除しました。');
     }
+
 }
