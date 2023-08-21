@@ -39,6 +39,11 @@ const currentCategoryName = computed(() => {
         return props.categories.find((category) => category.id === categoryId).name;
     }
 });
+
+// 選択した物が何もない場合
+const noSelected = computed(() => {
+    return !props.selectedMap && !props.selectedCharacter && !props.selectedTag && !props.selectedCategory;
+});
 </script>
 
 <template>
@@ -46,6 +51,7 @@ const currentCategoryName = computed(() => {
     <v-row justify="center" class="">
         <v-col cols="12">
             <h1 class="mt-5 text-white text-center font-bold">{{ currentCategoryName }}</h1>
+            <h1 v-if="noSelected" class="mt-5 text-white text-center font-bold">すべて表示</h1>
         </v-col>
         <v-expand-transition>
             <v-col cols="11">
