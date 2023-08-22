@@ -42,8 +42,9 @@ class SpotCategoryController extends Controller
 
         session()->flash('message', '保存しました');
 
-        return back();
     });
+    
+    return back();
 }
 
 
