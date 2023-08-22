@@ -42,7 +42,7 @@ class SpotCategoryController extends Controller
 
         session()->flash('message', '保存しました');
 
-        return to_route('sharespots.index');
+        return back();
     });
 }
 

@@ -34,6 +34,13 @@ class SpotController extends Controller
     $selectedCharacter = $request->query('selectedCharacter');
     $selectedCategory = $request->query('category');
 
+    // ログインしているユーザーのカテゴリーを取得
+    if(auth()->check()) {
+        $userCategories = auth()->user()->categories;
+    } else {
+        $userCategories = null;
+    }
+
     // ユーザーごとにカテゴリーを取得
     $categories = Category::where('user_id', auth()->id())->get();
     
@@ -83,6 +90,7 @@ class SpotController extends Controller
         'characters' => $characters,
         'maps' => $maps,
         'tags' => $tags,
+        'userCategories' => $userCategories,
     ]);
 }
 

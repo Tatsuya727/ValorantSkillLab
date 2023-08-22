@@ -1,6 +1,5 @@
 <script setup>
 import NavBar from '@/Components/original/NavBar.vue';
-import FlashMessage from '@/Components/original/FlashMessage.vue';
 import SpotHeader from '@/Components/original/SpotHeader.vue';
 import SpotList from '@/Components/original/SpotList.vue';
 import { defineProps, onMounted, reactive, ref } from 'vue';
@@ -38,6 +37,10 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    userCategories: {
+        type: Array,
+        required: false,
+    },
     flash: Object,
 });
 
@@ -56,7 +59,6 @@ window.addEventListener('beforeunload', () => {
         <v-main class="bg-zinc-900">
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
-                    <FlashMessage :flash="flash" />
                     <SpotHeader
                         :maps="maps"
                         :characters="characters"
@@ -76,6 +78,8 @@ window.addEventListener('beforeunload', () => {
                         :selectedCategory="selectedCategory"
                         :openUpdateDialog="openUpdateDialog"
                         :deleteCategory="deleteCategory"
+                        :userCategories="userCategories"
+                        :flash="flash"
                     />
                 </div>
             </v-container>

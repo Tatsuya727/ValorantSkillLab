@@ -29,6 +29,11 @@ const props = defineProps({
         type: Number,
         required: false,
     },
+    userCategories: {
+        type: Array,
+        required: false,
+    },
+    flash: Object,
 });
 
 const selectedCategoryId = props.selectedCategory;
@@ -66,7 +71,7 @@ const noSelected = computed(() => {
                             <!-- 情報 -->
                             <div class="p-4 bg-neutral-800">
                                 <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
-                                    <SpotMenu :spot="spot" />
+                                    <SpotMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
                                 </div>
                                 <div>
                                     <h2 class="text-gray-700 text-white">
