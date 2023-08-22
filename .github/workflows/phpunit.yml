@@ -23,6 +23,12 @@ jobs:
             - name: Sail up
               run: ./vendor/bin/sail up -d
 
+            - name: Wait for PostgreSQL to be ready
+              run: sleep 20
+
+            - name: Test database connection
+              run: ./vendor/bin/sail exec pgsql psql -U ${{ env.DB_USERNAME }} -d ${{ env.DB_DATABASE }} -c '\l'
+
             - name: Sail Artisan Migrate
               run: ./vendor/bin/sail artisan migrate
 
