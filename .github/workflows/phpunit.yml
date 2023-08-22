@@ -23,6 +23,9 @@ jobs:
             - name: Sail up
               run: ./vendor/bin/sail up -d
 
+            - name: Wait for PostgreSQL
+              run: sleep 15
+
             - name: Sail Artisan Migrate
               run: ./vendor/bin/sail artisan migrate
 
