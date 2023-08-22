@@ -19,7 +19,7 @@ class SpotControllerTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     /** @test */
-    public function index_spot()
+    public function in_index_authenticated_user_can_see_spot()
     {
         $user = User::factory()->create();
         $this->actingAs($user);
