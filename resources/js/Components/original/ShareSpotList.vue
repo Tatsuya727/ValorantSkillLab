@@ -48,13 +48,13 @@ const props = defineProps({
 
 <template>
     <div>
-        <div v-if="props.spots.data.length === 0" class="mt-10 text-center text-white text-lg">検索結果無し</div>
-        <div v-else-if="spotsCount < allSpotsCount" class="mt-5 text-center text-white text-lg">
+        <div v-if="props.spots.data.length === 0" class="mt-10 text-center text-white text-lg title">検索結果無し</div>
+        <div v-else-if="spotsCount < allSpotsCount" class="mt-5 text-center text-white text-lg title">
             検索結果
             <span class="text-3xl">{{ props.spotsCount }}</span>
             件
         </div>
-        <div v-else class="mt-5 text-center text-white text-lg">
+        <div v-else class="mt-5 text-center text-white text-lg title">
             すべての投稿
             <span class="text-3xl">{{ props.allSpotsCount }}</span>
             件
