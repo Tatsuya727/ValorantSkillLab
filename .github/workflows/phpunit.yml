@@ -20,11 +20,14 @@ jobs:
             - name: Install Dependencies
               run: docker run --rm -v $(pwd):/opt -w /opt laravelsail/php81-composer:latest composer install --prefer-dist --no-interaction  --no-progress
 
+            - name: start mysql
+              run: ./vendor/bin/sail up -d mysql
+
             - name: Sail up
               run: ./vendor/bin/sail up -d
 
-            - name: Wait for PostgreSQL
-              run: sleep 15
+            - name: generate key
+              run: ./vendor/bin/sail artisan key:generate
 
             - name: Sail Artisan Migrate
               run: ./vendor/bin/sail artisan migrate
