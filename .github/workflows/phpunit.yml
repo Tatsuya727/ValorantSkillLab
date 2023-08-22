@@ -23,20 +23,8 @@ jobs:
             - name: Sail up
               run: ./vendor/bin/sail up -d
 
-            - name: Wait for PostgreSQL
-              run: sleep 15
-
-            - name: Generate key
-              run: php artisan key:generate
-
             - name: Sail Artisan Migrate
-              run: ./vendor/bin/sail artisan migrate:refresh --seed --force
-              env:
-                  DB_CONNECTION: pgsql
-                  DB_DATABASE: valorantskilllab
+              run: ./vendor/bin/sail artisan migrate
 
             - name: Run Tests
               run: ./vendor/bin/sail test
-              env:
-                  DB_CONNECTION: pgsql
-                  DB_DATABASE: valorantskilllab
