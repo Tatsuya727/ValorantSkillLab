@@ -54,11 +54,11 @@ Route::delete('/spots/{spot}/like', [LikeController::class, 'destroy'])
 ->name('likes.destroy')
 ->middleware(['auth', 'check.verified']);
 
-Route::post('/spots/{spot}/spotcategory', [SpotCategoryController::class, 'store'])
+Route::post('/spotcategory', [SpotCategoryController::class, 'store'])
 ->name('spotcategory.store')
 ->middleware(['auth', 'check.verified']);
 
-Route::delete('/spots/{spot}/spotcategory', [SpotCategoryController::class, 'destroy'])
+Route::delete('/spotcategory', [SpotCategoryController::class, 'destroy'])
 ->name('spotcategory.destroy')
 ->middleware(['auth', 'check.verified']);
 

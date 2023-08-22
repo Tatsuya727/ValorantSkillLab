@@ -6,6 +6,7 @@ import Pagination from '@/Components/original/Pagination.vue';
 import LikeButton from '@/Components/original/LikeButton.vue';
 import ShareSpotMenu from '@/Components/original/ShareSpotMenu.vue';
 import SpotTags from '@/Components/original/SpotTags.vue';
+import FlashMessage from '@/Components/original/FlashMessage.vue';
 import dayjs from 'dayjs';
 
 const props = defineProps({
@@ -41,10 +42,12 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    flash: Object,
 });
 </script>
 
 <template>
+    <FlashMessage :flash="flash" />
     <div>
         <div v-if="props.spots.data.length === 0" class="mt-10 text-center text-white text-lg">検索結果無し</div>
         <div v-else-if="spotsCount < allSpotsCount" class="mt-5 text-center text-white text-lg">
@@ -70,7 +73,7 @@ const props = defineProps({
                 <!-- 情報 -->
                 <div class="p-4 bg-neutral-800">
                     <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
-                        <ShareSpotMenu :spot="spot" :userCategories="userCategories" />
+                        <ShareSpotMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
                     </div>
                     <div class="flex mb-2">
                         <Link :href="spot.show_url">
@@ -96,7 +99,6 @@ const props = defineProps({
                     <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
                         <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
                         <!-- ユーザーネーム -->
-
                         <div class="text-green">{{ spot.user.name }}</div>
                     </div>
                 </div>

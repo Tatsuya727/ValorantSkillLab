@@ -23,65 +23,69 @@ class SpotController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $characters = Character::all();
-        $maps = Map::all();
-        $tags = Tag::all();
-        
-        $tag = $request->query('tag');
-        $search = $request->query('search');
-        $selectedMap = $request->query('selectedMap');
-        $selectedCharacter = $request->query('selectedCharacter');
-        $selectedCategory = $request->query('category');
+{
+    $characters = Character::all();
+    $maps = Map::all();
+    $tags = Tag::all();
+    
+    $tag = $request->query('tag');
+    $search = $request->query('search');
+    $selectedMap = $request->query('selectedMap');
+    $selectedCharacter = $request->query('selectedCharacter');
+    $selectedCategory = $request->query('category');
 
-        // ユーザーごとにカテゴリーを取得
-        $categories = Category::where('user_id', auth()->id())->get();
-        
-        // ユーザーごとのスポットを取得
-        $spots = Spot::with(['images', 'map', 'character', 'tags' , 'categories'])
-            ->searchSpot($search)
-            ->where('user_id', auth()->id())
-            ->when($tag, function ($query, $tag) {
-                return $query->whereHas('tags', function ($query) use ($tag) {
-                    $query->where('name', $tag);
+    // ユーザーごとにカテゴリーを取得
+    $categories = Category::where('user_id', auth()->id())->get();
+    
+    // ユーザーごとのスポットと保存した他人のスポットを取得
+    $spots = Spot::with(['images', 'map', 'character', 'tags' , 'categories'])
+        ->searchSpot($search)
+        ->where(function ($query) {
+            $query->where('user_id', auth()->id())
+                ->orWhereHas('categories', function ($query) {
+                    $query->where('user_id', auth()->id());
                 });
-            })
-            ->when($selectedMap, function ($query, $selectedMap) {
-                return $query->whereHas('map', function ($query) use ($selectedMap) {
-                    $query->where('id', $selectedMap['id']);
-                });
-            })
-            ->when($selectedCharacter, function ($query, $selectedCharacter) {
-                return $query->whereHas('character', function ($query) use ($selectedCharacter) {
-                    $query->where('id', $selectedCharacter['id']);
-                });
-            })
-            ->when($selectedCategory, function ($query, $selectedCategory) {
-                return $query->whereHas('categories', function ($query) use ($selectedCategory) {
-                    $query->where('categories.id', $selectedCategory);
-                });
-            })
-            ->paginate(12)
-            ->appends($request->all());
+        })
+        ->when($tag, function ($query, $tag) {
+            return $query->whereHas('tags', function ($query) use ($tag) {
+                $query->where('name', $tag);
+            });
+        })
+        ->when($selectedMap, function ($query, $selectedMap) {
+            return $query->whereHas('map', function ($query) use ($selectedMap) {
+                $query->where('id', $selectedMap['id']);
+            });
+        })
+        ->when($selectedCharacter, function ($query, $selectedCharacter) {
+            return $query->whereHas('character', function ($query) use ($selectedCharacter) {
+                $query->where('id', $selectedCharacter['id']);
+            });
+        })
+        ->when($selectedCategory, function ($query, $selectedCategory) {
+            return $query->whereHas('categories', function ($query) use ($selectedCategory) {
+                $query->where('categories.id', $selectedCategory);
+            });
+        })
+        ->paginate(12)
+        ->appends($request->all());
 
-        // 各spotにshow_urlプロパティを追加
-        foreach ($spots as $spot) {
-            $spot->show_url = route('spots.show', ['spot' => $spot->id]);
-        }
+    // 各spotにshow_urlプロパティを追加
+    foreach ($spots as $spot) {
+        $spot->show_url = route('spots.show', ['spot' => $spot->id]);
+    }        
 
-        
+    return Inertia::render('Spots/Index', [
+        'spots' => $spots,
+        'categories' => $categories,
+        'selectedMap' => $selectedMap,
+        'selectedCharacter' => $selectedCharacter,
+        'selectedCategory' => $selectedCategory,
+        'characters' => $characters,
+        'maps' => $maps,
+        'tags' => $tags,
+    ]);
+}
 
-        return Inertia::render('Spots/Index', [
-            'spots' => $spots,
-            'categories' => $categories,
-            'selectedMap' => $selectedMap,
-            'selectedCharacter' => $selectedCharacter,
-            'selectedCategory' => $selectedCategory,
-            'characters' => $characters,
-            'maps' => $maps,
-            'tags' => $tags,
-        ]);
-    }
 
     /**
      * Show the form for creating a new resource.

@@ -1,9 +1,11 @@
 <script setup>
 import { ref } from 'vue';
+import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
     spot: Object,
     userCategories: Array,
+    flash: Object,
 });
 
 const location = ref('end');
@@ -11,11 +13,18 @@ const saveDialog = ref(false);
 const selectedCategories = ref([]);
 
 const saveSpot = () => {
-    console.log(selectedCategories);
-    Inertia.post(route('spots.store'), {
+    Inertia.post(route('spotcategory.store'), {
         spot: props.spot,
         categories: selectedCategories.value,
     });
+};
+
+const alreadySaved = () => {
+    if (props.flash.massage === '既に保存されています') {
+        return true;
+    } else {
+        return false;
+    }
 };
 </script>
 
@@ -41,22 +50,20 @@ const saveSpot = () => {
     <v-dialog v-model="saveDialog" max-width="400px">
         <v-card>
             <v-card-title class="headline">保存先</v-card-title>
+            <!-- すでにspotがuserCategoriesに登録されている場合、エラーメッセージを表示 -->
+            <div v-if="alreadySaved" class="text-red text-center">
+                {{ flash.message }}
+            </div>
             <v-card-text>
                 <v-divider></v-divider>
-                <v-list dense>
-                    <template v-for="category in props.userCategories" :key="category.id">
-                        <!-- v-checkboxでカテゴリーの名前を表示 -->
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-checkbox v-model="category.checked" :label="category.name" class="text-black"></v-checkbox>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </template>
-                </v-list>
+                <template v-for="category in props.userCategories" :key="category.id">
+                    <!-- v-checkboxでカテゴリーの名前を表示 -->
+                    <v-checkbox v-model="selectedCategories" :value="category" :label="category.name" class="text-black"></v-checkbox>
+                </template>
                 <v-divider></v-divider>
             </v-card-text>
             <v-card-actions class="justify-end">
-                <v-btn color="success" @click="saveToCategory">保存する</v-btn>
+                <v-btn color="success" @click="saveSpot">保存する</v-btn>
                 <v-btn color="primary" text @click="saveDialog = false">キャンセル</v-btn>
             </v-card-actions>
         </v-card>
