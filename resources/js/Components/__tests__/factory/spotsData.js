@@ -4,7 +4,7 @@ export const test_spots = [
         name: 'Aサイト　空爆',
         map_id: 1,
         character_id: 1,
-        category_id: 1,
+        // category_id: 1,
         description: 'Aサイトの空爆スポットです。',
         tags: [
             {
@@ -36,7 +36,7 @@ export const test_spots = [
         name: 'Bサイト　空爆',
         map_id: 1,
         character_id: 1,
-        category_id: 1,
+        // category_id: 1,
         description: 'Bサイトの空爆スポットです。',
         tags: [
             {

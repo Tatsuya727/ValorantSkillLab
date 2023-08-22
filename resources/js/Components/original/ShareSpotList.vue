@@ -4,7 +4,6 @@ import { defineProps, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import Pagination from '@/Components/original/Pagination.vue';
 import LikeButton from '@/Components/original/LikeButton.vue';
-
 import ShareSpotMenu from '@/Components/original/ShareSpotMenu.vue';
 import SpotTags from '@/Components/original/SpotTags.vue';
 
@@ -15,9 +14,7 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-
     categories: {
-
         type: Object,
         required: true,
     },
@@ -33,7 +30,6 @@ const props = defineProps({
         type: Number,
         required: true,
     },
-
     userCategories: {
         type: Array,
         required: false,
@@ -46,19 +42,19 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    flash: Object,
 });
-
 </script>
 
 <template>
     <div>
-        <div v-if="props.spots.data.length === 0" class="mt-10 text-center text-white text-lg">検索結果無し</div>
-        <div v-else-if="spotsCount < allSpotsCount" class="mt-5 text-center text-white text-lg">
+        <div v-if="props.spots.data.length === 0" class="mt-10 text-center text-white text-lg title">検索結果無し</div>
+        <div v-else-if="spotsCount < allSpotsCount" class="mt-5 text-center text-white text-lg title">
             検索結果
             <span class="text-3xl">{{ props.spotsCount }}</span>
             件
         </div>
-        <div v-else class="mt-5 text-center text-white text-lg">
+        <div v-else class="mt-5 text-center text-white text-lg title">
             すべての投稿
             <span class="text-3xl">{{ props.allSpotsCount }}</span>
             件
@@ -76,14 +72,14 @@ const props = defineProps({
                 <!-- 情報 -->
                 <div class="p-4 bg-neutral-800">
                     <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
-                        <ShareSpotMenu :spot="spot" :userCategories="userCategories" />
+                        <ShareSpotMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
                     </div>
                     <div class="flex mb-2">
                         <Link :href="spot.show_url">
                             <h1 class="text-2xl font-bold text-white">{{ spot.title }}</h1>
                             <div class="mt-2">
                                 <p class="text-sm text-gray-400">
-                                    category: <span class="font-bold text-white">{{ spot.category.name }}</span>
+                                    category: <span class="font-bold text-white">{{ spot.categories[0].name }}</span>
                                 </p>
                                 <p class="text-sm text-gray-400">
                                     map: <span class="font-bold text-white">{{ spot.map.name }}</span>
@@ -102,7 +98,6 @@ const props = defineProps({
                     <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
                         <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
                         <!-- ユーザーネーム -->
-
                         <div class="text-green">{{ spot.user.name }}</div>
                     </div>
                 </div>

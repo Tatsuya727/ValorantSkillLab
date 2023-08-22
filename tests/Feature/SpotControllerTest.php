@@ -2,93 +2,143 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Spot;
+use App\Models\User;
+use App\Models\Map;
+use App\Models\Character;
+use App\Models\Category;
+use App\Models\Tag;
+use App\Models\Image;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use Database\Factories\MapFactory;
-use Database\Factories\CharacterFactory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Database\Factories\MapFactory;
+use Database\Factories\CharacterFactory;
+use Database\Factories\CategoryFactory;
+use Database\Factories\TagFactory;
+
+
+
 
 class SpotControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    /** @test */
-    public function create_spot()
+    public function test_index_displays_spots_for_authenticated_user()
     {
-        // 作成のテスト
+        $user = User::factory()->create();
+        $spot = Spot::factory()->create(['user_id' => $user->id]);
 
-        $this->withoutExceptionHandling();
+        $response = $this->actingAs($user)->get(route('spots.index'));
 
-        Storage::fake('public');  // フェイクのストレージを作成
+        $response->assertStatus(200)
+            ->assertInertia(fn ($page) => 
+                $page->component('Spots/Index')
+                    ->has('spots')
+                    ->has('categories')
+                    ->has('characters')
+                    ->has('maps')
+                    ->has('tags')
+                    ->has('userCategories')
+            );
+    }
 
-        // テスト用のユーザーを作成
+    public function test_create_displays_create_form_for_authenticated_user()
+    {
         $user = User::factory()->create();
 
-        // テスト用のMapとCharacterを作成
+        $response = $this->actingAs($user)->get(route('spots.create'));
+
+        $response->assertStatus(200)
+            ->assertInertia(fn ($page) => 
+                $page->component('Spots/Create')
+                    ->has('maps')
+                    ->has('characters')
+                    ->has('categories')
+                    ->has('tags')
+            );
+    }
+
+    public function test_store_creates_a_new_spot_and_redirects()
+    {
+        Storage::fake('public');  // フェイクのストレージを作成
+
+        $user = User::factory()->create();
         $map = MapFactory::new()->create();
         $character = CharacterFactory::new()->create();
+        $category = CategoryFactory::new()->create();
+        $tag = TagFactory::new()->create();
 
-        // ログイン
         $this->actingAs($user);
-
 
         // テストデータ
         $data = [
-            'title' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
+            'title' => 'New Spot',
+            'description' => 'Spot Description',
             'map_id' => $map->id,
             'character_id' => $character->id,
             'images' => [
                 ['image_path' => UploadedFile::fake()->image('image1.jpg'), 'description' => $this->faker->sentence],
                 ['image_path' => UploadedFile::fake()->image('image2.jpg'), 'description' => $this->faker->sentence],
             ],
+            'categories' => [
+                $category->id,
+            ],
+            'tags' => [
+                $tag->id,
+            ],
         ];
 
-        // リクエストの送信
-        $response = $this->post('/spots', $data);
+        $response = $this->post(route('spots.store'), $data);
 
-        // レスポンスの検証
-        $response->assertStatus(302);
-
-        // データベースの検証
-        $this->assertDatabaseHas('spots', [
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'map_id' => $data['map_id'],
-            'character_id' => $data['character_id'],
-        ]);
+        $this->assertDatabaseHas('spots', ['title' => 'New Spot', 'user_id' => $user->id]);
+        $response->assertRedirect(route('categories.index'));
 
     }
 
-    /** @test */
-    public function delete_spot()
+    public function test_show_displays_spot_details()
     {
-        // 削除のテスト
-        
-        $this->withoutExceptionHandling();
-
-        // テスト用のユーザーを作成
         $user = User::factory()->create();
-
-        // テスト用のSpotを作成
         $spot = Spot::factory()->create(['user_id' => $user->id]);
 
-        // ログイン
-        $this->actingAs($user);
+        $response = $this->actingAs($user)->get(route('spots.show', $spot));
 
-        // リクエストの送信
-        $response = $this->delete('/spots/' . $spot->id);
+        $response->assertStatus(200)
+            ->assertInertia(fn ($page) => 
+                $page->component('Spots/Show')
+                    ->has('spot')
+                    ->has('user')
+            );
+    }
 
-        // レスポンスの検証
-        $response->assertStatus(302);
+    public function test_edit_displays_edit_form_for_authenticated_user()
+    {
+        $user = User::factory()->create();
+        $spot = Spot::factory()->create(['user_id' => $user->id]);
 
-        // データベースの検証
-        $this->assertDatabaseMissing('spots', [
-            'id' => $spot->id,
-        ]);
+        $response = $this->actingAs($user)->get(route('spots.edit', $spot));
+
+        $response->assertStatus(200)
+            ->assertInertia(fn ($page) => 
+                $page->component('Spots/Edit')
+                    ->has('spot')
+                    ->has('maps')
+                    ->has('characters')
+            );
+    }
+
+
+
+    public function test_destroy_deletes_the_spot_and_redirects()
+    {
+        $user = User::factory()->create();
+        $spot = Spot::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->delete(route('spots.destroy', $spot));
+
+        $this->assertDatabaseMissing('spots', ['id' => $spot->id]);
+        $response->assertRedirect(route('spots.index'));
     }
 }

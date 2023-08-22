@@ -5,7 +5,6 @@ import ShareSpotHeader from '@/Components/original/ShareSpotHeader.vue';
 
 import { Head } from '@inertiajs/vue3';
 
-
 const props = defineProps({
     spots: {
         type: Array,
@@ -47,12 +46,11 @@ const props = defineProps({
         type: Array,
         required: false,
     },
-
+    flash: Object,
 });
 </script>
 
 <template>
-
     <Head title="みんなの投稿" />
 
     <v-app>
@@ -60,7 +58,6 @@ const props = defineProps({
         <v-main class="bg-zinc-900">
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
-
                     <ShareSpotHeader :selectedTag="selectedTag" :maps="maps" :characters="characters" :tags="tags" :selectedMap="selectedMap" :selectedCharacter="selectedCharacter" />
                     <ShareSpotList
                         :selectedTag="selectedTag"
@@ -71,8 +68,8 @@ const props = defineProps({
                         :userCategories="userCategories"
                         :selectedMap="selectedMap"
                         :selectedCharacter="selectedCharacter"
+                        :flash="flash"
                     />
-
                 </div>
             </v-container>
         </v-main>

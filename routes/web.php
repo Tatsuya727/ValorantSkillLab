@@ -10,8 +10,8 @@ use App\Http\Controllers\SpotController;
 use App\Http\Controllers\ShareSpotController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LikeController;
-
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\SpotCategoryController;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -54,6 +54,13 @@ Route::delete('/spots/{spot}/like', [LikeController::class, 'destroy'])
 ->name('likes.destroy')
 ->middleware(['auth', 'check.verified']);
 
+Route::post('/spotcategory', [SpotCategoryController::class, 'store'])
+->name('spotcategory.store')
+->middleware(['auth', 'check.verified']);
+
+Route::delete('/spotcategory', [SpotCategoryController::class, 'destroy'])
+->name('spotcategory.destroy')
+->middleware(['auth', 'check.verified']);
 
 Route::resource('/categories', CategoryController::class)
 ->middleware(['auth', 'check.verified']);

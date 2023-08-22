@@ -23,6 +23,10 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    selectedCategory: {
+        type: Number,
+        required: false,
+    },
     routeName: {
         type: String,
         required: true,
@@ -38,7 +42,7 @@ const selectedCharacter = ref(props.selectedCharacter);
 const selectedTag = ref(localStorage.getItem('selectedTag') || null);
 
 const filterSpots = () => {
-    Inertia.get(route(props.routeName), { selectedMap: selectedMap.value, selectedCharacter: selectedCharacter.value, tag: selectedTag.value });
+    Inertia.get(route(props.routeName), { selectedMap: selectedMap.value, selectedCharacter: selectedCharacter.value, tag: selectedTag.value, category: props.selectedCategory });
 };
 
 const selectMap = (map) => {

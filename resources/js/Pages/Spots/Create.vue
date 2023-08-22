@@ -34,7 +34,7 @@ const form = reactive({
     description: '',
     map_id: '',
     character_id: '',
-    category_id: '',
+    categories: '',
     images: [
         { file: null, description: '', preview: null },
         { file: null, description: '', preview: null },
@@ -47,7 +47,7 @@ const errors = reactive({
     description: null,
     map_id: null,
     character_id: null,
-    category_id: null,
+    categories: null,
     images: [],
     tags: null,
 });
@@ -59,7 +59,7 @@ const storeSpot = () => {
         formData.append('description', form.description);
         formData.append('map_id', form.map_id);
         formData.append('character_id', form.character_id);
-        formData.append('category_id', form.category_id);
+        formData.append('categories', form.categories);
 
         form.images.forEach((image, index) => {
             if (image.file) {
@@ -80,7 +80,7 @@ const storeSpot = () => {
                 form.description = null;
                 form.map_id = null;
                 form.character_id = null;
-                form.category_id = null;
+                form.categories = null;
                 form.images = [
                     { file: null, description: null, preview: null },
                     { file: null, description: null, preview: null },
@@ -209,16 +209,16 @@ onUnmounted(() => {
 
                     <!-- カテゴリー -->
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                        <label for="category_id" class="block text-sm font-medium text-white">カテゴリー<span class="text-red-500">*</span></label>
+                        <label for="categories" class="block text-sm font-medium text-white">カテゴリー<span class="text-red-500">*</span></label>
                         <select
-                            name="category_id"
-                            v-model="form.category_id"
+                            name="categories"
+                            v-model="form.categories"
                             class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                         >
                             <option disabled value="">カテゴリーを選択</option>
                             <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
                         </select>
-                        <div v-if="errors.category_id" class="text-red-500">{{ errors.category_id }}</div>
+                        <div v-if="errors.categories" class="text-red-500">{{ errors.categories }}</div>
                         <div class="text-center mt-3">
                             <StoreCategory />
                         </div>
