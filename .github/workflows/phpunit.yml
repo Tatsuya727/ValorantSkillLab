@@ -10,13 +10,11 @@ jobs:
     tests:
         runs-on: ubuntu-latest
 
-        env:
-            DB_USERNAME: sail
-            DB_DATABASE: valorantskilllab
-            DB_PASSWORD: password
-            DB_HOST: pgsql
-            DB_PORT: 5432
-            DB_CONNECTION: pgsql
+        environment:
+            PGPASSWORD: '${DB_PASSWORD:-secret}'
+            POSTGRES_DB: '${DB_DATABASE}'
+            POSTGRES_USER: '${DB_USERNAME}'
+            POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
 
         steps:
             - name: Checkout code
