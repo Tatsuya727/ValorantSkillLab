@@ -9,6 +9,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Database\Factories\MapFactory;
 use Database\Factories\CharacterFactory;
+use Database\Factories\CategoryFactory;
+use Database\Factories\TagFactory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,9 +30,11 @@ class SpotControllerTest extends TestCase
         // テスト用のユーザーを作成
         $user = User::factory()->create();
 
-        // テスト用のMapとCharacterを作成
+        // テスト用のMapとCharacterとCategoryとTagを作成
         $map = MapFactory::new()->create();
         $character = CharacterFactory::new()->create();
+        $category = CategoryFactory::new()->create();
+        $tag = TagFactory::new()->create();
 
         // ログイン
         $this->actingAs($user);
@@ -45,6 +49,12 @@ class SpotControllerTest extends TestCase
             'images' => [
                 ['image_path' => UploadedFile::fake()->image('image1.jpg'), 'description' => $this->faker->sentence],
                 ['image_path' => UploadedFile::fake()->image('image2.jpg'), 'description' => $this->faker->sentence],
+            ],
+            'categories' => [
+                $category->id,
+            ],
+            'tags' => [
+                $tag->id,
             ],
         ];
 
