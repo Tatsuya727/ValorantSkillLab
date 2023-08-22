@@ -13,8 +13,7 @@ class CategoryTest extends TestCase
 {
     use RefreshDatabase;
     
-    /** @test */
-    public function in_index_authenticated_user_can_see_categories_and_spots()
+    public function test_in_index_authenticated_user_can_see_categories_and_spots()
     {
         $user = User::factory()->create();
         $category = Category::factory()->create(['user_id' => $user->id]);
@@ -33,8 +32,7 @@ class CategoryTest extends TestCase
             );
     }
     
-    /** @test */
-    public function store_creates_a_new_category_and_redirects()
+    public function test_store_creates_a_new_category_and_redirects()
     {
         $user = User::factory()->create();
 
@@ -47,8 +45,7 @@ class CategoryTest extends TestCase
         $response->assertRedirect(route('categories.index'));
     }
     
-    /** @test */
-    public function store_redirects_to_spots_create_when_redirect_to_create_is_true()
+    public function test_store_redirects_to_spots_create_when_redirect_to_create_is_true()
     {
         $user = User::factory()->create();
 
@@ -61,8 +58,7 @@ class CategoryTest extends TestCase
     }
 
     
-    /** @test */
-    public function update_modifies_the_category_and_redirects()
+    public function test_update_modifies_the_category_and_redirects()
     {
         $user = User::factory()->create();
         $category = Category::factory()->create(['user_id' => $user->id]);
@@ -75,8 +71,7 @@ class CategoryTest extends TestCase
         $response->assertRedirect(route('categories.index'));
     }
     
-    /** @test */
-    public function destroy_deletes_the_category_and_related_spots_and_redirects()
+    public function test_destroy_deletes_the_category_and_related_spots_and_redirects()
     {
         $user = User::factory()->create();
         $category = Category::factory()->create(['user_id' => $user->id]);

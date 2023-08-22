@@ -2,86 +2,81 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Spot;
+use App\Models\User;
+use App\Models\Map;
+use App\Models\Character;
+use App\Models\Category;
+use App\Models\Tag;
+use App\Models\Image;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Database\Factories\MapFactory;
 use Database\Factories\CharacterFactory;
 use Database\Factories\CategoryFactory;
 use Database\Factories\TagFactory;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
+
+
+
 
 class SpotControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    /** @test */
-    public function in_index_authenticated_user_can_see_spot()
+    public function test_index_displays_spots_for_authenticated_user()
     {
         $user = User::factory()->create();
-        $this->actingAs($user);
-
-        $response = $this->get('/spots');
-
-        $response->assertStatus(200);
-    }
-
-    /** @test */
-    public function show_spot()
-    {
-
-        $user = User::factory()->create();
-
         $spot = Spot::factory()->create(['user_id' => $user->id]);
 
-        $this->actingAs($user);
+        $response = $this->actingAs($user)->get(route('spots.index'));
 
-        $response = $this->get('/spots/' . $spot->id);
-
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertInertia(fn ($page) => 
+                $page->component('Spots/Index')
+                    ->has('spots')
+                    ->has('categories')
+                    ->has('characters')
+                    ->has('maps')
+                    ->has('tags')
+                    ->has('userCategories')
+            );
     }
 
-    /** @test */
-    public function create_spot()
+    public function test_create_displays_create_form_for_authenticated_user()
     {
-        // 作成画面の表示のテスト
-
         $user = User::factory()->create();
 
-        $this->actingAs($user);
+        $response = $this->actingAs($user)->get(route('spots.create'));
 
-        $response = $this->get('/spots/create');
-
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertInertia(fn ($page) => 
+                $page->component('Spots/Create')
+                    ->has('maps')
+                    ->has('characters')
+                    ->has('categories')
+                    ->has('tags')
+            );
     }
 
-    /** @test */
-    public function store_spot()
+    public function test_store_creates_a_new_spot_and_redirects()
     {
-        // 作成のテスト
-
         Storage::fake('public');  // フェイクのストレージを作成
 
-        // テスト用のユーザーを作成
         $user = User::factory()->create();
-
-        // テスト用のMapとCharacterとCategoryとTagを作成
         $map = MapFactory::new()->create();
         $character = CharacterFactory::new()->create();
         $category = CategoryFactory::new()->create();
         $tag = TagFactory::new()->create();
 
-        // ログイン
         $this->actingAs($user);
-
 
         // テストデータ
         $data = [
-            'title' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
+            'title' => 'New Spot',
+            'description' => 'Spot Description',
             'map_id' => $map->id,
             'character_id' => $character->id,
             'images' => [
@@ -96,47 +91,54 @@ class SpotControllerTest extends TestCase
             ],
         ];
 
-        // リクエストの送信
-        $response = $this->post('/spots', $data);
+        $response = $this->post(route('spots.store'), $data);
 
-        // レスポンスの検証
-        $response->assertStatus(302);
-
-        // データベースの検証
-        $this->assertDatabaseHas('spots', [
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'map_id' => $data['map_id'],
-            'character_id' => $data['character_id'],
-        ]);
+        $this->assertDatabaseHas('spots', ['title' => 'New Spot', 'user_id' => $user->id]);
+        $response->assertRedirect(route('categories.index'));
 
     }
 
-    /** @test */
-    public function delete_spot()
+    public function test_show_displays_spot_details()
     {
-        // 削除のテスト
-        
-        $this->withoutExceptionHandling();
-
-        // テスト用のユーザーを作成
         $user = User::factory()->create();
-
-        // テスト用のSpotを作成
         $spot = Spot::factory()->create(['user_id' => $user->id]);
 
-        // ログイン
-        $this->actingAs($user);
+        $response = $this->actingAs($user)->get(route('spots.show', $spot));
 
-        // リクエストの送信
-        $response = $this->delete('/spots/' . $spot->id);
+        $response->assertStatus(200)
+            ->assertInertia(fn ($page) => 
+                $page->component('Spots/Show')
+                    ->has('spot')
+                    ->has('user')
+            );
+    }
 
-        // レスポンスの検証
-        $response->assertStatus(302);
+    public function test_edit_displays_edit_form_for_authenticated_user()
+    {
+        $user = User::factory()->create();
+        $spot = Spot::factory()->create(['user_id' => $user->id]);
 
-        // データベースの検証
-        $this->assertDatabaseMissing('spots', [
-            'id' => $spot->id,
-        ]);
+        $response = $this->actingAs($user)->get(route('spots.edit', $spot));
+
+        $response->assertStatus(200)
+            ->assertInertia(fn ($page) => 
+                $page->component('Spots/Edit')
+                    ->has('spot')
+                    ->has('maps')
+                    ->has('characters')
+            );
+    }
+
+
+
+    public function test_destroy_deletes_the_spot_and_redirects()
+    {
+        $user = User::factory()->create();
+        $spot = Spot::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->delete(route('spots.destroy', $spot));
+
+        $this->assertDatabaseMissing('spots', ['id' => $spot->id]);
+        $response->assertRedirect(route('spots.index'));
     }
 }
