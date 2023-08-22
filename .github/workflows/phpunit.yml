@@ -7,10 +7,6 @@ on:
 jobs:
     laravel-tests:
         runs-on: ubuntu-latest
-        # laravelプロジェクトのあるディレクトリに変更
-        defaults:
-            run:
-                working-directory: ./ValorantSkillLab
 
         steps:
             - uses: actions/checkout@v3
