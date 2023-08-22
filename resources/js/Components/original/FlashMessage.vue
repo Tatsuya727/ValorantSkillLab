@@ -5,10 +5,8 @@ const { flash } = defineProps({
     flash: Object,
 });
 
-// const snackbar = ref(true);
 const snackbar = ref(flash && flash.message ? true : false);
 
-// const timeout = ref(flash && flash.message ? 5000 : 0);
 const timeout = ref(5000);
 </script>
 

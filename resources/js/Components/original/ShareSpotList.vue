@@ -6,7 +6,7 @@ import Pagination from '@/Components/original/Pagination.vue';
 import LikeButton from '@/Components/original/LikeButton.vue';
 import ShareSpotMenu from '@/Components/original/ShareSpotMenu.vue';
 import SpotTags from '@/Components/original/SpotTags.vue';
-import FlashMessage from '@/Components/original/FlashMessage.vue';
+
 import dayjs from 'dayjs';
 
 const props = defineProps({
@@ -47,7 +47,6 @@ const props = defineProps({
 </script>
 
 <template>
-    <FlashMessage :flash="flash" />
     <div>
         <div v-if="props.spots.data.length === 0" class="mt-10 text-center text-white text-lg">検索結果無し</div>
         <div v-else-if="spotsCount < allSpotsCount" class="mt-5 text-center text-white text-lg">

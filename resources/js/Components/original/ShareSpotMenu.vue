@@ -12,11 +12,25 @@ const location = ref('end');
 const saveDialog = ref(false);
 const selectedCategories = ref([]);
 
+const flashStatus = ref(false);
+
 const saveSpot = () => {
-    Inertia.post(route('spotcategory.store'), {
-        spot: props.spot,
-        categories: selectedCategories.value,
-    });
+    Inertia.post(
+        route('spotcategory.store'),
+        {
+            spot: props.spot,
+            categories: selectedCategories.value,
+        },
+        {
+            preserveState: true,
+            onSuccess: () => {
+                if (props.flash.message === '保存しました') {
+                    saveDialog.value = false;
+                    snackbar.value = true;
+                }
+            },
+        }
+    );
 };
 
 const alreadySaved = () => {
@@ -26,6 +40,10 @@ const alreadySaved = () => {
         return false;
     }
 };
+
+const snackbar = ref(false);
+
+const timeout = ref(5000);
 </script>
 
 <template>
@@ -68,4 +86,13 @@ const alreadySaved = () => {
             </v-card-actions>
         </v-card>
     </v-dialog>
+
+    <!-- フラッシュメッセージ -->
+    <div class="text-center">
+        <v-snackbar v-model="snackbar" :timeout="timeout" color="white" elevation="24">
+            <div v-if="flash">
+                {{ flash.message }}
+            </div>
+        </v-snackbar>
+    </div>
 </template>
