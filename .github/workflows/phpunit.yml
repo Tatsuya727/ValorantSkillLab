@@ -1,42 +1,38 @@
-name: Laravel CI
+name: CI
 
 on:
-    push:
-        branches: [main]
     pull_request:
-        branches: [main]
+        branches: ['main']
 
 jobs:
-    tests:
+    laravel-tests:
         runs-on: ubuntu-latest
-
-        environment:
-            PGPASSWORD: '${DB_PASSWORD:-secret}'
-            POSTGRES_DB: '${DB_DATABASE}'
-            POSTGRES_USER: '${DB_USERNAME}'
-            POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+        # laravelプロジェクトのあるディレクトリに変更
+        defaults:
+            run:
+                working-directory: ./example-app
 
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+            - uses: actions/checkout@v3
 
-            - name: Copy .env
-              run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+            - name: cp env
+              run: cp .env.example .env
 
-            - name: Install Dependencies
-              run: docker run --rm -v $(pwd):/opt -w /opt laravelsail/php81-composer:latest composer install --prefer-dist --no-interaction  --no-progress
+            - name: composer install
+              run: docker run --rm -u "$(id -u):$(id -g)" -v $(pwd):/var/www/html -w /var/www/html laravelsail/php81-composer:latest composer install --ignore-platform-reqs
 
-            - name: Sail up
+            # 先に起動しておく
+            - name: start　postgres
+              run: ./vendor/bin/sail up -d postgres
+
+            - name: start
               run: ./vendor/bin/sail up -d
 
-            - name: Wait for PostgreSQL to be ready
-              run: sleep 20
+            - name: generate key
+              run: ./vendor/bin/sail artisan key:generate
 
-            - name: Test database connection
-              run: ./vendor/bin/sail exec pgsql psql -U ${{ env.DB_USERNAME }} -d ${{ env.DB_DATABASE }} -c '\l'
-
-            - name: Sail Artisan Migrate
+            - name: migrate
               run: ./vendor/bin/sail artisan migrate
 
-            - name: Run Tests
+            - name: test
               run: ./vendor/bin/sail test
