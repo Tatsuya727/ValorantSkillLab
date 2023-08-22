@@ -10,9 +10,12 @@ const props = defineProps({
 
 const location = ref('end');
 const saveDialog = ref(false);
-const selectedCategories = ref([]);
 
-const flashStatus = ref(false);
+// spotオブジェクトから保存されているカテゴリーのリストを取得
+const savedCategories = props.spot.categories || [];
+
+// 保存されているカテゴリーのIDをselectedCategoriesの初期値として設定
+const selectedCategories = ref(savedCategories.map((category) => category.id));
 
 const saveSpot = () => {
     Inertia.post(
@@ -76,7 +79,7 @@ const timeout = ref(5000);
                 <v-divider></v-divider>
                 <template v-for="category in props.userCategories" :key="category.id">
                     <!-- v-checkboxでカテゴリーの名前を表示 -->
-                    <v-checkbox v-model="selectedCategories" :value="category" :label="category.name" class="text-black"></v-checkbox>
+                    <v-checkbox v-model="selectedCategories" :value="category.id" :label="category.name" class="text-black"></v-checkbox>
                 </template>
                 <v-divider></v-divider>
             </v-card-text>
