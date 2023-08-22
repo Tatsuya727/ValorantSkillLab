@@ -253,13 +253,22 @@ class SpotController extends Controller
      */
     public function destroy(Spot $spot)
     {
-        // タグを削除
-        $spot->tags()->detach();
+        // 自分のスポットであれば削除、他人のスポットであれば自分のカテゴリーとの関連を削除
+        if ($spot->user_id === auth()->id()) {
+            // タグを削除
+            $spot->tags()->detach();
 
-        $spot->delete();
+            $spot->delete();
 
-        session()->flash('message', '削除しました');
+            session()->flash('message', '削除しました');
 
-        return to_route('spots.index');
+            return to_route('spots.index');
+        } else {
+            $spot->categories()->detach(auth()->id());
+
+            session()->flash('message', 'カテゴリーから削除しました');
+
+            return to_route('spots.index');
+                }
     }
 }
