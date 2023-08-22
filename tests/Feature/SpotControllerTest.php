@@ -19,11 +19,49 @@ class SpotControllerTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     /** @test */
+    public function index_spot()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $response = $this->get('/spots');
+
+        $response->assertStatus(200);
+    }
+
+    /** @test */
+    public function show_spot()
+    {
+
+        $user = User::factory()->create();
+
+        $spot = Spot::factory()->create(['user_id' => $user->id]);
+
+        $this->actingAs($user);
+
+        $response = $this->get('/spots/' . $spot->id);
+
+        $response->assertStatus(200);
+    }
+
+    /** @test */
     public function create_spot()
     {
-        // 作成のテスト
+        // 作成画面の表示のテスト
 
-        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
+
+        $response = $this->get('/spots/create');
+
+        $response->assertStatus(200);
+    }
+
+    /** @test */
+    public function store_spot()
+    {
+        // 作成のテスト
 
         Storage::fake('public');  // フェイクのストレージを作成
 
