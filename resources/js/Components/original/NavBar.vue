@@ -80,7 +80,7 @@ const items = [
                 </Link>
             </v-list-item>
 
-            <v-list-group value="Category">
+            <v-list-group value="Category" v-if="$page.props.auth.user">
                 <template v-slot:activator="{ props }">
                     <v-list-item v-bind="props" prepend-icon="mdi-format-list-bulleted" title="マイリスト"></v-list-item>
                 </template>
