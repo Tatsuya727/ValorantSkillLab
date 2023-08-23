@@ -70,7 +70,7 @@ class SpotController extends Controller
         })
         ->when($selectedCategory, function ($query, $selectedCategory) {
             return $query->whereHas('categories', function ($query) use ($selectedCategory) {
-                $query->where('categories.id', $selectedCategory);
+                $query->where('categories.id', $selectedCategory['id']);
             });
         })
         ->paginate(12)

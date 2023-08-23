@@ -32,8 +32,9 @@ const selectedCategory = ref(null);
 
 // カテゴリーの名前をクリックすると、そのカテゴリーを持つspots.indexに遷移する
 const selectCategory = (category) => {
-    selectedCategory.value = category.id;
-    Inertia.get(route('spots.index'), { category: selectedCategory.value });
+    selectedCategory.value = category;
+    console.log(selectedCategory.value);
+    // Inertia.get(route('spots.index'), { category: selectedCategory.value });
 };
 
 // カテゴリーに関連する最初のスポットを取得

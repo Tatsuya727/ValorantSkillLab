@@ -87,6 +87,7 @@ const resetSpots = () => {
                 :selectedMap="selectedMap"
                 :selectedCharacter="selectedCharacter"
                 :selectedCategory="selectedCategory"
+                :categories="categories"
                 :routeName="'spots.index'"
             />
         </v-col>

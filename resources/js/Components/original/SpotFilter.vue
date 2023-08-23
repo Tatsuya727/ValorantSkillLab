@@ -15,16 +15,20 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-    selectedMap: {
+    categories: {
         type: Array,
+        required: true,
+    },
+    selectedMap: {
+        type: Object,
         required: false,
     },
     selectedCharacter: {
-        type: Array,
+        type: Object,
         required: false,
     },
     selectedCategory: {
-        type: Number,
+        type: Object,
         required: false,
     },
     routeName: {
@@ -40,9 +44,10 @@ const tab = ref(null);
 const selectedMap = ref(props.selectedMap);
 const selectedCharacter = ref(props.selectedCharacter);
 const selectedTag = ref(localStorage.getItem('selectedTag') || null);
+const selectedCategory = ref(props.selectedCategory);
 
 const filterSpots = () => {
-    Inertia.get(route(props.routeName), { selectedMap: selectedMap.value, selectedCharacter: selectedCharacter.value, tag: selectedTag.value, category: props.selectedCategory });
+    Inertia.get(route(props.routeName), { selectedMap: selectedMap.value, selectedCharacter: selectedCharacter.value, tag: selectedTag.value, category: selectedCategory.value });
 };
 
 const selectMap = (map) => {
@@ -64,10 +69,15 @@ const selectTags = (tag) => {
     localStorage.setItem('selectedTag', tag.name);
 };
 
+const selectCategory = (category) => {
+    selectedCategory.value = category; // カテゴリーオブジェクト全体を設定
+};
+
 const resetFilter = () => {
     selectedMap.value = null;
     selectedCharacter.value = null;
     selectedTag.value = null;
+    selectedCategory.value = null;
 };
 </script>
 
@@ -84,6 +94,7 @@ const resetFilter = () => {
                             <v-tab :value="1">マップ</v-tab>
                             <v-tab :value="2">キャラクター</v-tab>
                             <v-tab :value="3">タグ</v-tab>
+                            <v-tab :value="4">カテゴリー</v-tab>
                         </v-tabs>
                         <v-window v-model="tab">
                             <v-window-item :value="1">
@@ -105,6 +116,7 @@ const resetFilter = () => {
                                     </div>
                                 </v-card-text>
                             </v-window-item>
+
                             <v-window-item :value="3">
                                 <v-card-title class="text-center flex">
                                     <div>タグを選択</div>
@@ -118,16 +130,69 @@ const resetFilter = () => {
                                     </div>
                                 </v-card-text>
                             </v-window-item>
+                            <v-window-item :value="4">
+                                <v-card-title class="text-center flex">
+                                    <div>カテゴリーを選択</div>
+                                </v-card-title>
+                                <v-card-text class="mx-10 text-center">
+                                    <div class="flex">
+                                        <div v-for="category in categories" :key="category.id">
+                                            <v-chip @click="selectCategory(category)" class="m-2" color="blue" close>{{ category.name }}</v-chip>
+                                        </div>
+                                    </div>
+                                </v-card-text>
+                            </v-window-item>
                         </v-window>
                     </v-col>
 
                     <!-- ボタンのセクション -->
                     <v-col cols="3" class="items-center justify-center">
                         <div class="mt-10">
-                            <v-autocomplete class="m-3" label="マップ" v-model="selectedMap" :items="maps" item-title="name" item-value="id" clearable variant="outlined"></v-autocomplete>
-                            <v-autocomplete class="m-3" label="キャラクター" v-model="selectedCharacter" :items="characters" item-title="name" item-value="id" clearable variant="outlined">
+                            <v-autocomplete
+                                class="m-3"
+                                label="マップ"
+                                v-model="selectedMap"
+                                :items="maps"
+                                item-title="name"
+                                item-value="id"
+                                clearable
+                                variant="outlined"
+                                return-object
+                            ></v-autocomplete>
+                            <v-autocomplete
+                                class="m-3"
+                                label="キャラクター"
+                                v-model="selectedCharacter"
+                                :items="characters"
+                                item-title="name"
+                                item-value="id"
+                                clearable
+                                variant="outlined"
+                                return-object
+                            >
                             </v-autocomplete>
-                            <v-autocomplete class="m-3" label="タグ" v-model="selectedTag" :items="tags" item-title="name" item-value="name" clearable variant="outlined"></v-autocomplete>
+                            <v-autocomplete
+                                class="m-3"
+                                label="タグ"
+                                v-model="selectedTag"
+                                :items="tags"
+                                item-title="name"
+                                item-value="name"
+                                clearable
+                                variant="outlined"
+                                return-object
+                            ></v-autocomplete>
+                            <v-autocomplete
+                                class="m-3"
+                                label="カテゴリー"
+                                v-model="selectedCategory"
+                                :items="categories"
+                                item-title="name"
+                                item-value="id"
+                                clearable
+                                variant="outlined"
+                                return-object
+                            ></v-autocomplete>
                         </div>
 
                         <v-btn color="success" block @click="filterSpots">検索</v-btn>
