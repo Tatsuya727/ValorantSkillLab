@@ -92,8 +92,10 @@ const timeout = ref(5000);
         <v-card>
             <v-card-title class="headline">保存先</v-card-title>
             <!-- すでにspotがuserCategoriesに登録されている場合、エラーメッセージを表示 -->
-            <div v-if="alreadySaved" class="text-red text-center">
-                {{ flash.message }}
+            <div v-if="props.flash">
+                <div v-if="alreadySaved" class="text-red text-center">
+                    {{ flash.message }}
+                </div>
             </div>
             <v-card-text>
                 <v-divider></v-divider>

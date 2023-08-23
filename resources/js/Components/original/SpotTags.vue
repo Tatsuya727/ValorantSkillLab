@@ -45,7 +45,7 @@ const filterSpotsByTag = (tag) => {
     <div v-for="(tag, index) in tags" :key="index">
         <v-chip
             v-if="selectedTag && selectedTag === tag.name"
-            :class="'cursor-pointer hover:bg-cyan-600 active:bg-indigo-500'"
+            :class="'cursor-pointer hover:bg-cyan-600 active:bg-indigo-500 selected-tag '"
             @click="filterSpotsByTag(tag.name)"
             class="m-2"
             color="light-blue-lighten-4"
@@ -53,7 +53,7 @@ const filterSpotsByTag = (tag) => {
         >
             {{ tag.name }}
         </v-chip>
-        <v-chip v-else :class="'cursor-pointer hover:bg-cyan-900 active:bg-indigo-500'" @click="filterSpotsByTag(tag.name)" class="ma-2" color="indigo-accent-4 " label>
+        <v-chip v-else :class="'cursor-pointer hover:bg-cyan-900 active:bg-indigo-500 common-tag'" @click="filterSpotsByTag(tag.name)" class="ma-2 tag" color="indigo-accent-4 " label>
             {{ tag.name }}
         </v-chip>
     </div>
