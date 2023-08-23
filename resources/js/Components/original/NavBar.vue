@@ -5,13 +5,6 @@ import { Inertia } from '@inertiajs/inertia';
 
 const drawer = ref(null);
 const route = inject('route');
-const links = [
-    // ['mdi-map', 'Map', 'maps.index', 'Maps/Index'],
-    // ['mdi-account', 'Character', 'characters.index', 'Characters/Index'],
-    ['mdi-spotlight', 'マイリスト', 'categories.index', 'Categories/Index'],
-    ['mdi-pencil', '作成する', 'spots.create', 'Spots/Create'],
-    ['mdi-plus-box', 'みんなの投稿', 'sharespots.index', 'ShareSpots/Index'],
-];
 </script>
 
 <template>
@@ -27,15 +20,28 @@ const links = [
         <Link :href="route('sharespots.index')" class="mr-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Post</Link>
         <Link :href="route('categories.index')" class="mr-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Category</Link> -->
 
-        <v-btn class="mr-5 border border-gray-400 bg-green" prepend-icon="mdi-pencil" @click="Inertia.get(route('spots.create'))">作成する</v-btn>
-        <v-btn v-if="$page.props.auth.user" class="mr-5" variant="outlined" prepend-icon="mdi-logout">ログアウト</v-btn>
+        <div class="mr-5">
+            <v-btn class="mr-5 border border-gray-400 bg-green" prepend-icon="mdi-pencil" @click="Inertia.get(route('spots.create'))">作成する</v-btn>
+            <v-menu transition="slide-y-transition">
+                <template v-slot:activator="{ props }">
+                    <v-btn v-if="$page.props.auth.user" class="mr-5" variant="outlined" prepend-icon="mdi-account" v-bind="props">{{ $page.props.auth.user.name }}</v-btn>
+                </template>
+                <v-list>
+                    <v-list-item>
+                        <v-list-item-title><v-icon class="mr-4">mdi-account</v-icon>マイページ</v-list-item-title>
+                    </v-list-item>
+                    <v-divider></v-divider>
+                    <v-list-item>
+                        <v-list-item-title><v-icon class="mr-4">mdi-logout</v-icon> ログアウト</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </div>
 
         <!-- <v-spacer></v-spacer> -->
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" color="grey-darken-3">
         <v-sheet color="grey-darken-4" class="pa-4">
-            <!-- <v-avatar class="mb-4" color="grey-darken-1" size="64"></v-avatar> -->
-
             <div v-if="$page.props.auth.user" class="username">{{ $page.props.auth.user.name }}</div>
             <div v-else>
                 <Link :href="route('login')">
@@ -49,23 +55,30 @@ const links = [
         </v-sheet>
 
         <v-list>
-            <v-list-item v-for="[icon, text, routeName, routeComponent] in links" :key="icon" link>
-                <Link :href="route(routeName)" :class="{ 'text-blue-500': $page.component === routeComponent }">
+            <v-list-item>
+                <Link :href="route('categories.index')" :class="{ 'text-blue-500': $page.component === 'Categories/Index' }">
                     <v-list-item-title>
-                        <v-icon class="mr-4">{{ icon }}</v-icon>
-                        {{ text }}
+                        <v-icon class="mr-4">mdi-account</v-icon>
+                        マイページ
                     </v-list-item-title>
                 </Link>
             </v-list-item>
-            <!-- $page.props.auth.userがいない場合は表示しない -->
-            <!-- <v-list-item v-if="$page.props.auth.user" link>
-                <Link :href="route('logout')" method="post">
+            <v-list-item>
+                <Link :href="route('spots.create')" :class="{ 'text-blue-500': $page.component === 'Spots/Create' }">
                     <v-list-item-title>
-                        <v-icon class="mr-4">mdi-logout</v-icon>
-                        ログアウト
+                        <v-icon class="mr-4">mdi-pencil</v-icon>
+                        作成する
                     </v-list-item-title>
                 </Link>
-            </v-list-item> -->
+            </v-list-item>
+            <v-list-item>
+                <Link :href="route('sharespots.index')" :class="{ 'text-blue-500': $page.component === 'ShareSpots/Index' }">
+                    <v-list-item-title>
+                        <v-icon class="mr-4">mdi-account-supervisor</v-icon>
+                        みんなの投稿
+                    </v-list-item-title>
+                </Link>
+            </v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>

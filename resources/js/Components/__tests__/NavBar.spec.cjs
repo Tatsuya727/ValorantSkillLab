@@ -42,8 +42,8 @@ describe('NavBar.vue', () => {
         const wrapper = setup();
 
         // 各リンクが正しいhrefを持っているか検証
-        expect(wrapper.find('a[href="route(\'maps.index\')"]').exists()).toBeTruthy();
-        expect(wrapper.find('a[href="route(\'characters.index\')"]').exists()).toBeTruthy();
+        // expect(wrapper.find('a[href="route(\'maps.index\')"]').exists()).toBeTruthy();
+        // expect(wrapper.find('a[href="route(\'characters.index\')"]').exists()).toBeTruthy();
         expect(wrapper.find('a[href="route(\'spots.index\')"]').exists()).toBeTruthy();
         expect(wrapper.find('a[href="route(\'spots.create\')"]').exists()).toBeTruthy();
     });
