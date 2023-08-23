@@ -4,7 +4,6 @@ import { Inertia } from '@inertiajs/inertia';
 
 import SpotFilter from '@/Components/original/SpotFilter.vue';
 
-
 const props = defineProps({
     selectedTag: String,
     resetSelectedTag: Function,
@@ -23,7 +22,6 @@ window.addEventListener('beforeunload', () => {
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
 });
-
 
 // 画面上部に表示されたタグをクリックすると、タグの絞り込みを解除する
 const resetSelectedTag = () => {
@@ -45,7 +43,6 @@ const searchSpots = () => {
 };
 
 const resetSpots = () => {
-
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
 
@@ -56,7 +53,6 @@ const resetSpots = () => {
 
 <template>
     <div class="flex">
-
         <div class="share-spot-search flex w-full">
             <v-row>
                 <v-col cols="4" class="flex">
@@ -88,10 +84,9 @@ const resetSpots = () => {
                 <v-col cols="8" class="flex">
                     <v-text-field data-test="search-input" id="name" label="検索" v-model="search" class="ml-5 text-white search-spots" @keyup.enter="searchSpots"></v-text-field>
                     <v-btn @click="searchSpots" class="search-button ml-5 mt-3">検索</v-btn>
-                    <v-btn @click="resetSpots" class="ml-2 mt-3">リセット</v-btn>
+                    <v-btn @click="resetSpots" class="mx-2 mt-3" color="red">リセット</v-btn>
                 </v-col>
             </v-row>
-
         </div>
     </div>
     <v-divider></v-divider>
