@@ -47,6 +47,12 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --no-progress --prefer-dist --optimize-autoloader
 
+            - name: Install Node.js dependencies
+              run: npm install
+
+            - name: Build Vite assets
+              run: npm run build
+
             - name: Prepare the application
               run: |
                   php artisan key:generate
