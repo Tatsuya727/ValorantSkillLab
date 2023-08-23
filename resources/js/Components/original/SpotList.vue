@@ -36,15 +36,6 @@ const props = defineProps({
     flash: Object,
 });
 
-const selectedCategoryId = props.selectedCategory;
-
-const currentCategoryName = computed(() => {
-    const categoryId = Number(selectedCategoryId);
-    if (categoryId) {
-        return props.categories.find((category) => category.id === categoryId).name;
-    }
-});
-
 // 選択した物が何もない場合
 const noSelected = computed(() => {
     return !props.selectedMap && !props.selectedCharacter && !props.selectedTag && !props.selectedCategory;
@@ -55,7 +46,7 @@ const noSelected = computed(() => {
     <v-divider></v-divider>
     <v-row justify="center">
         <v-col cols="12">
-            <h1 v-if="currentCategoryName" class="mt-5 text-white text-center font-bold">{{ currentCategoryName }}({{ spots.data.length }})</h1>
+            <h1 v-if="selectedCategory" class="mt-5 text-white text-center font-bold">{{ selectedCategory.name }}({{ spots.data.length }})</h1>
             <h1 v-if="noSelected" class="mt-5 text-white text-center font-bold">すべて表示({{ spots.data.length }})</h1>
         </v-col>
         <v-col cols="11">
