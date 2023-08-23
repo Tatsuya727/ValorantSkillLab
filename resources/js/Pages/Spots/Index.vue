@@ -2,7 +2,7 @@
 import NavBar from '@/Components/original/NavBar.vue';
 import SpotHeader from '@/Components/original/SpotHeader.vue';
 import SpotList from '@/Components/original/SpotList.vue';
-import { defineProps, onMounted, reactive, ref } from 'vue';
+import { defineProps, ref } from 'vue';
 
 const props = defineProps({
     spots: {
