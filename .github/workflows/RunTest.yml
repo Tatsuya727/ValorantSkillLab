@@ -42,27 +42,41 @@ jobs:
                   extensions: mbstring, dom, fileinfo, pgsql
                   coverage: none
 
+            # envファイルがなければ.env.exampleをコピーする
             - name: Copy .env
               run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
+            # Composerのキャッシュをインストール
             - name: Install Composer dependencies
               run: composer install --no-progress --prefer-dist --optimize-autoloader
 
-            - name: Install Node.js dependencies
-              run: npm install
+            # Node.jsのセットアップ
+            - name: Setup Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '16'
 
+            # Node.jsの依存関係をインストール
+            - name: Install Node.js dependencies
+              run: npm ci
+
+            # Viteのアセットをビルド
             - name: Build Vite assets
               run: npm run build
 
+            # vitestのテストを実行
+            - name: Run vitest tests
+              run: npx vitest
+
+            # キーの生成
             - name: Prepare the application
               run: |
                   php artisan key:generate
 
+            # マイグレーションの実行
             - name: Run Migration
               run: php artisan migrate -v
 
+            # テストの実行
             - name: Run Phpunit
               run: vendor/bin/phpunit
-
-            - name: Run Vitest
-              run: npm run test
