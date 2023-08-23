@@ -78,9 +78,9 @@ const props = defineProps({
                         <Link :href="spot.show_url">
                             <h1 class="text-2xl font-bold text-white">{{ spot.title }}</h1>
                             <div class="mt-2">
-                                <p class="text-sm text-gray-400">
+                                <!-- <p class="text-sm text-gray-400">
                                     category: <span class="font-bold text-white">{{ spot.categories[0].name }}</span>
-                                </p>
+                                </p> -->
                                 <p class="text-sm text-gray-400">
                                     map: <span class="font-bold text-white">{{ spot.map.name }}</span>
                                 </p>
