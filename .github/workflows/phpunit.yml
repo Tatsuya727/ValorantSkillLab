@@ -1,40 +1,58 @@
-name: Laravel CI
+name: Laravel CI without Sail
 
-on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
+on: [push, pull_request]
 
 jobs:
-    tests:
+    laravel:
+        name: Laravel (PHP ${{ matrix.php-versions }})
         runs-on: ubuntu-latest
-
         env:
-            DB_USERNAME: sail
-            DB_DATABASE: valorantskilllab
-            DB_PASSWORD: password
+            DB_CONNECTION: pgsql
             DB_HOST: pgsql
             DB_PORT: 5432
-            DB_CONNECTION: pgsql
+            DB_DATABASE: valorantskilllab
+            DB_USERNAME: sail
+            DB_PASSWORD: password
+
+        services:
+            postgres:
+                image: postgres:latest
+                env:
+                    POSTGRES_USER: sail
+                    POSTGRES_PASSWORD: password
+                    POSTGRES_DB: valorantskilllab
+                ports:
+                    - 5432:5432
+                options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
+
+        strategy:
+            fail-fast: false
+            matrix:
+                php-versions: ['8.1']
 
         steps:
-            - uses: actions/checkout@v3
+            - name: Checkout code
+              uses: actions/checkout@v2
 
-            - name: cp env
-              run: cp .env.example .env
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-versions }}
+                  extensions: mbstring, dom, fileinfo, pgsql
+                  coverage: none
 
-            - name: composer install
-              run: docker run --rm -u "$(id -u):$(id -g)" -v $(pwd):/var/www/html -w /var/www/html laravelsail/php81-composer:latest composer install --ignore-platform-reqs
+            - name: Copy .env
+              run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
-            - name: start
-              run: ./vendor/bin/sail up -d
+            - name: Install Composer dependencies
+              run: composer install --no-progress --prefer-dist --optimize-autoloader
 
-            - name: generate key
-              run: ./vendor/bin/sail artisan key:generate
+            - name: Prepare the application
+              run: |
+                  php artisan key:generate
 
-            - name: migrate
-              run: ./vendor/bin/sail artisan migrate
+            - name: Run Migration
+              run: php artisan migrate -v
 
-            - name: test
-              run: ./vendor/bin/sail test
+            - name: Run Tests
+              run: vendor/bin/phpunit
