@@ -26,13 +26,18 @@ const route = inject('route');
                 <template v-slot:activator="{ props }">
                     <v-btn v-if="$page.props.auth.user" class="mr-5" variant="outlined" prepend-icon="mdi-account" v-bind="props">{{ $page.props.auth.user.name }}</v-btn>
                 </template>
-                <v-list>
+                <v-list v-if="$page.props.auth.user">
                     <v-list-item>
                         <v-list-item-title><v-icon class="mr-4">mdi-account</v-icon>マイページ</v-list-item-title>
                     </v-list-item>
                     <v-divider></v-divider>
                     <v-list-item>
-                        <v-list-item-title><v-icon class="mr-4">mdi-logout</v-icon> ログアウト</v-list-item-title>
+                        <v-list-item-title>
+                            <Link :href="route('logout')" method="post" class="text-black">
+                                <v-icon class="mr-4">mdi-logout</v-icon>
+                                ログアウト
+                            </Link>
+                        </v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
