@@ -7,12 +7,15 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-
     selectedMap: {
         type: Number,
         required: false,
     },
     selectedCharacter: {
+        type: Number,
+        required: false,
+    },
+    selectedCategory: {
         type: Number,
         required: false,
     },
@@ -33,8 +36,8 @@ window.addEventListener('beforeunload', () => {
 const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
     localStorage.setItem('selectedTag', tag);
-    if (props.selectedMap || props.selectedCharacter || selectedTag.value) {
-        Inertia.get(route(props.routeName), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, tag: selectedTag.value });
+    if (props.selectedMap || props.selectedCharacter || props.selectedCategory || selectedTag.value) {
+        Inertia.get(route(props.routeName), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, category: props.selectedCategory, tag: selectedTag.value });
     } else {
         Inertia.get(route(props.routeName));
     }

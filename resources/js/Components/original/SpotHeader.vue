@@ -53,8 +53,8 @@ const resetSelectedTag = () => {
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
     // 選択したマップとキャラクターがあれば、それらを含めて絞り込みを行う
-    if (props.selectedMap && props.selectedCharacter) {
-        Inertia.get(route('spots.index'), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter });
+    if (props.selectedMap || props.selectedCharacter || props.selectedCategory) {
+        Inertia.get(route('spots.index'), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, category: props.selectedCategory });
     } else {
         Inertia.get(route('spots.index'));
     }
