@@ -4,7 +4,13 @@ import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 
 const drawer = ref(null);
-const open = ref(['Category']);
+const open = ref([]);
+
+const items = [
+    { text: 'マイページ', icon: 'mdi-account', route: 'categories.index' },
+    { text: '作成する', icon: 'mdi-pencil', route: 'spots.create' },
+    { text: 'みんなの投稿', icon: 'mdi-account-supervisor', route: 'sharespots.index' },
+];
 </script>
 
 <template>
@@ -60,38 +66,29 @@ const open = ref(['Category']);
         </v-sheet>
 
         <v-list v-model:opened="open">
-            <v-list-item prepend-icon="mdi-account">
-                <Link :href="route('categories.index')" :class="{ 'text-blue-500': $page.component === 'Categories/Index' }">
-                    <v-list-item-title>マイページ</v-list-item-title>
+            <v-list-item v-for="(item, i) in items" :key="i" :value="item" :prepend-icon="item.icon">
+                <Link :href="route(item.route)">
+                    <v-list-item-title v-text="item.text"></v-list-item-title>
                 </Link>
             </v-list-item>
 
             <v-list-group value="Category">
                 <template v-slot:activator="{ props }">
-                    <v-list-item-title v-bind="props" class="cursor-pointer">
-                        <v-icon class="mr-4">mdi-pencil</v-icon>
-                        カテゴリー
-                        <v-icon v-if="!props.active" class="ml-2">mdi-chevron-down</v-icon>
-                        <v-icon v-else class="ml-2">mdi-chevron-up</v-icon>
-                    </v-list-item-title>
+                    <v-list-item v-bind="props" prepend-icon="mdi-pencil" title="カテゴリー"></v-list-item>
                 </template>
 
-                <v-list-item v-for="category in $page.props.categories" :key="category.id" class="ml-3">
-                    {{ category.name }}
-                </v-list-item>
+                <v-list-item v-for="category in $page.props.categories" :key="category.id" :title="category.name" :value="category.name" class="ml-3"> </v-list-item>
             </v-list-group>
 
-            <v-list-item prepend-icon="mdi-pencil">
-                <Link :href="route('spots.create')" :class="{ 'text-blue-500': $page.component === 'Spots/Create' }">
-                    <v-list-item-title>作成する</v-list-item-title>
-                </Link>
+            <!-- <v-list-item prepend-icon="mdi-pencil">
+                <Link :href="route('spots.create')" :class="{ 'text-blue-500': $page.component === 'Spots/Create' }"> 作成する </Link>
             </v-list-item>
 
             <v-list-item prepend-icon="mdi-account-supervisor">
                 <Link :href="route('sharespots.index')" :class="{ 'text-blue-500': $page.component === 'ShareSpots/Index' }">
                     <v-list-item-title>みんなの投稿</v-list-item-title>
                 </Link>
-            </v-list-item>
+            </v-list-item> -->
         </v-list>
     </v-navigation-drawer>
 </template>
