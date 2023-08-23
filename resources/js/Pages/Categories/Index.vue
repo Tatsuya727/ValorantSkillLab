@@ -38,7 +38,7 @@ const selectCategory = (category) => {
 
 // カテゴリーに関連する最初のスポットを取得
 const getFirstSpotForCategory = (categoryId) => {
-    const relatedSpot = props.spots.find((spot) => spot.categories && spot.categories[0].id === categoryId);
+    const relatedSpot = props.spots.find((spot) => spot.categories && spot.categories.some((category) => category.id === categoryId));
 
     if (relatedSpot) {
         return relatedSpot.images[0].image_path;
