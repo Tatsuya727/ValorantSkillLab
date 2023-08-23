@@ -6,7 +6,8 @@ jobs:
     laravel:
         name: Laravel (PHP ${{ matrix.php-versions }})
         runs-on: ubuntu-latest
-        env:
+        environment:
+            name: Github Actions
             DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
             DB_HOST: ${{ secrets.DB_HOST }}
             DB_PORT: ${{ secrets.DB_PORT }}
@@ -17,7 +18,8 @@ jobs:
         services:
             postgres:
                 image: postgres:latest
-                env:
+                environment:
+                    name: Github Actions
                     POSTGRES_USER: ${{ secrets.DB_USERNAME }}
                     POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
                     POSTGRES_DB: ${{ secrets.DB_DATABASE }}
