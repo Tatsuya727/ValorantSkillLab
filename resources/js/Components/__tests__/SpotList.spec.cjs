@@ -60,22 +60,41 @@ describe('SpotList.vue', () => {
 
     const wrapper = mount(SpotList, { propsData });
     const tag_wrapper = mount(SpotTags);
+
     it('タグが表示される', () => {
         const tag = wrapper.find('.common-tag');
 
         expect(tag.exists()).toBeTruthy();
     });
 
-    it('タグがクリックされたらそのタグを持つspotのみが表示される', async () => {
+    it('タグがクリックされたらそのタグの色が変わる', async () => {
         const tag = wrapper.findAll('.common-tag');
         await tag[0].trigger('click');
 
         const selectedTag = wrapper.find('.selected-tag');
 
-        console.log('-----------------');
-        console.log(selectedTag.html());
-        console.log('-----------------');
         expect(selectedTag).toBeTruthy();
         expect(selectedTag.text()).toBe('Tag1');
+    });
+
+    it('マップが表示される', () => {
+        const maps = wrapper.findAll('.map-name');
+
+        expect(maps[0].exists()).toBeTruthy();
+        expect(maps[0].text()).toBe('Map1');
+    });
+
+    it('キャラクターが表示される', () => {
+        const characters = wrapper.findAll('.character-name');
+
+        expect(characters[0].exists()).toBeTruthy();
+        expect(characters[0].text()).toBe('Character1');
+    });
+
+    it('タイトルが表示される', () => {
+        const titles = wrapper.findAll('.spot-title');
+
+        expect(titles[0].exists()).toBeTruthy();
+        expect(titles[0].text()).toBe('Test Title');
     });
 });

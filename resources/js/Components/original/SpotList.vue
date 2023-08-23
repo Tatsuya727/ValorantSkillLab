@@ -74,14 +74,14 @@ const noSelected = computed(() => {
                                     <SpotMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
                                 </div>
                                 <div>
-                                    <h2 class="text-gray-700 text-white">
+                                    <h2 class="text-gray-700 text-white spot-title">
                                         {{ spot.title }}
                                     </h2>
                                     <p class="text-sm text-gray-700 text-grey">
-                                        map: <span class="font-bold text-white">{{ spot.map.name }}</span>
+                                        map: <span class="font-bold text-white map-name">{{ spot.map.name }}</span>
                                     </p>
                                     <p class="text-sm text-gray-700 text-grey">
-                                        character: <span class="font-bold text-white">{{ spot.character.name }}</span>
+                                        character: <span class="font-bold text-white character-name">{{ spot.character.name }}</span>
                                     </p>
                                     <!-- タグの名前をすべて表示 -->
                                     <div class="flex flex-wrap mt-2">
