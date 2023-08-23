@@ -24,6 +24,7 @@ class SpotController extends Controller
      */
     public function index(Request $request)
 {
+    $user = auth()->user();
     $characters = Character::all();
     $maps = Map::all();
     $tags = Tag::all();
@@ -70,7 +71,7 @@ class SpotController extends Controller
         })
         ->when($selectedCategory, function ($query, $selectedCategory) {
             return $query->whereHas('categories', function ($query) use ($selectedCategory) {
-                $query->where('categories.id', $selectedCategory);
+                $query->where('categories.id', $selectedCategory['id']);
             });
         })
         ->paginate(12)
@@ -82,6 +83,7 @@ class SpotController extends Controller
     }        
 
     return Inertia::render('Spots/Index', [
+        'user' => $user,
         'spots' => $spots,
         'categories' => $categories,
         'selectedMap' => $selectedMap,

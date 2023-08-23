@@ -18,6 +18,7 @@ class ShareSpotController extends Controller
         $search = $request->query('search');
         $selectedMap = $request->query('selectedMap');
         $selectedCharacter = $request->query('selectedCharacter');
+        $selectedCategory = $request->query('category');
 
         $spots = Spot::with(['images', 'map', 'character', 'tags', 'user', 'categories'])
             ->withCount('likedBy')
@@ -35,6 +36,11 @@ class ShareSpotController extends Controller
             ->when($selectedCharacter, function ($query, $selectedCharacter) {
                 return $query->whereHas('character', function ($query) use ($selectedCharacter) {
                     $query->where('id', $selectedCharacter['id']);
+                });
+            })
+            ->when($selectedCategory, function ($query, $selectedCategory) {
+                return $query->whereHas('categories', function ($query) use ($selectedCategory) {
+                    $query->where('categories.name', $selectedCategory['name']);
                 });
             })
             ->paginate(12)
@@ -87,7 +93,8 @@ class ShareSpotController extends Controller
         $characters = Character::all();
         $maps = Map::all();
         $tags = Tag::all();
-        $categories = Category::all();
+        $categories = Category::select('name')->distinct()->get();
+
 
         return Inertia::render('ShareSpots/Index', [
             'spots' => $spots,
@@ -100,6 +107,7 @@ class ShareSpotController extends Controller
             'userCategories' => $userCategories,
             'selectedMap' => $selectedMap,
             'selectedCharacter' => $selectedCharacter,
+            'selectedCategory' => $selectedCategory,
         ]);
     }
 }

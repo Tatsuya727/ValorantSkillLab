@@ -6,10 +6,6 @@ import SpotHeader from '@/Components/original/SpotHeader.vue';
 import CategoryMenu from '@/Components/original/CategoryMenu.vue';
 
 const props = defineProps({
-    categories: {
-        type: Array,
-        required: true,
-    },
     spots: {
         type: Array,
         required: true,
@@ -26,19 +22,23 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    categories: {
+        type: Array,
+        required: true,
+    },
 });
 
 const selectedCategory = ref(null);
 
 // カテゴリーの名前をクリックすると、そのカテゴリーを持つspots.indexに遷移する
 const selectCategory = (category) => {
-    selectedCategory.value = category.id;
+    selectedCategory.value = category;
     Inertia.get(route('spots.index'), { category: selectedCategory.value });
 };
 
 // カテゴリーに関連する最初のスポットを取得
 const getFirstSpotForCategory = (categoryId) => {
-    const relatedSpot = props.spots.find((spot) => spot.categories && spot.categories[0].id === categoryId);
+    const relatedSpot = props.spots.find((spot) => spot.categories && spot.categories.some((category) => category.id === categoryId));
 
     if (relatedSpot) {
         return relatedSpot.images[0].image_path;

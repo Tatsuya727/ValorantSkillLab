@@ -74,27 +74,24 @@ const props = defineProps({
                     <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
                         <ShareSpotMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
                     </div>
-                    <div class="flex mb-2">
+                    <div class="mb-4">
                         <Link :href="spot.show_url">
-                            <h1 class="text-2xl font-bold text-white">{{ spot.title }}</h1>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-400">
-                                    category: <span class="font-bold text-white">{{ spot.categories[0].name }}</span>
-                                </p>
-                                <p class="text-sm text-gray-400">
-                                    map: <span class="font-bold text-white">{{ spot.map.name }}</span>
-                                </p>
-                                <p class="text-sm text-gray-400">
-                                    character: <span class="font-bold text-white">{{ spot.character.name }}</span>
-                                </p>
-                            </div>
+                            <h2 class="text-gray-700 text-white spot-title">
+                                {{ spot.title }}
+                            </h2>
+                            <p class="text-sm text-gray-700 text-grey">
+                                map: <span class="font-bold text-white map-name">{{ spot.map.name }}</span>
+                            </p>
+                            <p class="text-sm text-gray-700 text-grey">
+                                character: <span class="font-bold text-white character-name">{{ spot.character.name }}</span>
+                            </p>
                         </Link>
                         <!-- タグの名前をすべて表示 -->
-                        <div class="flex flex-wrap mt-7">
+                        <div class="flex flex-wrap">
+                            <LikeButton class="mt-2 mr-2" :spot="spot" />
                             <SpotTags :tags="spot.tags" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'sharespots.index'" />
                         </div>
                     </div>
-                    <LikeButton :spot="spot" />
                     <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
                         <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
                         <!-- ユーザーネーム -->

@@ -7,12 +7,15 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-
     selectedMap: {
         type: Number,
         required: false,
     },
     selectedCharacter: {
+        type: Number,
+        required: false,
+    },
+    selectedCategory: {
         type: Number,
         required: false,
     },
@@ -33,8 +36,8 @@ window.addEventListener('beforeunload', () => {
 const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
     localStorage.setItem('selectedTag', tag);
-    if (props.selectedMap || props.selectedCharacter || selectedTag.value) {
-        Inertia.get(route(props.routeName), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, tag: selectedTag.value });
+    if (props.selectedMap || props.selectedCharacter || props.selectedCategory || selectedTag.value) {
+        Inertia.get(route(props.routeName), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, category: props.selectedCategory, tag: selectedTag.value });
     } else {
         Inertia.get(route(props.routeName));
     }
@@ -45,7 +48,7 @@ const filterSpotsByTag = (tag) => {
     <div v-for="(tag, index) in tags" :key="index">
         <v-chip
             v-if="selectedTag && selectedTag === tag.name"
-            :class="'cursor-pointer hover:bg-cyan-600 active:bg-indigo-500'"
+            :class="'cursor-pointer hover:bg-cyan-600 active:bg-indigo-500 selected-tag '"
             @click="filterSpotsByTag(tag.name)"
             class="m-2"
             color="light-blue-lighten-4"
@@ -53,7 +56,7 @@ const filterSpotsByTag = (tag) => {
         >
             {{ tag.name }}
         </v-chip>
-        <v-chip v-else :class="'cursor-pointer hover:bg-cyan-900 active:bg-indigo-500'" @click="filterSpotsByTag(tag.name)" class="ma-2" color="indigo-accent-4 " label>
+        <v-chip v-else :class="'cursor-pointer hover:bg-cyan-900 active:bg-indigo-500 common-tag'" @click="filterSpotsByTag(tag.name)" class="ma-2 tag" color="indigo-accent-4 " label>
             {{ tag.name }}
         </v-chip>
     </div>

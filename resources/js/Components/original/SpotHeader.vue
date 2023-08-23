@@ -53,8 +53,8 @@ const resetSelectedTag = () => {
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
     // 選択したマップとキャラクターがあれば、それらを含めて絞り込みを行う
-    if (props.selectedMap && props.selectedCharacter) {
-        Inertia.get(route('spots.index'), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter });
+    if (props.selectedMap || props.selectedCharacter || props.selectedCategory) {
+        Inertia.get(route('spots.index'), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, category: props.selectedCategory });
     } else {
         Inertia.get(route('spots.index'));
     }
@@ -79,7 +79,7 @@ const resetSpots = () => {
         <v-col cols="6" class="flex">
             <v-text-field data-test="search-input" id="name" label="検索" v-model="search" class="ml-5 text-white search-spots" @keyup.enter="searchSpots"></v-text-field>
             <v-btn @click="searchSpots" class="search-button ml-5 mt-3">検索</v-btn>
-            <v-btn v-if="!inCategory" @click="resetSpots" class="ml-2 mt-3">リセット</v-btn>
+            <v-btn v-if="!inCategory" @click="resetSpots" class="ml-2 mt-3" color="red">リセット</v-btn>
             <SpotFilter
                 :maps="maps"
                 :characters="characters"
@@ -87,6 +87,7 @@ const resetSpots = () => {
                 :selectedMap="selectedMap"
                 :selectedCharacter="selectedCharacter"
                 :selectedCategory="selectedCategory"
+                :categories="categories"
                 :routeName="'spots.index'"
             />
         </v-col>

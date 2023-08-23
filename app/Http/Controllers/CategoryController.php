@@ -15,9 +15,15 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::where('user_id', auth()->user()->id)->get();
+        // ユーザーごとのスポットと保存した他人のスポットを取得
         $spots = Spot::with(['images', 'map', 'character', 'tags', 'categories'])
-        ->where('user_id', auth()->user()->id)->get();
-
+            ->where(function ($query) {
+                $query->where('user_id', auth()->id())
+                    ->orWhereHas('categories', function ($query) {
+                        $query->where('user_id', auth()->id());
+                    });
+            })
+            ->get();
         $tags = Tag::all();
         $maps = Map::all();
         $characters = Character::all();
