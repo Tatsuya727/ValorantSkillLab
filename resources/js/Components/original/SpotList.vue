@@ -85,7 +85,7 @@ const noSelected = computed(() => {
                                     </p>
                                     <!-- タグの名前をすべて表示 -->
                                     <div class="flex flex-wrap mt-2">
-                                        <SpotTags :tags="spot.tags" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'sharespots.index'" />
+                                        <SpotTags :tags="spot.tags" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'spots.index'" />
                                     </div>
                                     <div class="text-green text-right">{{ spot.user.name }}</div>
                                 </div>
