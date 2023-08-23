@@ -67,7 +67,7 @@ jobs:
             # vitestのテストを実行
             - name: Run vitest tests
               env:
-                  LARAVEL_BYPASS_ENV_CHECK: 1
+                  LARAVEL_BYPASS_ENV_CHECK: ${{ secrets.LARAVEL_BYPASS_ENV_CHECK }}
               run: npx vitest
 
             # キーの生成
