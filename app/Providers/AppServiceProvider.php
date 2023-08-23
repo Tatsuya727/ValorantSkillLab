@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
                     'message' => session('message'),
                 ];
             },
-            'categories' => function () {
+            'NavCategories' => function () {
                 if (auth()->user()) {
                     return Category::where('user_id', auth()->id())->get();
                 }

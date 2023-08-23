@@ -1,10 +1,18 @@
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 
 const drawer = ref(null);
-const open = ref([]);
+const open = ref(['Category']);
+
+const selectedCategory = ref(null);
+
+// カテゴリーの名前をクリックすると、そのカテゴリーを持つspots.indexに遷移する
+const selectCategory = (category) => {
+    selectedCategory.value = category;
+    Inertia.get(route('spots.index'), { category: selectedCategory.value });
+};
 
 const items = [
     { text: 'マイページ', icon: 'mdi-account', route: 'categories.index' },
@@ -74,10 +82,18 @@ const items = [
 
             <v-list-group value="Category">
                 <template v-slot:activator="{ props }">
-                    <v-list-item v-bind="props" prepend-icon="mdi-pencil" title="カテゴリー"></v-list-item>
+                    <v-list-item v-bind="props" prepend-icon="mdi-format-list-bulleted" title="カテゴリー"></v-list-item>
                 </template>
 
-                <v-list-item v-for="category in $page.props.categories" :key="category.id" :title="category.name" :value="category.name" class="ml-3"> </v-list-item>
+                <v-list-item @click="Inertia.get(route('spots.index'))" prepend-icon="mdi-select-all"> 全て </v-list-item>
+                <v-list-item
+                    v-for="category in $page.props.NavCategories"
+                    :key="category.id"
+                    @click="selectCategory(category)"
+                    :title="category.name"
+                    :value="category.name"
+                    prepend-icon="mdi-format-list-bulleted"
+                ></v-list-item>
             </v-list-group>
 
             <!-- <v-list-item prepend-icon="mdi-pencil">
