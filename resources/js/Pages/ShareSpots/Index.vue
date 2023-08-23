@@ -46,6 +46,10 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    selectedCategory: {
+        type: Array,
+        required: false,
+    },
     flash: Object,
 });
 </script>
@@ -58,7 +62,16 @@ const props = defineProps({
         <v-main class="bg-zinc-900">
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
-                    <ShareSpotHeader :selectedTag="selectedTag" :maps="maps" :characters="characters" :tags="tags" :selectedMap="selectedMap" :selectedCharacter="selectedCharacter" />
+                    <ShareSpotHeader
+                        :selectedTag="selectedTag"
+                        :maps="maps"
+                        :characters="characters"
+                        :tags="tags"
+                        :categories="categories"
+                        :selectedMap="selectedMap"
+                        :selectedCharacter="selectedCharacter"
+                        :selectedCategory="selectedCategory"
+                    />
                     <ShareSpotList
                         :selectedTag="selectedTag"
                         :spots="props.spots"

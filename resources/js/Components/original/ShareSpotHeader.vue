@@ -7,12 +7,13 @@ import SpotFilter from '@/Components/original/SpotFilter.vue';
 const props = defineProps({
     selectedTag: String,
     resetSelectedTag: Function,
-
     maps: Array,
     characters: Array,
     tags: Array,
+    categories: Array,
     selectedMap: Array,
     selectedCharacter: Array,
+    selectedCategory: Array,
 });
 
 const selectedTag = ref(localStorage.getItem('selectedTag') || '');
@@ -62,23 +63,30 @@ const resetSpots = () => {
                         :tags="props.tags"
                         :selectedMap="props.selectedMap"
                         :selectedCharacter="props.selectedCharacter"
+                        :categories="props.categories"
                         :routeName="'sharespots.index'"
                     />
                     <div class="text-grey ml-3 mt-2">
                         <div>
                             選択したマップ:
-                            <span v-if="selectedMap" class="text-white text-lg font-bold">{{ selectedMap.name }}</span>
-                            <span v-else class="text-white text-lg font-bold">無し</span>
+                            <span v-if="selectedMap" class="text-green text-lg font-bold">{{ selectedMap.name }}</span>
+                            <span v-else class="text-grey text-lg font-bold">無し</span>
                         </div>
                         <div>
                             選択したキャラクター:
-                            <span v-if="selectedCharacter" class="text-white text-lg font-bold">{{ selectedCharacter.name }}</span>
-                            <span v-else class="text-white text-lg font-bold">無し</span>
+                            <span v-if="selectedCharacter" class="text-green text-lg font-bold">{{ selectedCharacter.name }}</span>
+                            <span v-else class="text-grey text-lg font-bold">無し</span>
                         </div>
                     </div>
                     <div class="text-grey ml-10 mt-3">
-                        タグ:
+                        選択したタグ:
                         <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
+                        <span v-else class="text-grey text-lg font-bold">無し</span>
+                        <div>
+                            選択したカテゴリー:
+                            <span v-if="selectedCategory" class="text-green text-lg font-bold">{{ selectedCategory.name }}</span>
+                            <span v-else class="text-grey text-lg font-bold">無し</span>
+                        </div>
                     </div>
                 </v-col>
                 <v-col cols="8" class="flex">
