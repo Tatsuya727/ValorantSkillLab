@@ -55,7 +55,7 @@ const noSelected = computed(() => {
     <v-divider></v-divider>
     <v-row justify="center" class="">
         <v-col cols="12">
-            <h1 class="mt-5 text-white text-center font-bold">{{ currentCategoryName }}({{ spots.data.length }})</h1>
+            <h1 v-if="currentCategoryName" class="mt-5 text-white text-center font-bold">{{ currentCategoryName }}({{ spots.data.length }})</h1>
             <h1 v-if="noSelected" class="mt-5 text-white text-center font-bold">すべて表示({{ spots.data.length }})</h1>
         </v-col>
         <v-expand-transition>
@@ -87,6 +87,7 @@ const noSelected = computed(() => {
                                     <div class="flex flex-wrap mt-2">
                                         <SpotTags :tags="spot.tags" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'sharespots.index'" />
                                     </div>
+                                    <div class="text-green text-right">{{ spot.user.name }}</div>
                                 </div>
                             </div>
                         </div>

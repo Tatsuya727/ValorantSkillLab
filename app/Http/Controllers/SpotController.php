@@ -45,7 +45,7 @@ class SpotController extends Controller
     $categories = Category::where('user_id', auth()->id())->get();
     
     // ユーザーごとのスポットと保存した他人のスポットを取得
-    $spots = Spot::with(['images', 'map', 'character', 'tags' , 'categories'])
+    $spots = Spot::with(['images', 'map', 'character', 'tags' , 'categories', 'user'])
         ->searchSpot($search)
         ->where(function ($query) {
             $query->where('user_id', auth()->id())
