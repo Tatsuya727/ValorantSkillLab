@@ -5,6 +5,10 @@ import SpotTags from '@/Components/original/SpotTags.vue';
 import SpotMenu from '@/Components/original/SpotMenu.vue';
 
 const props = defineProps({
+    user: {
+        type: Object,
+        required: true,
+    },
     spots: {
         type: Array,
         required: true,
@@ -61,7 +65,7 @@ const noSelected = computed(() => {
                         <!-- 情報 -->
                         <div class="p-4 bg-neutral-800">
                             <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
-                                <SpotMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
+                                <SpotMenu :user="user" :spot="spot" :userCategories="userCategories" :flash="flash" />
                             </div>
                             <div>
                                 <h2 class="text-gray-700 text-white spot-title">

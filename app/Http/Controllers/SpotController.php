@@ -24,6 +24,7 @@ class SpotController extends Controller
      */
     public function index(Request $request)
 {
+    $user = auth()->user();
     $characters = Character::all();
     $maps = Map::all();
     $tags = Tag::all();
@@ -82,6 +83,7 @@ class SpotController extends Controller
     }        
 
     return Inertia::render('Spots/Index', [
+        'user' => $user,
         'spots' => $spots,
         'categories' => $categories,
         'selectedMap' => $selectedMap,

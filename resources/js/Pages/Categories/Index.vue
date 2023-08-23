@@ -6,10 +6,6 @@ import SpotHeader from '@/Components/original/SpotHeader.vue';
 import CategoryMenu from '@/Components/original/CategoryMenu.vue';
 
 const props = defineProps({
-    categories: {
-        type: Array,
-        required: true,
-    },
     spots: {
         type: Array,
         required: true,
@@ -25,6 +21,10 @@ const props = defineProps({
     tags: {
         type: Array,
         required: false,
+    },
+    categories: {
+        type: Array,
+        required: true,
     },
 });
 

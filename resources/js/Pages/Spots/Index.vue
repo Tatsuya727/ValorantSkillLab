@@ -5,6 +5,10 @@ import SpotList from '@/Components/original/SpotList.vue';
 import { defineProps, ref } from 'vue';
 
 const props = defineProps({
+    user: {
+        type: Object,
+        required: true,
+    },
     spots: {
         type: Array,
         required: true,
@@ -70,14 +74,13 @@ window.addEventListener('beforeunload', () => {
                     />
 
                     <SpotList
-                        :selectedTag="selectedTag"
+                        :user="user"
                         :spots="spots"
                         :categories="categories"
                         :selectedMap="selectedMap"
                         :selectedCharacter="selectedCharacter"
+                        :selectedTag="selectedTag"
                         :selectedCategory="selectedCategory"
-                        :openUpdateDialog="openUpdateDialog"
-                        :deleteCategory="deleteCategory"
                         :userCategories="userCategories"
                         :flash="flash"
                     />

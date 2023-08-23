@@ -3,6 +3,10 @@ import { defineProps, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
+    user: {
+        type: Object,
+        required: true,
+    },
     spot: {
         type: Object,
         required: true,
@@ -13,6 +17,9 @@ const props = defineProps({
     },
     flash: Object,
 });
+
+// spotの作成者がログインユーザーであるかどうか
+const isMySpot = props.spot.user_id === props.user.id;
 
 const deleteSpotId = ref(null);
 
@@ -81,7 +88,7 @@ const timeout = ref(5000);
             <v-list-item>
                 <v-list-item-title @click="saveDialog = true" class="cursor-pointer open-update-dialog"><v-icon class="mr-2">mdi-content-save-all</v-icon>保存する</v-list-item-title>
             </v-list-item>
-            <v-list-item>
+            <v-list-item v-if="isMySpot">
                 <v-list-item-title @click="setDeleteSpotId(spot.id)" class="cursor-pointer open-delete-dialog"><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title>
             </v-list-item>
         </v-list>
