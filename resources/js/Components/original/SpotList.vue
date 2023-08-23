@@ -49,7 +49,7 @@ const noSelected = computed(() => {
             <h1 v-if="selectedCategory" class="mt-5 text-white text-center font-bold">{{ selectedCategory.name }}({{ spots.data.length }})</h1>
             <h1 v-if="noSelected" class="mt-5 text-white text-center font-bold">すべて表示({{ spots.data.length }})</h1>
         </v-col>
-        <v-col cols="11">
+        <v-col cols="11" sm="12" md="12" lg="12">
             <v-row justify="center" class="mx-3">
                 <v-col v-if="spots.data.length === 0" cols="12" class="text-white text-center text-lg font-bold">無し</v-col>
                 <v-col v-for="spot in props.spots.data" :key="spot.id" cols="12" sm="6" md="4" lg="3" class="mt-10">

@@ -62,50 +62,43 @@ const props = defineProps({
     </div>
     <Pagination class="mt-5 text-white" :links="props.spots.links"></Pagination>
 
-    <v-row justify="center">
-        <v-col cols="11">
-            <v-row justify="center" class="mx-3">
-                <v-col v-for="spot in props.spots.data" :key="spot.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
-                    <div class="flex flex-col rounded overflow-hidden relative h-full">
-                        <!-- 画像 -->
-                        <Link :href="spot.show_url" class="flex-grow">
-                            <v-img cover class="cursor-pointer h-full" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy"></v-img>
+    <v-row justify="center" class="mx-3">
+        <v-col v-for="spot in props.spots.data" :key="spot.id" cols="12" sm="6" md="4" lg="3" class="mt-10">
+            <div class="flex flex-col rounded overflow-hidden relative h-full">
+                <!-- 画像 -->
+                <Link :href="spot.show_url" class="flex-grow">
+                    <v-img cover class="cursor-pointer h-full" :src="spot.images[0].image_path" alt="サムネイル画像" loading="lazy"></v-img>
+                </Link>
+                <!-- 情報 -->
+                <div class="p-4 bg-neutral-800">
+                    <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
+                        <ShareSpotMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
+                    </div>
+                    <div class="mb-4">
+                        <Link :href="spot.show_url">
+                            <h2 class="text-gray-700 text-white spot-title">
+                                {{ spot.title }}
+                            </h2>
+                            <p class="text-sm text-gray-700 text-grey">
+                                map: <span class="font-bold text-white map-name">{{ spot.map.name }}</span>
+                            </p>
+                            <p class="text-sm text-gray-700 text-grey">
+                                character: <span class="font-bold text-white character-name">{{ spot.character.name }}</span>
+                            </p>
                         </Link>
-                        <!-- 情報 -->
-                        <div class="p-4 bg-neutral-800">
-                            <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
-                                <ShareSpotMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
-                            </div>
-                            <div class="flex mb-2">
-                                <Link :href="spot.show_url">
-                                    <h1 class="text-2xl font-bold text-white">{{ spot.title }}</h1>
-                                    <div class="mt-2">
-                                        <!-- <p class="text-sm text-gray-400">
-                                            category: <span class="font-bold text-white">{{ spot.categories[0].name }}</span>
-                                        </p> -->
-                                        <p class="text-sm text-gray-400">
-                                            map: <span class="font-bold text-white">{{ spot.map.name }}</span>
-                                        </p>
-                                        <p class="text-sm text-gray-400">
-                                            character: <span class="font-bold text-white">{{ spot.character.name }}</span>
-                                        </p>
-                                    </div>
-                                </Link>
-                                <!-- タグの名前をすべて表示 -->
-                                <div class="flex flex-wrap mt-7">
-                                    <SpotTags :tags="spot.tags" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'sharespots.index'" />
-                                </div>
-                            </div>
-                            <LikeButton :spot="spot" />
-                            <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
-                                <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
-                                <!-- ユーザーネーム -->
-                                <div class="text-green">{{ spot.user.name }}</div>
-                            </div>
+                        <!-- タグの名前をすべて表示 -->
+                        <div class="flex flex-wrap">
+                            <LikeButton class="mt-2 mr-2" :spot="spot" />
+                            <SpotTags :tags="spot.tags" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'sharespots.index'" />
                         </div>
                     </div>
-                </v-col>
-            </v-row>
+                    <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
+                        <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
+                        <!-- ユーザーネーム -->
+                        <div class="text-green">{{ spot.user.name }}</div>
+                    </div>
+                </div>
+            </div>
         </v-col>
     </v-row>
     <Pagination class="mt-5 text-white" :links="props.spots.links"></Pagination>
