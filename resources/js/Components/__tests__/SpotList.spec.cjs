@@ -49,6 +49,14 @@ describe('SpotList.vue', () => {
                 },
             ],
         },
+        user: {
+            id: 1,
+            name: 'Test User',
+        },
+        flash: {
+            message: 'Test Message',
+            success: true,
+        },
     };
     // route関数をモック
     global.route = (name) => `mocked-route-for-${name}`;

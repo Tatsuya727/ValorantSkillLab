@@ -99,14 +99,14 @@ const timeout = ref(5000);
         <v-card>
             <v-card-title class="headline">保存先</v-card-title>
             <!-- すでにspotがuserCategoriesに登録されている場合、エラーメッセージを表示 -->
-            <div v-if="props.flash">
+            <div v-if="flash">
                 <div v-if="alreadySaved" class="text-red text-center">
                     {{ flash.message }}
                 </div>
             </div>
             <v-card-text>
                 <v-divider></v-divider>
-                <template v-for="category in props.userCategories" :key="category.id">
+                <template v-for="category in userCategories" :key="category.id">
                     <!-- v-checkboxでカテゴリーの名前を表示 -->
                     <v-checkbox v-model="selectedCategories" :value="category.id" :label="category.name" class="text-black"></v-checkbox>
                 </template>
