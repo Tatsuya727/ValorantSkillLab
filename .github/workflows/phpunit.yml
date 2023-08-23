@@ -7,20 +7,20 @@ jobs:
         name: Laravel (PHP ${{ matrix.php-versions }})
         runs-on: ubuntu-latest
         env:
-            DB_CONNECTION: pgsql
-            DB_HOST: 127.0.0.1
-            DB_PORT: 5432
-            DB_DATABASE: valorantskilllab
-            DB_USERNAME: sail
-            DB_PASSWORD: password
+            DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
+            DB_HOST: ${{ secrets.DB_HOST }}
+            DB_PORT: ${{ secrets.DB_PORT }}
+            DB_DATABASE: ${{ secrets.DB_DATABASE }}
+            DB_USERNAME: ${{ secrets.DB_USERNAME }}
+            DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
         services:
             postgres:
                 image: postgres:latest
                 env:
-                    POSTGRES_USER: sail
-                    POSTGRES_PASSWORD: password
-                    POSTGRES_DB: valorantskilllab
+                    POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+                    POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+                    POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
                 ports:
                     - 5432:5432
                 options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
