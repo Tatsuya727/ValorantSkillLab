@@ -66,6 +66,8 @@ jobs:
 
             # vitestのテストを実行
             - name: Run vitest tests
+              env:
+                  LARAVEL_BYPASS_ENV_CHECK: 1
               run: npx vitest
 
             # キーの生成
