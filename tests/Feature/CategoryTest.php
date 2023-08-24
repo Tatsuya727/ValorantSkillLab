@@ -36,10 +36,13 @@ class CategoryTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('categories.store'), [
-            'name' => 'New Category',
-            'redirect_to_create' => false,
-        ]);
+        $response = $this
+                ->actingAs($user)
+                ->from('categories')
+                ->post(route('categories.store'), [
+                    'name' => 'New Category',
+                    'redirect_to_create' => false,
+                ]);
 
         $this->assertDatabaseHas('categories', ['name' => 'New Category', 'user_id' => $user->id]);
         $response->assertRedirect(route('categories.index'));
@@ -49,7 +52,10 @@ class CategoryTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('categories.store'), [
+        $response = $this
+                ->actingAs($user)
+                ->from('spots/create')
+                ->post(route('categories.store'), [
             'name' => 'New Category',
         ]);
 
@@ -62,7 +68,10 @@ class CategoryTest extends TestCase
         $user = User::factory()->create();
         $category = Category::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->put(route('categories.update', $category), [
+        $response = $this
+            ->actingAs($user)
+            ->from('categories')
+            ->put(route('categories.update', $category), [
             'name' => 'Updated Category',
         ]);
 
