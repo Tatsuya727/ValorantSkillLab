@@ -22,6 +22,7 @@ class ShareSpotController extends Controller
         $selectedCategory = $request->query('category');
 
         $spots = Spot::with(['images', 'map', 'character', 'tags', 'user', 'categories'])
+            ->where('is_public', true)
             ->withCount('likedBy')
             ->searchSpot($search)
             ->when($selectedTag, function ($query, $selectedTag) {
@@ -55,6 +56,7 @@ class ShareSpotController extends Controller
 
         // 検索条件に合致する全てのspotを取得
         $allSpots = Spot::with(['images', 'map', 'character', 'tags', 'categories', 'user'])
+            ->where('is_public', true)
             ->searchSpot($search)
             ->when($selectedTag, function ($query, $selectedTag) {
                 return $query->whereHas('tags', function ($query) use ($selectedTag) {
