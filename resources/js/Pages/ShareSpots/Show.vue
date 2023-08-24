@@ -13,10 +13,6 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    user: {
-        type: Object,
-        required: true,
-    },
 });
 
 const imageModal = ref({
@@ -92,7 +88,7 @@ const pageTitle = props.spot.title;
                     </div>
                 </div>
                 <div v-else class="text-right m-10 pt-10 text-grey">
-                    作成者: <span class="text-blue">{{ props.user.name }}</span>
+                    作成者: <span class="text-blue">{{ spot.user.name }}</span>
                 </div>
                 <div class="text-center">
                     <h1 class="font-bold text-4xl text-white">{{ spot.title }}</h1>
