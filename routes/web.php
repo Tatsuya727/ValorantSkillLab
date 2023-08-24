@@ -35,15 +35,15 @@ Route::get('/auth/google', [GoogleLoginController::class, 'redirectToGoogle'])
 Route::get('/auth/google/callback', [GoogleLoginController::class, 'handleGoogleCallback'])
     ->name('login.google.callback');
 
-Route::resource("maps", MapController::class);
+// Route::resource("maps", MapController::class);
 
-Route::resource("characters", CharacterController::class)
-->middleware(['auth']);
+// Route::resource("characters", CharacterController::class)
+// ->middleware(['auth']);
 
 Route::resource("spots", SpotController::class)
 ->middleware(['auth', 'check.verified']);
 
-Route::get("/sharespots", [ShareSpotController::class, 'index'])
+Route::get("/", [ShareSpotController::class, 'index'])
 ->name('sharespots.index');
 
 Route::post('/spots/{spot}/like', [LikeController::class, 'store'])
@@ -68,7 +68,7 @@ Route::resource('/categories', CategoryController::class)
 Route::resource('/tags', TagController::class)
 ->middleware(['auth', 'check.verified']);
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),

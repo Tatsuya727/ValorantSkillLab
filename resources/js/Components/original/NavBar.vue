@@ -24,7 +24,9 @@ const items = [
 <template>
     <v-app-bar color="grey-darken-3">
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>ValorantSkillLab</v-toolbar-title>
+        <v-toolbar-title>
+            <Link href="/"> ValorantSkillLab </Link>
+        </v-toolbar-title>
 
         <div class="mr-5">
             <v-btn class="mr-5 border border-gray-400 bg-green" prepend-icon="mdi-pencil" @click="Inertia.get(route('spots.create'))">作成する</v-btn>
@@ -34,7 +36,12 @@ const items = [
                 </template>
                 <v-list v-if="$page.props.auth.user">
                     <v-list-item>
-                        <v-list-item-title><v-icon class="mr-4">mdi-account</v-icon>マイページ</v-list-item-title>
+                        <v-list-item-title>
+                            <Link :href="route('categories.index')" class="text-black">
+                                <v-icon class="mr-4">mdi-account</v-icon>
+                                マイページ
+                            </Link>
+                        </v-list-item-title>
                     </v-list-item>
                     <v-divider></v-divider>
                     <v-list-item>
