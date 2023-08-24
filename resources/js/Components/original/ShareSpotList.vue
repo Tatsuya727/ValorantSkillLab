@@ -19,7 +19,15 @@ const props = defineProps({
         required: true,
     },
     selectedTag: {
-        type: String,
+        type: Object,
+        required: false,
+    },
+    selectedMap: {
+        type: Object,
+        required: false,
+    },
+    selectedCharacter: {
+        type: Object,
         required: false,
     },
     allSpotsCount: {
@@ -31,14 +39,6 @@ const props = defineProps({
         required: true,
     },
     userCategories: {
-        type: Array,
-        required: false,
-    },
-    selectedMap: {
-        type: Array,
-        required: false,
-    },
-    selectedCharacter: {
         type: Array,
         required: false,
     },
@@ -89,7 +89,7 @@ const props = defineProps({
                         <!-- タグの名前をすべて表示 -->
                         <div class="flex flex-wrap">
                             <LikeButton class="mt-2 mr-2" :spot="spot" />
-                            <SpotTags :tags="spot.tags" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'sharespots.index'" />
+                            <SpotTags :tags="spot.tags" :selectedTag="selectedTag" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'sharespots.index'" />
                         </div>
                     </div>
                     <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">

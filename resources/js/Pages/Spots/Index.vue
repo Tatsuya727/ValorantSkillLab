@@ -18,6 +18,10 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    selectedTag: {
+        type: Object,
+        required: false,
+    },
     selectedMap: {
         type: Object,
         required: false,
@@ -49,14 +53,6 @@ const props = defineProps({
     flash: Object,
 });
 
-const selectedTag = ref(localStorage.getItem('selectedTag') || '');
-
-// ページを離れるときにローカルストレージから選択されたタグを削除する
-window.addEventListener('beforeunload', () => {
-    selectedTag.value = '';
-    localStorage.removeItem('selectedTag');
-});
-
 const pageTitle = props.selectedCategory ? props.selectedCategory.name : 'すべて表示';
 </script>
 
@@ -72,6 +68,7 @@ const pageTitle = props.selectedCategory ? props.selectedCategory.name : 'すべ
                         :maps="maps"
                         :characters="characters"
                         :tags="tags"
+                        :selectedTag="selectedTag"
                         :selectedMap="selectedMap"
                         :selectedCharacter="selectedCharacter"
                         :selectedCategory="selectedCategory"

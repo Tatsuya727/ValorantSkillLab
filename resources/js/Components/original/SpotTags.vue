@@ -7,16 +7,20 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    selectedTag: {
+        type: Object,
+        required: false,
+    },
     selectedMap: {
-        type: Number,
+        type: Object,
         required: false,
     },
     selectedCharacter: {
-        type: Number,
+        type: Object,
         required: false,
     },
     selectedCategory: {
-        type: Number,
+        type: Object,
         required: false,
     },
     routeName: {
@@ -25,21 +29,15 @@ const props = defineProps({
     },
 });
 
-const selectedTag = ref(localStorage.getItem('selectedTag') || '');
-
-// ページを離れるときにローカルストレージから選択されたタグを削除する
-window.addEventListener('beforeunload', () => {
-    localStorage.removeItem('selectedTag');
-});
+const selectedTag = ref(props.selectedTag);
 
 // タグを選択するとそのタグのスポットのみ表示する
 const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
-    localStorage.setItem('selectedTag', tag);
     if (props.selectedMap || props.selectedCharacter || props.selectedCategory || selectedTag.value) {
-        Inertia.get(route(props.routeName), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, category: props.selectedCategory, tag: selectedTag.value });
+        Inertia.get(route(props.routeName), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, category: props.selectedCategory, selectedTag: selectedTag.value });
     } else {
-        Inertia.get(route(props.routeName));
+        Inertia.get(route(props.routeName), { selectedTag: selectedTag.value });
     }
 };
 </script>

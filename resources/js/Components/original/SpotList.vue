@@ -81,8 +81,9 @@ const noSelected = computed(() => {
                                 <div class="flex flex-wrap mt-2">
                                     <SpotTags
                                         :tags="spot.tags"
-                                        :selectedMap="props.selectedMap"
-                                        :selectedCharacter="props.selectedCharacter"
+                                        :selectedTag="selectedTag"
+                                        :selectedMap="selectedMap"
+                                        :selectedCharacter="selectedCharacter"
                                         :selectedCategory="selectedCategory"
                                         :routeName="'spots.index'"
                                     />

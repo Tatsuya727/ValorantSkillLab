@@ -5,29 +5,20 @@ import { Inertia } from '@inertiajs/inertia';
 import SpotFilter from '@/Components/original/SpotFilter.vue';
 
 const props = defineProps({
-    selectedTag: String,
     resetSelectedTag: Function,
     maps: Array,
     characters: Array,
     tags: Array,
     categories: Array,
-    selectedMap: Array,
-    selectedCharacter: Array,
-    selectedCategory: Array,
-});
-
-const selectedTag = ref(localStorage.getItem('selectedTag') || '');
-
-// ページを離れるときにローカルストレージから選択されたタグを削除する
-window.addEventListener('beforeunload', () => {
-    selectedTag.value = '';
-    localStorage.removeItem('selectedTag');
+    selectedTag: Object,
+    selectedMap: Object,
+    selectedCharacter: Object,
+    selectedCategory: Object,
 });
 
 // 画面上部に表示されたタグをクリックすると、タグの絞り込みを解除する
 const resetSelectedTag = () => {
-    selectedTag.value = '';
-    localStorage.removeItem('selectedTag');
+    props.selectedTag = '';
 
     // 選択したマップとキャラクターがあれば、それらを含めて絞り込みを行う
     if (props.selectedMap && props.selectedCharacter) {
@@ -44,10 +35,6 @@ const searchSpots = () => {
 };
 
 const resetSpots = () => {
-    selectedTag.value = '';
-    localStorage.removeItem('selectedTag');
-
-    search.value = '';
     Inertia.get(route('sharespots.index'));
 };
 </script>
@@ -61,6 +48,7 @@ const resetSpots = () => {
                         :maps="props.maps"
                         :characters="props.characters"
                         :tags="props.tags"
+                        :selectedTag="props.selectedTag"
                         :selectedMap="props.selectedMap"
                         :selectedCharacter="props.selectedCharacter"
                         :categories="props.categories"
