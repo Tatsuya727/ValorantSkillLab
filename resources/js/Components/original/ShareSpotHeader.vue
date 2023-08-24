@@ -5,15 +5,15 @@ import { Inertia } from '@inertiajs/inertia';
 import SpotFilter from '@/Components/original/SpotFilter.vue';
 
 const props = defineProps({
-    selectedTag: String,
     resetSelectedTag: Function,
     maps: Array,
     characters: Array,
     tags: Array,
     categories: Array,
-    selectedMap: Array,
-    selectedCharacter: Array,
-    selectedCategory: Array,
+    selectedTag: Object,
+    selectedMap: Object,
+    selectedCharacter: Object,
+    selectedCategory: Object,
 });
 
 // 画面上部に表示されたタグをクリックすると、タグの絞り込みを解除する
@@ -48,6 +48,7 @@ const resetSpots = () => {
                         :maps="props.maps"
                         :characters="props.characters"
                         :tags="props.tags"
+                        :selectedTag="props.selectedTag"
                         :selectedMap="props.selectedMap"
                         :selectedCharacter="props.selectedCharacter"
                         :categories="props.categories"

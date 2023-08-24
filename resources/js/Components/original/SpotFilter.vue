@@ -19,6 +19,10 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    selectedTag: {
+        type: Object,
+        required: false,
+    },
     selectedMap: {
         type: Object,
         required: false,

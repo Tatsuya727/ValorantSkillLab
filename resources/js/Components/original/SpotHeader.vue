@@ -73,6 +73,7 @@ const resetSpots = () => {
                 :maps="maps"
                 :characters="characters"
                 :tags="tags"
+                :selectedTag="selectedTag"
                 :selectedMap="selectedMap"
                 :selectedCharacter="selectedCharacter"
                 :selectedCategory="selectedCategory"
