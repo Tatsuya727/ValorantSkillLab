@@ -71,8 +71,10 @@ const filterSpotsByTag = (tag) => {
                             @click="openImageModal(image)"
                             loading="lazy"
                         ></v-img>
-                        <div v-if="image.description" class="border border-white p-2 text-white">{{ image.description }}</div>
-                        <div v-else class="border border-white p-2 text-white">説明なし</div>
+                        <div v-if="image.description" class="border border-white p-2 text-white max-w-full break-words" style="max-width: 465px">
+                            {{ image.description }}
+                        </div>
+                        <div v-else class="border border-white p-2 text-white max-w-full break-words" style="max-width: 465px">説明なし</div>
                     </div>
                 </div>
             </v-col>
