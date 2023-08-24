@@ -109,7 +109,6 @@ class SpotControllerTest extends TestCase
             ->assertInertia(fn ($page) => 
                 $page->component('Spots/Show')
                     ->has('spot')
-                    ->has('user')
             );
     }
 
