@@ -4,6 +4,7 @@ import ImageModal from '@/Components/original/ImageModal.vue';
 import { defineProps, ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
+import { Head } from '@inertiajs/inertia-vue3';
 
 // import draggable from 'vuedraggable';
 
@@ -48,8 +49,12 @@ const filterSpotsByTag = (tag) => {
     localStorage.setItem('selectedTag', tag);
     Inertia.get(route('spots.index'), { tag: tag });
 };
+
+const pageTitle = props.spot.title;
 </script>
 <template>
+    <Head :title="pageTitle" />
+
     <v-app id="inspire">
         <NavBar />
         <v-main class="bg-zinc-900">
