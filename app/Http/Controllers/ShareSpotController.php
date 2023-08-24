@@ -10,6 +10,7 @@ use App\Models\Character;
 use App\Models\Tag;
 use Inertia\Inertia;
 
+
 class ShareSpotController extends Controller
 {
     public function index(Request $request)
@@ -87,7 +88,7 @@ class ShareSpotController extends Controller
 
         // 各spotにshow_urlプロパティを追加
         foreach ($spots as $spot) {
-            $spot->show_url = route('spots.show', ['spot' => $spot->id]);
+            $spot->show_url = route('sharespots.show', ['spot' => $spot->id]);
         }
 
         $characters = Character::all();
@@ -108,6 +109,23 @@ class ShareSpotController extends Controller
             'selectedMap' => $selectedMap,
             'selectedCharacter' => $selectedCharacter,
             'selectedCategory' => $selectedCategory,
+        ]);
+    }
+
+    public function show(Spot $spot)
+    {
+        $spot = Spot::with(['images', 'tags', 'user', 'categories'])->find($spot->id);
+
+        // ログインしているユーザーのカテゴリーを取得
+        if(auth()->check()) {
+            $userCategories = auth()->user()->categories;
+        } else {
+            $userCategories = null;
+        }
+
+        return Inertia::render('ShareSpots/Show', [
+            'spot' => $spot,
+            'userCategories' => $userCategories,
         ]);
     }
 }

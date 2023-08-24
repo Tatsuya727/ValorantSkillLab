@@ -43,7 +43,7 @@ const selectedTag = ref(localStorage.getItem('selectedTag') || '');
 const filterSpotsByTag = (tag) => {
     selectedTag.value = tag;
     localStorage.setItem('selectedTag', tag);
-    Inertia.get(route('spots.index'), { tag: tag });
+    Inertia.get(route('sharespots.index'), { tag: tag });
 };
 
 const pageTitle = props.spot.title;

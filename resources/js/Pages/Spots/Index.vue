@@ -3,6 +3,7 @@ import NavBar from '@/Components/original/NavBar.vue';
 import SpotHeader from '@/Components/original/SpotHeader.vue';
 import SpotList from '@/Components/original/SpotList.vue';
 import { defineProps, ref } from 'vue';
+import { Head } from '@inertiajs/vue3';
 
 const props = defineProps({
     user: {
@@ -26,7 +27,7 @@ const props = defineProps({
         required: false,
     },
     selectedCategory: {
-        type: Number,
+        type: Object,
         required: false,
     },
     maps: {
@@ -55,11 +56,15 @@ window.addEventListener('beforeunload', () => {
     selectedTag.value = '';
     localStorage.removeItem('selectedTag');
 });
+
+const pageTitle = props.selectedCategory ? props.selectedCategory.name : 'すべて表示';
 </script>
 
 <template>
+    <Head :title="pageTitle" />
+
     <v-app id="inspire">
-        <NavBar />
+        <NavBar :pageTitle="pageTitle" />
         <v-main class="bg-zinc-900">
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">

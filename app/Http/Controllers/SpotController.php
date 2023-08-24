@@ -181,13 +181,18 @@ class SpotController extends Controller
      */
     public function show(Spot $spot)
     {
-        $spot = Spot::with(['images', 'tags'])->find($spot->id);
+        $spot = Spot::with(['images', 'tags', 'user', 'categories'])->find($spot->id);
 
-        $user = User::find($spot->user_id);
+        // ログインしているユーザーのカテゴリーを取得
+        if(auth()->check()) {
+            $userCategories = auth()->user()->categories;
+        } else {
+            $userCategories = null;
+        }
         
         return Inertia::render('Spots/Show', [
             'spot' => $spot,
-            'user' => $user,
+            'userCategories' => $userCategories,
         ]);
     }
 

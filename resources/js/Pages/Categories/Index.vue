@@ -4,6 +4,7 @@ import { Inertia } from '@inertiajs/inertia';
 import NavBar from '@/Components/original/NavBar.vue';
 import SpotHeader from '@/Components/original/SpotHeader.vue';
 import CategoryMenu from '@/Components/original/CategoryMenu.vue';
+import { Head } from '@inertiajs/vue3';
 
 const props = defineProps({
     spots: {
@@ -51,11 +52,15 @@ const getSpotCountForCategory = (categoryId) => {
 
 // ここがカテゴリー一覧ページであることを示すフラグ
 const inCategory = true;
+
+const pageTitle = 'マイページ';
 </script>
 
 <template>
+    <Head :title="pageTitle" />
+
     <v-app id="inspire">
-        <NavBar />
+        <NavBar :pageTitle="pageTitle" />
         <v-main class="bg-zinc-900">
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">

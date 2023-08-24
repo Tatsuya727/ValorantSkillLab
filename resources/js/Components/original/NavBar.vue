@@ -3,6 +3,13 @@ import { ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 
+const props = defineProps({
+    pageTitle: {
+        type: String,
+        default: '',
+    },
+});
+
 const drawer = ref(null);
 const open = ref(['Category']);
 
@@ -17,14 +24,20 @@ const selectCategory = (category) => {
 const items = [
     { text: 'マイページ', icon: 'mdi-account', route: 'categories.index' },
     { text: '作成する', icon: 'mdi-pencil', route: 'spots.create' },
-    { text: 'みんなの投稿', icon: 'mdi-account-supervisor', route: 'sharespots.index' },
+    { text: 'すべての投稿', icon: 'mdi-account-supervisor', route: 'sharespots.index' },
 ];
 </script>
 
 <template>
     <v-app-bar color="grey-darken-3">
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>ValorantSkillLab</v-toolbar-title>
+        <v-toolbar-title>
+            <Link href="/"> ValorantSkillLab </Link>
+        </v-toolbar-title>
+
+        <h2>{{ pageTitle }}</h2>
+
+        <v-spacer></v-spacer>
 
         <div class="mr-5">
             <v-btn class="mr-5 border border-gray-400 bg-green" prepend-icon="mdi-pencil" @click="Inertia.get(route('spots.create'))">作成する</v-btn>
@@ -34,7 +47,12 @@ const items = [
                 </template>
                 <v-list v-if="$page.props.auth.user">
                     <v-list-item>
-                        <v-list-item-title><v-icon class="mr-4">mdi-account</v-icon>マイページ</v-list-item-title>
+                        <v-list-item-title>
+                            <Link :href="route('categories.index')" class="text-black">
+                                <v-icon class="mr-4">mdi-account</v-icon>
+                                マイページ
+                            </Link>
+                        </v-list-item-title>
                     </v-list-item>
                     <v-divider></v-divider>
                     <v-list-item>
@@ -48,8 +66,6 @@ const items = [
                 </v-list>
             </v-menu>
         </div>
-
-        <!-- <v-spacer></v-spacer> -->
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" color="grey-darken-3">
         <v-sheet color="grey-darken-4" class="pa-4">

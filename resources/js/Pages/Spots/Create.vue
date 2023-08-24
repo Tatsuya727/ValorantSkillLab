@@ -5,6 +5,7 @@ import NavBar from '@/Components/original/NavBar.vue';
 import StoreCategory from '@/Components/original/StoreCategory.vue';
 import StoreTag from '@/Components/original/StoreTag.vue';
 import { defineProps, computed, onMounted, onUnmounted } from 'vue';
+import { Head } from '@inertiajs/vue3';
 
 const props = defineProps({
     maps: {
@@ -156,11 +157,15 @@ onMounted(() => {
 onUnmounted(() => {
     document.removeEventListener('click', handleClickOutside);
 });
+
+const pageTitle = '作成する';
 </script>
 
 <template>
+    <Head :title="pageTitle" />
+
     <v-app id="inspire">
-        <NavBar />
+        <NavBar :pageTitle="pageTitle" />
         <v-main class="bg-zinc-900 flex justify-center min-h-screen mt-10">
             <v-form @submit.prevent="storeSpot" class="w-full max-w-7xl bg-neutral-700 p-10 rounded">
                 <!-- タイトル -->
