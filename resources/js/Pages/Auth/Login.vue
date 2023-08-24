@@ -42,8 +42,16 @@ const pageTitle = 'ログイン';
                 {{ status }}
             </div>
             <v-form @submit.prevent="submit">
-                <v-text-field label="メールアドレス" v-model="form.email" required autofocus autocomplete="username" :error-messages="form.errors.email"></v-text-field>
-                <v-text-field label="パスワード" type="password" v-model="form.password" required autocomplete="current-password" :error-messages="form.errors.password"></v-text-field>
+                <v-text-field label="メールアドレス" v-model="form.email" required autofocus autocomplete="username" :error-messages="form.errors.email" @keyup.enter="submit"></v-text-field>
+                <v-text-field
+                    label="パスワード"
+                    type="password"
+                    v-model="form.password"
+                    required
+                    autocomplete="current-password"
+                    :error-messages="form.errors.password"
+                    @keyup.enter="submit"
+                ></v-text-field>
                 <v-checkbox v-model="form.remember" label="ログインしたままにする"></v-checkbox>
                 <div class="flex items-center justify-end mt-4">
                     <Link
@@ -53,11 +61,15 @@ const pageTitle = 'ログイン';
                     >
                         パスワードをお忘れの場合
                     </Link>
-                    <v-btn :disabled="form.processing" class="ml-4" @click="submit"> ログイン </v-btn>
+                    <v-btn :disabled="form.processing" color="success" class="ml-4" @click="submit"> ログイン </v-btn>
                 </div>
             </v-form>
-            <!-- google login -->
+
             <div class="flex items-center justify-end mt-4">
+                <Link :href="route('register')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <v-btn color="blue">アカウントを作成する</v-btn>
+                </Link>
+                <!-- google login -->
                 <Link :href="route('login.google')" class="ml-4">
                     <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" style="margin-left: 3em" />
                 </Link>

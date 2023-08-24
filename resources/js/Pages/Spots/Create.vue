@@ -4,7 +4,7 @@ import { Inertia } from '@inertiajs/inertia';
 import NavBar from '@/Components/original/NavBar.vue';
 import StoreCategory from '@/Components/original/StoreCategory.vue';
 import StoreTag from '@/Components/original/StoreTag.vue';
-import { defineProps, computed, onMounted, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -36,6 +36,7 @@ const form = reactive({
     map_id: '',
     character_id: '',
     categories: '',
+    is_public: true,
     images: [
         { file: null, description: '', preview: null },
         { file: null, description: '', preview: null },
@@ -49,6 +50,7 @@ const errors = reactive({
     map_id: null,
     character_id: null,
     categories: null,
+    is_public: null,
     images: [],
     tags: null,
 });
@@ -61,6 +63,7 @@ const storeSpot = () => {
         formData.append('map_id', form.map_id);
         formData.append('character_id', form.character_id);
         formData.append('categories', form.categories);
+        formData.append('is_public', form.is_public ? '1' : '0');
 
         form.images.forEach((image, index) => {
             if (image.file) {
@@ -77,16 +80,7 @@ const storeSpot = () => {
 
         Inertia.post('/spots', formData, {
             onSuccess: () => {
-                form.title = null;
-                form.description = null;
-                form.map_id = null;
-                form.character_id = null;
-                form.categories = null;
-                form.images = [
-                    { file: null, description: null, preview: null },
-                    { file: null, description: null, preview: null },
-                ];
-                form.tags = [];
+                console.log('onSuccess');
             },
             onError: (responseErrors) => {
                 Object.assign(errors, responseErrors);
@@ -168,62 +162,70 @@ const pageTitle = '作成する';
         <NavBar :pageTitle="pageTitle" />
         <v-main class="bg-zinc-900 flex justify-center min-h-screen mt-10">
             <v-form @submit.prevent="storeSpot" class="w-full max-w-7xl bg-neutral-700 p-10 rounded">
+                <!-- 公開非公開の設定 -->
+                <div class="flex flex-wrap mb-6">
+                    <div class="w-30 px-3 text-white">
+                        <label for="is_public" class="block text-sm font-medium mb-2">公開設定</label>
+                        <v-switch v-model="form.is_public" :label="form.is_public ? '公開' : '非公開'" color="green" inset></v-switch>
+                    </div>
+                </div>
+
                 <!-- タイトル -->
-                <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="flex flex-wrap mb-6">
                     <div class="w-full px-3">
-                        <label for="title" class="block text-sm font-medium text-white">タイトル<span class="text-red-500">*</span></label>
+                        <label for="title" class="block text-sm font-medium text-white mb-2">タイトル<span class="text-red-500">*</span></label>
                         <input
                             type="text"
                             name="title"
                             v-model="form.title"
                             class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
-                        <div v-if="errors.title" class="text-red-500">{{ errors.title }}</div>
+                        <div v-if="errors.title" class="text-red-500 mt-2">{{ errors.title }}</div>
                     </div>
                 </div>
 
                 <!-- マップ, カテゴリー, キャラ, タグ -->
-                <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="flex flex-wrap mb-6">
                     <!-- マップ -->
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label for="map_id" class="block text-sm font-medium text-white">マップ<span class="text-red-500">*</span></label>
+                        <label for="map_id" class="block text-sm font-medium text-white mb-2">マップ<span class="text-red-500">*</span></label>
                         <select
                             name="map_id"
                             v-model="form.map_id"
-                            class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                            class="mt-1 block w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                         >
                             <option disabled value="">マップを選択</option>
                             <option v-for="map in maps" :value="map.id">{{ map.name }}</option>
                         </select>
-                        <div v-if="errors.map_id" class="text-red-500">{{ errors.map_id }}</div>
+                        <div v-if="errors.map_id" class="text-red-500 mt-2">{{ errors.map_id }}</div>
                     </div>
 
                     <!-- キャラクター -->
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label for="character_id" class="block text-sm font-medium text-white">キャラクター<span class="text-red-500">*</span></label>
+                        <label for="character_id" class="block text-sm font-medium text-white mb-2">キャラクター<span class="text-red-500">*</span></label>
                         <select
                             name="character_id"
                             v-model="form.character_id"
-                            class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                            class="mt-1 block w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                         >
                             <option disabled value="">キャラクターを選択</option>
                             <option v-for="character in characters" :value="character.id">{{ character.name }}</option>
                         </select>
-                        <div v-if="errors.character_id" class="text-red-500">{{ errors.character_id }}</div>
+                        <div v-if="errors.character_id" class="text-red-500 mt-2">{{ errors.character_id }}</div>
                     </div>
 
                     <!-- カテゴリー -->
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                        <label for="categories" class="block text-sm font-medium text-white">カテゴリー<span class="text-red-500">*</span></label>
+                        <label for="categories" class="block text-sm font-medium text-white mb-2">カテゴリー<span class="text-red-500">*</span></label>
                         <select
                             name="categories"
                             v-model="form.categories"
-                            class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                            class="mt-1 block w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                         >
                             <option disabled value="">カテゴリーを選択</option>
                             <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
                         </select>
-                        <div v-if="errors.categories" class="text-red-500">{{ errors.categories }}</div>
+                        <div v-if="errors.categories" class="text-red-500 mt-2">{{ errors.categories }}</div>
                         <div class="text-center mt-3">
                             <StoreCategory />
                         </div>
@@ -233,7 +235,7 @@ const pageTitle = '作成する';
                     <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
                         <div class="w-full px-3" ref="dropdownRef">
                             <div class="flex flex-wrap">
-                                <label for="tags" class="block text-sm font-medium text-white">タグ<span>(3つまで選択可)</span></label>
+                                <label for="tags" class="block text-sm font-medium text-white mb-2">タグ<span>(3つまで選択可)</span></label>
                                 <!-- 選択したタグを表示 -->
                                 <div v-for="tagId in form.tags" :key="tagId" class="ml-2">
                                     <v-chip color="light-blue-lighten-5" close closable @click="removeTag(tagId)">
@@ -246,7 +248,7 @@ const pageTitle = '作成する';
                                 v-model="searchQuery"
                                 @focus="showDropdown = true"
                                 placeholder="タグを検索..."
-                                class="mt-2 block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                                class="mt-2 block w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                             />
                             <ul v-if="filteredTags.length && showDropdown" class="dropdown-list">
                                 <li
@@ -261,7 +263,7 @@ const pageTitle = '作成する';
                                     {{ tag.name }} ({{ tag.spotCount }})
                                 </li>
                             </ul>
-                            <div v-if="errors.tags" class="text-red-500">{{ errors.tags }}</div>
+                            <div v-if="errors.tags" class="text-red-500 mt-2">{{ errors.tags }}</div>
                         </div>
                         <div class="text-center mt-3">
                             <StoreTag />
@@ -270,9 +272,9 @@ const pageTitle = '作成する';
                 </div>
 
                 <!-- 説明 -->
-                <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="flex flex-wrap mb-6">
                     <div class="w-full px-3">
-                        <label for="description" class="block text-sm font-medium text-white">説明<span class="text-red-500">*</span></label>
+                        <label for="description" class="block text-sm font-medium text-white mb-2">説明<span class="text-red-500">*</span></label>
                         <input
                             type="text"
                             name="description"
@@ -280,11 +282,11 @@ const pageTitle = '作成する';
                             class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
                         <!-- エラー -->
-                        <div v-if="errors.description" class="text-red-500">{{ errors.description }}</div>
+                        <div v-if="errors.description" class="text-red-500 mt-2">{{ errors.description }}</div>
                     </div>
                 </div>
 
-                <button type="button" @click="addImageForm" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">画像を追加</button>
+                <button type="button" @click="addImageForm" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">画像を追加</button>
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div v-for="(image, index) in form.images" :key="index" class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <div class="my-5">
@@ -298,13 +300,13 @@ const pageTitle = '作成する';
                                 name="image_path"
                                 @change="(e) => onFileChange(e, image)"
                             />
-                            <div v-if="errors.images && errors.images[index]" class="text-red-500">{{ errors.images[index].image_path }}</div>
+                            <div v-if="errors.images && errors.images[index]" class="text-red-500 mt-2">{{ errors.images[index].image_path }}</div>
                             <!-- 画像を選択するとプレビューを表示 -->
                             <img :src="image.preview" v-if="image.preview" class="mt-2 w-full h-auto" />
-                            <button v-if="index >= 2" type="button" @click="removeImageForm(index)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">削除</button>
+                            <button v-if="index >= 2" type="button" @click="removeImageForm(index)" class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">削除</button>
                         </div>
 
-                        <label for="description" class="block text-sm font-medium text-white">説明</label>
+                        <label for="description" class="block text-sm font-medium text-white mb-2">説明</label>
                         <textarea
                             name="description"
                             v-model="image.description"
@@ -316,7 +318,7 @@ const pageTitle = '作成する';
 
                 <button
                     type="submit"
-                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-4"
                 >
                     作成
                 </button>

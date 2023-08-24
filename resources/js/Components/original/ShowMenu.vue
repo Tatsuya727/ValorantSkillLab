@@ -50,11 +50,48 @@ const deleteSpot = (id) => {
     Inertia.delete(route('spots.destroy', { spot: id }));
 };
 
+const togglePublic = (spotId) => {
+    Inertia.post(
+        `/spots/${spotId}/toggle-public`,
+        {},
+        {
+            onSuccess: () => {
+                publicDialog.value = false;
+            },
+            onError: (error) => {
+                console.log(error);
+            },
+        }
+    );
+};
+
 const dialog = ref(false);
+const publicDialog = ref(false);
 </script>
 <template>
     <div v-if="$page.props.auth.user">
-        <div v-if="$page.props.auth.user.id === props.spot.user.id" class="text-right mt-5 mr-5">
+        <div v-if="$page.props.auth.user.id === props.spot.user.id" class="text-right">
+            <v-btn :color="spot.is_public ? 'success' : 'secondary'" @click="publicDialog = true"> 公開設定:{{ spot.is_public ? '公開中' : '非公開中' }} </v-btn>
+
+            <!-- 公開設定のダイアログ -->
+            <v-dialog v-model="publicDialog" width="auto">
+                <v-card>
+                    <v-card-text class="font-bold">公開設定を変更しますか？</v-card-text>
+                    <v-card-text class="font-bold">
+                        現在は<span :class="{ 'text-red': true, 'font-bold': true }">{{ spot.is_public ? '公開中' : '非公開' }}</span
+                        >です。
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn :variant="'outlined'" :color="'success'" block @click="togglePublic(spot.id)">
+                            {{ spot.is_public ? '非公開にする' : '公開にする' }}
+                        </v-btn>
+                    </v-card-actions>
+                    <v-card-actions>
+                        <v-btn variant="outlined" color="primary" block @click="publicDialog = false">キャンセル</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
             <v-menu>
                 <template v-slot:activator="{ props }">
                     <v-btn class="mt-5" icon="mdi-dots-horizontal" v-bind="props"></v-btn>

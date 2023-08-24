@@ -137,6 +137,7 @@ class SpotController extends Controller
                 'user_id' => auth()->id(),
                 'map_id' => $request->map_id,
                 'character_id' => $request->character_id,
+                'is_public' => $request->is_public,
             ]);
 
             // タグの保存
@@ -290,5 +291,14 @@ class SpotController extends Controller
 
             return to_route('spots.index');
                 }
+    }
+
+    public function togglePublic($id)
+    {
+        $spot = Spot::find($id);
+        $spot->is_public = !$spot->is_public;
+        $spot->save();
+
+        return redirect()->route('spots.show', ['spot' => $spot->id]);
     }
 }

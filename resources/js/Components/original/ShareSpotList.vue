@@ -76,9 +76,13 @@ const props = defineProps({
                     </div>
                     <div class="mb-4">
                         <Link :href="spot.show_url">
-                            <h2 class="text-gray-700 text-white spot-title">
-                                {{ spot.title }}
-                            </h2>
+                            <v-tooltip :text="spot.title" location="top">
+                                <template v-slot:activator="{ props }">
+                                    <h2 v-bind="props" class="text-gray-700 text-white spot-title truncate">
+                                        {{ spot.title }}
+                                    </h2>
+                                </template>
+                            </v-tooltip>
                             <p class="text-sm text-gray-700 text-grey">
                                 map: <span class="font-bold text-white map-name">{{ spot.map.name }}</span>
                             </p>
@@ -103,3 +107,11 @@ const props = defineProps({
     </v-row>
     <Pagination class="mt-5 text-white" :links="props.spots.links"></Pagination>
 </template>
+
+<style scoped>
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+</style>

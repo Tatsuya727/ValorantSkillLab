@@ -26,6 +26,7 @@ class StoreSpotRequest extends FormRequest
             'description' =>  ['required','max:255'],
             'map_id' =>       ['required', 'exists:maps,id', 'integer'],
             'character_id' => ['required', 'exists:characters,id', 'integer'],
+            'is_public' =>    ['integer'],
             'images.*.image_path' =>  ['required'],
             'images.*.description' => ['max:255'],
             'categories' =>   ['required'],

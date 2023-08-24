@@ -39,8 +39,15 @@ const items = [
 
         <v-spacer></v-spacer>
 
-        <div class="mr-5">
-            <v-btn class="mr-5 border border-gray-400 bg-green" prepend-icon="mdi-pencil" @click="Inertia.get(route('spots.create'))">作成する</v-btn>
+        <div class="mr-5 flex">
+            <v-btn class="mr-5 border bg-green" prepend-icon="mdi-pencil" @click="Inertia.get(route('spots.create'))">作成する</v-btn>
+            <Link :href="route('login')" v-if="!$page.props.auth.user">
+                <v-btn class="border bg-blue">ログイン </v-btn>
+            </Link>
+
+            <Link :href="route('register')" v-if="!$page.props.auth.user">
+                <v-btn class="ml-2">新規登録</v-btn>
+            </Link>
             <v-menu transition="slide-y-transition">
                 <template v-slot:activator="{ props }">
                     <v-btn v-if="$page.props.auth.user" class="mr-5" variant="outlined" prepend-icon="mdi-account" v-bind="props">{{ $page.props.auth.user.name }}</v-btn>

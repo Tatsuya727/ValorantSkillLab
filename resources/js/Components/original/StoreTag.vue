@@ -2,10 +2,21 @@
 import { Inertia } from '@inertiajs/inertia';
 import { ref, reactive } from 'vue';
 
+const props = defineProps({
+    errors: {
+        type: Object,
+        required: true,
+    },
+});
+
 const dialog = ref(false);
 const errorMessage = ref(null);
 
 const form = reactive({
+    name: null,
+});
+
+const error = reactive({
     name: null,
 });
 
@@ -38,13 +49,14 @@ const storeTag = () => {
                 <v-card-text>
                     <div class="text-center">
                         <label for="name" class="m-5 block text-lg font-medium text-gray-700">タグ名</label>
+                        <p class="text-blue">最大10文字</p>
                         <input
                             type="text"
                             name="name"
                             v-model="form.name"
                             class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
-                        <div class="text-red-500">{{ errorMessage }}</div>
+                        <div v-if="errorMessage" class="text-red-500">{{ errorMessage }}</div>
                         <v-btn type="submit" color="success" block class="mt-5">追加</v-btn>
                     </div>
                 </v-card-text>

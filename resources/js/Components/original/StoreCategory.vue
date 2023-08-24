@@ -1,7 +1,6 @@
 <script setup>
 import { Inertia } from '@inertiajs/inertia';
 import { ref, reactive } from 'vue';
-import { usePage } from '@inertiajs/inertia-vue3';
 
 const dialog = ref(false);
 const errorMessage = ref(null);
@@ -11,25 +10,19 @@ const form = reactive({
     redirect_to_create: false,
 });
 
-const { url, component } = usePage();
-
-// コンポーネントを表示しているページによってredirect_to_createの値を変える
-const checkRedirect = () => {
-    if (url.value === '/spots/create') {
-        form.redirect_to_create = true;
-    }
-};
-
 const storeCategory = () => {
     if (!form.name) {
         errorMessage.value = 'カテゴリー名を入力してください。';
         return;
     }
 
-    checkRedirect();
     Inertia.post('/categories', form, {
         onSuccess: () => {
             dialog.value = false;
+        },
+        onError: (errors) => {
+            errorMessage.value = errors.name;
+            console.log(errors);
         },
     });
 };
