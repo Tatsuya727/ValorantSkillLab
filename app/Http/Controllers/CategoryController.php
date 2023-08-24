@@ -39,18 +39,16 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => ['required', 'max:15'],
+        ]);
+        
         Category::create([
             'name' => $request->name,
             'user_id' => $request->user()->id,
         ]);
 
-        $redirectToCreate = $request->redirect_to_create;
-
-        if ($redirectToCreate) {
-            return redirect()->route('spots.create');
-        } else {
-            return redirect()->route('categories.index');
-        }
+        return back();
     }
 
     public function update(Request $request, Category $category)
