@@ -181,7 +181,7 @@ class SpotController extends Controller
      */
     public function show(Spot $spot)
     {
-        $spot = Spot::with(['images', 'tags', 'user'])->find($spot->id);
+        $spot = Spot::with(['images', 'tags', 'user', 'categories'])->find($spot->id);
 
         // ログインしているユーザーのカテゴリーを取得
         if(auth()->check()) {
