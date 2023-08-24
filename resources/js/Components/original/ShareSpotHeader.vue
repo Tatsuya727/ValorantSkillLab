@@ -35,7 +35,6 @@ const searchSpots = () => {
 };
 
 const resetSpots = () => {
-    search.value = '';
     Inertia.get(route('sharespots.index'));
 };
 </script>

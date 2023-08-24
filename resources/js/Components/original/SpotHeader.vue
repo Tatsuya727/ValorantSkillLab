@@ -59,10 +59,6 @@ const searchSpots = () => {
 };
 
 const resetSpots = () => {
-    selectedTag.value = '';
-    selectedMap.value = '';
-    selectedCharacter.value = '';
-    search.value = '';
     Inertia.get(route('spots.index', { category: props.selectedCategory }));
 };
 </script>
