@@ -52,10 +52,12 @@ const props = defineProps({
     },
     flash: Object,
 });
+
+const pageTitle = 'みんなの投稿';
 </script>
 
 <template>
-    <Head title="みんなの投稿" />
+    <Head :title="pageTitle" />
 
     <v-app>
         <NavBar />
