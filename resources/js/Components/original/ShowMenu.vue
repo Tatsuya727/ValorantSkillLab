@@ -50,12 +50,26 @@ const deleteSpot = (id) => {
     Inertia.delete(route('spots.destroy', { spot: id }));
 };
 
-const togglePublic = (id) => {
-    Inertia.post(route('spots.toggle-public', { spot: id }));
+const togglePublic = (spotId) => {
+    Inertia.post(
+        `/spots/${spotId}/toggle-public`,
+        {},
+        {
+            onSuccess: (response) => {
+                if (response.data.status === 'success') {
+                    // 必要に応じてUIを更新
+                    console.log('Public status changed to:', response.data.is_public);
+                }
+            },
+            onError: (error) => {
+                console.error('Error toggling public status:', error);
+            },
+        }
+    );
 };
 
 const dialog = ref(false);
-const publicDialog = ref(true);
+const publicDialog = ref(false);
 </script>
 <template>
     <div v-if="$page.props.auth.user">
@@ -66,8 +80,15 @@ const publicDialog = ref(true);
             <v-dialog v-model="publicDialog" width="auto">
                 <v-card>
                     <v-card-text class="font-bold">公開設定を変更しますか？</v-card-text>
+                    <v-card-text class="font-bold">
+                        現在は
+                        <span v-if="spot.is_public === true" class="text-red font-bold">公開中</span>
+                        <span v-if="spot.is_public === false" class="text-red font-bold">非公開</span>
+                        です。
+                    </v-card-text>
                     <v-card-actions>
-                        <v-btn variant="outlined" color="success" block @click="togglePublic(spot.id)">公開する</v-btn>
+                        <v-btn v-if="spot.is_public === true" variant="outlined" color="success" block @click="togglePublic(spot.id)">非公開にする</v-btn>
+                        <v-btn v-if="spot.is_public === false" variant="outlined" color="success" block @click="togglePublic(spot.id)">公開にする</v-btn>
                     </v-card-actions>
                     <v-card-actions>
                         <v-btn variant="outlined" color="primary" block @click="publicDialog = false">キャンセル</v-btn>
