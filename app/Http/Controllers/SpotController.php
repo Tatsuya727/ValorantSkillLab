@@ -137,6 +137,7 @@ class SpotController extends Controller
                 'user_id' => auth()->id(),
                 'map_id' => $request->map_id,
                 'character_id' => $request->character_id,
+                'is_public' => $request->is_public,
             ]);
 
             // タグの保存
