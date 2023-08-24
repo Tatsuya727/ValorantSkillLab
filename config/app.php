@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://valorantskilllab.onrender.com'),
+    'url' => env('APP_URL', 'https://valoskilllab.com'),
 
     'asset_url' => env('ASSET_URL'),
 
