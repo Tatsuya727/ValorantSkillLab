@@ -43,11 +43,11 @@ const tab = ref(null);
 
 const selectedMap = ref(props.selectedMap);
 const selectedCharacter = ref(props.selectedCharacter);
-const selectedTag = ref(localStorage.getItem('selectedTag') || null);
+const selectedTag = ref(props.selectedTag);
 const selectedCategory = ref(props.selectedCategory);
 
 const filterSpots = () => {
-    Inertia.get(route(props.routeName), { selectedMap: selectedMap.value, selectedCharacter: selectedCharacter.value, tag: selectedTag.value, category: selectedCategory.value });
+    Inertia.get(route(props.routeName), { selectedMap: selectedMap.value, selectedCharacter: selectedCharacter.value, selectedTag: selectedTag.value.name, category: selectedCategory.value });
 };
 
 const selectMap = (map) => {
@@ -66,7 +66,9 @@ const selectCharacter = (character) => {
 
 const selectTags = (tag) => {
     selectedTag.value = tag.name;
-    localStorage.setItem('selectedTag', tag.name);
+    if (!selectedCategory.value) {
+        tab.value = 4;
+    }
 };
 
 const selectCategory = (category) => {

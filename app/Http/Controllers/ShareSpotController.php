@@ -15,8 +15,8 @@ class ShareSpotController extends Controller
 {
     public function index(Request $request)
     {
-        $tag = $request->query('tag');
         $search = $request->query('search');
+        $selectedTag = $request->query('selectedTag');
         $selectedMap = $request->query('selectedMap');
         $selectedCharacter = $request->query('selectedCharacter');
         $selectedCategory = $request->query('category');
@@ -24,9 +24,9 @@ class ShareSpotController extends Controller
         $spots = Spot::with(['images', 'map', 'character', 'tags', 'user', 'categories'])
             ->withCount('likedBy')
             ->searchSpot($search)
-            ->when($tag, function ($query, $tag) {
-                return $query->whereHas('tags', function ($query) use ($tag) {
-                    $query->where('name', $tag);
+            ->when($selectedTag, function ($query, $selectedTag) {
+                return $query->whereHas('tags', function ($query) use ($selectedTag) {
+                    $query->where('name', $selectedTag);
                 });
             })
             ->when($selectedMap, function ($query, $selectedMap) {
@@ -56,9 +56,9 @@ class ShareSpotController extends Controller
         // 検索条件に合致する全てのspotを取得
         $allSpots = Spot::with(['images', 'map', 'character', 'tags', 'categories', 'user'])
             ->searchSpot($search)
-            ->when($tag, function ($query, $tag) {
-                return $query->whereHas('tags', function ($query) use ($tag) {
-                    $query->where('name', $tag);
+            ->when($selectedTag, function ($query, $selectedTag) {
+                return $query->whereHas('tags', function ($query) use ($selectedTag) {
+                    $query->where('name', $selectedTag);
                 });
             })
             ->when($selectedMap, function ($query, $selectedMap) {
@@ -106,6 +106,7 @@ class ShareSpotController extends Controller
             'allSpotsCount' => $allSpotsCount,
             'spotsCount' => $spotsCount,
             'userCategories' => $userCategories,
+            'selectedTag' => $selectedTag,
             'selectedMap' => $selectedMap,
             'selectedCharacter' => $selectedCharacter,
             'selectedCategory' => $selectedCategory,

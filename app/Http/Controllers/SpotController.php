@@ -29,8 +29,8 @@ class SpotController extends Controller
     $maps = Map::all();
     $tags = Tag::all();
     
-    $tag = $request->query('tag');
     $search = $request->query('search');
+    $selectedTag = $request->query('selectedTag');
     $selectedMap = $request->query('selectedMap');
     $selectedCharacter = $request->query('selectedCharacter');
     $selectedCategory = $request->query('category');
@@ -54,9 +54,9 @@ class SpotController extends Controller
                     $query->where('user_id', auth()->id());
                 });
         })
-        ->when($tag, function ($query, $tag) {
-            return $query->whereHas('tags', function ($query) use ($tag) {
-                $query->where('name', $tag);
+        ->when($selectedTag, function ($query, $selectedTag) {
+            return $query->whereHas('tags', function ($query) use ($selectedTag) {
+                $query->where('name', $selectedTag);
             });
         })
         ->when($selectedMap, function ($query, $selectedMap) {
@@ -86,6 +86,7 @@ class SpotController extends Controller
         'user' => $user,
         'spots' => $spots,
         'categories' => $categories,
+        'selectedTag' => $selectedTag,
         'selectedMap' => $selectedMap,
         'selectedCharacter' => $selectedCharacter,
         'selectedCategory' => $selectedCategory,

@@ -38,16 +38,20 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    selectedTag: {
+        type: Object,
+        required: false,
+    },
     selectedMap: {
-        type: Array,
+        type: Object,
         required: false,
     },
     selectedCharacter: {
-        type: Array,
+        type: Object,
         required: false,
     },
     selectedCategory: {
-        type: Array,
+        type: Object,
         required: false,
     },
     flash: Object,
@@ -65,25 +69,25 @@ const pageTitle = 'すべての投稿';
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
                     <ShareSpotHeader
-                        :selectedTag="selectedTag"
-                        :maps="maps"
-                        :characters="characters"
-                        :tags="tags"
-                        :categories="categories"
-                        :selectedMap="selectedMap"
-                        :selectedCharacter="selectedCharacter"
-                        :selectedCategory="selectedCategory"
+                        :selectedTag="props.selectedTag"
+                        :maps="props.maps"
+                        :characters="props.characters"
+                        :tags="props.tags"
+                        :categories="props.categories"
+                        :selectedMap="props.selectedMap"
+                        :selectedCharacter="props.selectedCharacter"
+                        :selectedCategory="props.selectedCategory"
                     />
                     <ShareSpotList
-                        :selectedTag="selectedTag"
+                        :selectedTag="props.selectedTag"
                         :spots="props.spots"
                         :categories="props.categories"
                         :allSpotsCount="props.allSpotsCount"
                         :spotsCount="props.spotsCount"
-                        :userCategories="userCategories"
-                        :selectedMap="selectedMap"
-                        :selectedCharacter="selectedCharacter"
-                        :flash="flash"
+                        :userCategories="props.userCategories"
+                        :selectedMap="props.selectedMap"
+                        :selectedCharacter="props.selectedCharacter"
+                        :flash="props.flash"
                     />
                 </div>
             </v-container>

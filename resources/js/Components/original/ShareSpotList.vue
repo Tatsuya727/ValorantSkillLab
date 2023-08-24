@@ -19,7 +19,15 @@ const props = defineProps({
         required: true,
     },
     selectedTag: {
-        type: String,
+        type: Object,
+        required: false,
+    },
+    selectedMap: {
+        type: Object,
+        required: false,
+    },
+    selectedCharacter: {
+        type: Object,
         required: false,
     },
     allSpotsCount: {
@@ -31,14 +39,6 @@ const props = defineProps({
         required: true,
     },
     userCategories: {
-        type: Array,
-        required: false,
-    },
-    selectedMap: {
-        type: Array,
-        required: false,
-    },
-    selectedCharacter: {
         type: Array,
         required: false,
     },

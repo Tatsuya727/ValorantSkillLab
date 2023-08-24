@@ -16,18 +16,9 @@ const props = defineProps({
     selectedCategory: Array,
 });
 
-const selectedTag = ref(localStorage.getItem('selectedTag') || '');
-
-// ページを離れるときにローカルストレージから選択されたタグを削除する
-window.addEventListener('beforeunload', () => {
-    selectedTag.value = '';
-    localStorage.removeItem('selectedTag');
-});
-
 // 画面上部に表示されたタグをクリックすると、タグの絞り込みを解除する
 const resetSelectedTag = () => {
-    selectedTag.value = '';
-    localStorage.removeItem('selectedTag');
+    props.selectedTag = '';
 
     // 選択したマップとキャラクターがあれば、それらを含めて絞り込みを行う
     if (props.selectedMap && props.selectedCharacter) {
@@ -44,9 +35,6 @@ const searchSpots = () => {
 };
 
 const resetSpots = () => {
-    selectedTag.value = '';
-    localStorage.removeItem('selectedTag');
-
     search.value = '';
     Inertia.get(route('sharespots.index'));
 };

@@ -17,25 +17,21 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    selectedTag: {
+        type: Object,
+        required: false,
+    },
     selectedMap: {
-        type: Array,
+        type: Object,
         required: false,
     },
     selectedCharacter: {
-        type: Array,
+        type: Object,
         required: false,
     },
     selectedCategory: {
-        type: Array,
-        required: false,
-    },
-    routeName: {
-        type: String,
-        required: true,
-    },
-    showCategory: {
         type: Object,
-        required: true,
+        required: false,
     },
     categories: {
         type: Array,
@@ -46,12 +42,8 @@ const props = defineProps({
         required: true,
     },
 });
-
-const selectedTag = ref(localStorage.getItem('selectedTag') || '');
-
 const resetSelectedTag = () => {
-    selectedTag.value = '';
-    localStorage.removeItem('selectedTag');
+    props.selectedTag = '';
     // 選択したマップとキャラクターがあれば、それらを含めて絞り込みを行う
     if (props.selectedMap || props.selectedCharacter || props.selectedCategory) {
         Inertia.get(route('spots.index'), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, category: props.selectedCategory });
@@ -68,7 +60,8 @@ const searchSpots = () => {
 
 const resetSpots = () => {
     selectedTag.value = '';
-    localStorage.removeItem('selectedTag');
+    selectedMap.value = '';
+    selectedCharacter.value = '';
     search.value = '';
     Inertia.get(route('spots.index', { category: props.selectedCategory }));
 };

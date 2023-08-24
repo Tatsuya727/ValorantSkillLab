@@ -35,14 +35,10 @@ const closeImageModal = () => {
     imageModal.value.image = null;
 };
 
-// ページがロードされるたびにローカルストレージから選択されたタグを読み込む
-const selectedTag = ref(localStorage.getItem('selectedTag') || '');
-
 // タグを選択するとそのタグのスポットのみ表示する
 const filterSpotsByTag = (tag) => {
-    selectedTag.value = tag;
-    localStorage.setItem('selectedTag', tag);
-    Inertia.get(route(props.routeName), { tag: tag });
+    props.selectedTag = tag;
+    Inertia.get(route(props.routeName), { selectedTag: props.selectedTag });
 };
 </script>
 <template>
