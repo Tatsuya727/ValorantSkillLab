@@ -8,6 +8,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    userCategories: {
+        type: Array,
+        required: false,
+    },
 });
 
 const deleteSpot = (id) => {

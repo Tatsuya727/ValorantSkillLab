@@ -116,9 +116,16 @@ class ShareSpotController extends Controller
     {
         $spot = Spot::with(['images', 'tags', 'user'])->find($spot->id);
 
-        
+        // ログインしているユーザーのカテゴリーを取得
+        if(auth()->check()) {
+            $userCategories = auth()->user()->categories;
+        } else {
+            $userCategories = null;
+        }
+
         return Inertia::render('ShareSpots/Show', [
             'spot' => $spot,
+            'userCategories' => $userCategories,
         ]);
     }
 }

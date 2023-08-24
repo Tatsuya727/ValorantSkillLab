@@ -36,14 +36,6 @@ const saveSpot = () => {
     );
 };
 
-const alreadySaved = () => {
-    if (props.flash.massage === '既に保存されています') {
-        return true;
-    } else {
-        return false;
-    }
-};
-
 const snackbar = ref(false);
 
 const timeout = ref(5000);
@@ -71,10 +63,6 @@ const timeout = ref(5000);
     <v-dialog v-model="saveDialog" max-width="400px">
         <v-card>
             <v-card-title class="headline">保存先</v-card-title>
-            <!-- すでにspotがuserCategoriesに登録されている場合、エラーメッセージを表示 -->
-            <div v-if="alreadySaved" class="text-red text-center">
-                {{ flash.message }}
-            </div>
             <v-card-text>
                 <v-divider></v-divider>
                 <template v-for="category in props.userCategories" :key="category.id">
