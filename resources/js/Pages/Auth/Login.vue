@@ -42,8 +42,16 @@ const pageTitle = 'ログイン';
                 {{ status }}
             </div>
             <v-form @submit.prevent="submit">
-                <v-text-field label="メールアドレス" v-model="form.email" required autofocus autocomplete="username" :error-messages="form.errors.email"></v-text-field>
-                <v-text-field label="パスワード" type="password" v-model="form.password" required autocomplete="current-password" :error-messages="form.errors.password"></v-text-field>
+                <v-text-field label="メールアドレス" v-model="form.email" required autofocus autocomplete="username" :error-messages="form.errors.email" @keyup.enter="submit"></v-text-field>
+                <v-text-field
+                    label="パスワード"
+                    type="password"
+                    v-model="form.password"
+                    required
+                    autocomplete="current-password"
+                    :error-messages="form.errors.password"
+                    @keyup.enter="submit"
+                ></v-text-field>
                 <v-checkbox v-model="form.remember" label="ログインしたままにする"></v-checkbox>
                 <div class="flex items-center justify-end mt-4">
                     <Link
