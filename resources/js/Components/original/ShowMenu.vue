@@ -25,10 +25,10 @@ const dialog = ref(false);
                 </template>
                 <v-list>
                     <!-- <v-list-item>
-                                    <Link :href="`/spots/${spot.id}/edit`">
-                                        <v-list-item-title class="text-black"><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
-                                    </Link>
-                                </v-list-item> -->
+                        <Link :href="`/spots/${spot.id}/edit`">
+                            <v-list-item-title class="text-black"><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
+                        </Link>
+                    </v-list-item> -->
                     <v-list-item>
                         <v-list-item-title @click="dialog = true" class="cursor-pointer"><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title>
                         <!-- <v-list-item-title @click="deleteSpot(spot.id)" class="cursor-pointer">削除する</v-list-item-title> -->
