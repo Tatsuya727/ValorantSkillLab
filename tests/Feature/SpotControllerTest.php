@@ -89,6 +89,7 @@ class SpotControllerTest extends TestCase
             'tags' => [
                 $tag->id,
             ],
+            'is_public' => '1',
         ];
 
         $response = $this->post(route('spots.store'), $data);

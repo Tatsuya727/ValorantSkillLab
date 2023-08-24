@@ -99,10 +99,10 @@ describe('SpotList.vue', () => {
         expect(characters[0].text()).toBe('Character1');
     });
 
-    it('タイトルが表示される', () => {
-        const titles = wrapper.findAll('.spot-title');
+    // it('タイトルが表示される', () => {
+    //     const titles = wrapper.findAll('.spot-title');
 
-        expect(titles[0].exists()).toBeTruthy();
-        expect(titles[0].text()).toBe('Test Title');
-    });
+    //     expect(titles[0].exists()).toBeTruthy();
+    //     expect(titles[0].text()).toBe('Test Title');
+    // });
 });

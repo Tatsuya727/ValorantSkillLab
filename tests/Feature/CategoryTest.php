@@ -51,7 +51,6 @@ class CategoryTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('categories.store'), [
             'name' => 'New Category',
-            'redirect_to_create' => true,
         ]);
 
         $response->assertRedirect(route('spots.create'));
