@@ -21,6 +21,7 @@ class Spot extends Model
         'user_id',
         'map_id',
         'character_id',
+        'is_public'
     ];
 
     public function scopeSearchSpot($query, $search)
