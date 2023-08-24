@@ -53,7 +53,7 @@ const props = defineProps({
     flash: Object,
 });
 
-const pageTitle = 'みんなの投稿';
+const pageTitle = 'すべての投稿';
 </script>
 
 <template>

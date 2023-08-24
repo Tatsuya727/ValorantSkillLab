@@ -24,7 +24,7 @@ const selectCategory = (category) => {
 const items = [
     { text: 'マイページ', icon: 'mdi-account', route: 'categories.index' },
     { text: '作成する', icon: 'mdi-pencil', route: 'spots.create' },
-    { text: 'みんなの投稿', icon: 'mdi-account-supervisor', route: 'sharespots.index' },
+    { text: 'すべての投稿', icon: 'mdi-account-supervisor', route: 'sharespots.index' },
 ];
 </script>
 
@@ -35,7 +35,7 @@ const items = [
             <Link href="/"> ValorantSkillLab </Link>
         </v-toolbar-title>
 
-        <div>{{ pageTitle }}</div>
+        <h2>{{ pageTitle }}</h2>
 
         <v-spacer></v-spacer>
 

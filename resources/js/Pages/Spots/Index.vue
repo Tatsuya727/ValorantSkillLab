@@ -57,7 +57,7 @@ window.addEventListener('beforeunload', () => {
     localStorage.removeItem('selectedTag');
 });
 
-const pageTitle = props.selectedCategory ? props.selectedCategory.name : '全て';
+const pageTitle = props.selectedCategory ? props.selectedCategory.name : 'すべて表示';
 </script>
 
 <template>
