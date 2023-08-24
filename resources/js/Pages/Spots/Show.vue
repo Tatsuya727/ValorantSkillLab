@@ -18,6 +18,7 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    flash: Object,
 });
 
 const imageModal = ref({
@@ -54,7 +55,7 @@ const pageTitle = props.spot.title;
         <NavBar :pageTitle="pageTitle" />
         <v-main class="bg-zinc-900">
             <div class="bg-neutral-700 mt-10 mx-5 pb-20 rounded">
-                <ShowMenu :spot="spot" :userCategories="userCategories" />
+                <ShowMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
                 <div class="text-center">
                     <h1 class="font-bold text-4xl text-white">{{ spot.title }}</h1>
                     <h2 class="text-xl text-white">{{ spot.description }}</h2>
