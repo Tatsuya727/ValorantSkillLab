@@ -57,6 +57,9 @@ Route::delete('/spots/{spot}/like', [LikeController::class, 'destroy'])
 ->name('likes.destroy')
 ->middleware(['auth', 'check.verified']);
 
+Route::post('/spots/{id}/toggle-public', 'SpotController@togglePublic')
+->name('spots.toggle-public');
+
 Route::post('/spotcategory', [SpotCategoryController::class, 'store'])
 ->name('spotcategory.store')
 ->middleware(['auth', 'check.verified']);

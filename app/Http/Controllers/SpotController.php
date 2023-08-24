@@ -292,4 +292,13 @@ class SpotController extends Controller
             return to_route('spots.index');
                 }
     }
+
+    public function togglePublic($id)
+    {
+        $spot = Spot::find($id);
+        $spot->is_public = !$spot->is_public;
+        $spot->save();
+
+        return redirect()->route('spots.show', ['spot' => $spot->id]);
+    }
 }
