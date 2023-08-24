@@ -60,7 +60,7 @@ const pageTitle = 'マイページ';
     <Head :title="pageTitle" />
 
     <v-app id="inspire">
-        <NavBar />
+        <NavBar :pageTitle="pageTitle" />
         <v-main class="bg-zinc-900">
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">

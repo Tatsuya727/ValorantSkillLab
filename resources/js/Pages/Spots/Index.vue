@@ -64,7 +64,7 @@ const pageTitle = props.selectedCategory ? props.selectedCategory.name : '全て
     <Head :title="pageTitle" />
 
     <v-app id="inspire">
-        <NavBar />
+        <NavBar :pageTitle="pageTitle" />
         <v-main class="bg-zinc-900">
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">

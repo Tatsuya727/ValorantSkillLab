@@ -165,7 +165,7 @@ const pageTitle = '作成する';
     <Head :title="pageTitle" />
 
     <v-app id="inspire">
-        <NavBar />
+        <NavBar :pageTitle="pageTitle" />
         <v-main class="bg-zinc-900 flex justify-center min-h-screen mt-10">
             <v-form @submit.prevent="storeSpot" class="w-full max-w-7xl bg-neutral-700 p-10 rounded">
                 <!-- タイトル -->

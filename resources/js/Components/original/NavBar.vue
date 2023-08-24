@@ -3,6 +3,13 @@ import { ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 
+const props = defineProps({
+    pageTitle: {
+        type: String,
+        default: '',
+    },
+});
+
 const drawer = ref(null);
 const open = ref(['Category']);
 
@@ -27,6 +34,10 @@ const items = [
         <v-toolbar-title>
             <Link href="/"> ValorantSkillLab </Link>
         </v-toolbar-title>
+
+        <div>{{ pageTitle }}</div>
+
+        <v-spacer></v-spacer>
 
         <div class="mr-5">
             <v-btn class="mr-5 border border-gray-400 bg-green" prepend-icon="mdi-pencil" @click="Inertia.get(route('spots.create'))">作成する</v-btn>
@@ -55,8 +66,6 @@ const items = [
                 </v-list>
             </v-menu>
         </div>
-
-        <!-- <v-spacer></v-spacer> -->
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" color="grey-darken-3">
         <v-sheet color="grey-darken-4" class="pa-4">

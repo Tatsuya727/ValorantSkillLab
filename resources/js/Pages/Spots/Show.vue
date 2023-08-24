@@ -56,7 +56,7 @@ const pageTitle = props.spot.title;
     <Head :title="pageTitle" />
 
     <v-app id="inspire">
-        <NavBar />
+        <NavBar :pageTitle="pageTitle" />
         <v-main class="bg-zinc-900">
             <div class="bg-neutral-700 mt-10 mx-5 pb-20 rounded">
                 <div v-if="$page.props.auth.user.name === props.user.name" class="text-right mt-5 mr-5">

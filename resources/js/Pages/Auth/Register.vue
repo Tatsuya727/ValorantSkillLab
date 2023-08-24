@@ -15,13 +15,15 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+const pageTitle = '新規登録';
 </script>
 
 <template>
-    <Head title="新規登録" />
+    <Head :title="pageTitle" />
 
     <v-app>
-        <NavBar />
+        <NavBar :pageTitle="pageTitle" />
         <GuestLayout>
             <v-form @submit.prevent="submit">
                 <v-text-field label="名前" v-model="form.name" required autofocus autocomplete="name" :error-messages="form.errors.name"></v-text-field>
