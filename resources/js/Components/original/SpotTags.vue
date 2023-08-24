@@ -37,7 +37,7 @@ const filterSpotsByTag = (tag) => {
     if (props.selectedMap || props.selectedCharacter || props.selectedCategory || selectedTag.value) {
         Inertia.get(route(props.routeName), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, category: props.selectedCategory, selectedTag: selectedTag.value });
     } else {
-        Inertia.get(route(props.routeName));
+        Inertia.get(route(props.routeName), { selectedTag: selectedTag.value });
     }
 };
 </script>

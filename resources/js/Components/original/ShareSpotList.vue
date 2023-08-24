@@ -89,7 +89,7 @@ const props = defineProps({
                         <!-- タグの名前をすべて表示 -->
                         <div class="flex flex-wrap">
                             <LikeButton class="mt-2 mr-2" :spot="spot" />
-                            <SpotTags :tags="spot.tags" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'sharespots.index'" />
+                            <SpotTags :tags="spot.tags" :selectedTag="selectedTag" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'sharespots.index'" />
                         </div>
                     </div>
                     <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
