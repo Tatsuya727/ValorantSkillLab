@@ -40,8 +40,12 @@ Route::get('/auth/google/callback', [GoogleLoginController::class, 'handleGoogle
 // Route::resource("characters", CharacterController::class)
 // ->middleware(['auth']);
 
-Route::resource("spots", SpotController::class)
-->middleware(['auth', 'check.verified']);
+// spots.showのみログインしていなくてもアクセス可能
+Route::get('spots/{spot}', [SpotController::class, 'show'])->name('spots.show');
+
+Route::resource('spots', SpotController::class)->except(['show'])
+    ->middleware(['auth', 'check.verified']);
+
 
 Route::get("/", [ShareSpotController::class, 'index'])
 ->name('sharespots.index');

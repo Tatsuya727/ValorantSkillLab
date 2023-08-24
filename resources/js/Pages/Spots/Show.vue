@@ -59,35 +59,37 @@ const pageTitle = props.spot.title;
         <NavBar :pageTitle="pageTitle" />
         <v-main class="bg-zinc-900">
             <div class="bg-neutral-700 mt-10 mx-5 pb-20 rounded">
-                <div v-if="$page.props.auth.user.name === props.user.name" class="text-right mt-5 mr-5">
-                    <v-menu>
-                        <template v-slot:activator="{ props }">
-                            <v-btn class="mt-5" icon="mdi-dots-horizontal" v-bind="props"></v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item>
-                                <Link :href="`/spots/${spot.id}/edit`">
-                                    <v-list-item-title><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
-                                </Link>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title @click="dialog = true" class="cursor-pointer"><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title>
-                                <!-- <v-list-item-title @click="deleteSpot(spot.id)" class="cursor-pointer">削除する</v-list-item-title> -->
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-                    <!-- 削除ボタンの確認ダイアログ -->
-                    <v-dialog v-model="dialog" width="auto">
-                        <v-card>
-                            <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
-                            <v-card-actions>
-                                <v-btn variant="outlined" color="error" block @click="deleteSpot(spot.id)">削除する</v-btn>
-                            </v-card-actions>
-                            <v-card-actions>
-                                <v-btn variant="outlined" color="primary" block @click="dialog = false">キャンセル</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
+                <div v-if="$page.props.auth.user">
+                    <div v-if="$page.props.auth.user.name === props.user.name" class="text-right mt-5 mr-5">
+                        <v-menu>
+                            <template v-slot:activator="{ props }">
+                                <v-btn class="mt-5" icon="mdi-dots-horizontal" v-bind="props"></v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item>
+                                    <Link :href="`/spots/${spot.id}/edit`">
+                                        <v-list-item-title><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
+                                    </Link>
+                                </v-list-item>
+                                <v-list-item>
+                                    <v-list-item-title @click="dialog = true" class="cursor-pointer"><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title>
+                                    <!-- <v-list-item-title @click="deleteSpot(spot.id)" class="cursor-pointer">削除する</v-list-item-title> -->
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                        <!-- 削除ボタンの確認ダイアログ -->
+                        <v-dialog v-model="dialog" width="auto">
+                            <v-card>
+                                <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
+                                <v-card-actions>
+                                    <v-btn variant="outlined" color="error" block @click="deleteSpot(spot.id)">削除する</v-btn>
+                                </v-card-actions>
+                                <v-card-actions>
+                                    <v-btn variant="outlined" color="primary" block @click="dialog = false">キャンセル</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </div>
                 </div>
                 <div v-else class="text-right m-10 pt-10 text-grey">
                     作成者: <span class="text-blue">{{ props.user.name }}</span>
