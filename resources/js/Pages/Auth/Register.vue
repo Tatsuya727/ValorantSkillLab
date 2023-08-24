@@ -36,12 +36,13 @@ const pageTitle = '新規登録';
                     required
                     autocomplete="new-password"
                     :error-messages="form.errors.password_confirmation"
+                    @keyup.enter="submit"
                 ></v-text-field>
                 <div class="flex items-center justify-end mt-4">
                     <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         登録済みですか？
                     </Link>
-                    <v-btn :disabled="form.processing" class="ml-4"> 新規登録 </v-btn>
+                    <v-btn :disabled="form.processing" class="ml-4" color="success"> 新規登録 </v-btn>
                 </div>
             </v-form>
             <!-- google login -->
