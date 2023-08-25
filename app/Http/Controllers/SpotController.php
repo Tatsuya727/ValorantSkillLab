@@ -153,12 +153,24 @@ class SpotController extends Controller
             }
         
             foreach ($request->images as $image) {
-                // s3に画像を保存
-                $image_path = Storage::disk('s3')->putFile('images', $image['image_path'], Str::random(20) . '.' . $image['image_path']->extension());
 
-                // 画像のURLを取得
-                $image_path = Storage::disk('s3')->url($image_path);
-
+                // 本番環境の場合
+                if(app()->environment('production')) {
+                    // 新しい画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
+                    $image_path = Storage::disk('s3')->putFileAs(
+                        'images',
+                        $image['image_path'],
+                        Str::random(20) . '.' . $image['image_path']->extension(),
+                        'public'
+                    );
+                } else {
+                    // 新しい画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
+                    $image_path = Storage::putFileAs(
+                        'public/images',
+                        $image['image_path'],
+                        Str::random(20) . '.' . $image['image_path']->extension()
+                    );
+                }
 
                 
                 $spot->images()->create([
