@@ -23,79 +23,79 @@ class SpotController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    $user = auth()->user();
-    $characters = Character::all();
-    $maps = Map::all();
-    $tags = Tag::all();
-    
-    $search = $request->query('search');
-    $selectedTag = $request->query('selectedTag');
-    $selectedMap = $request->query('selectedMap');
-    $selectedCharacter = $request->query('selectedCharacter');
-    $selectedCategory = $request->query('category');
+    {
+        $user = auth()->user();
+        $characters = Character::all();
+        $maps = Map::all();
+        $tags = Tag::all();
+        
+        $search = $request->query('search');
+        $selectedTag = $request->query('selectedTag');
+        $selectedMap = $request->query('selectedMap');
+        $selectedCharacter = $request->query('selectedCharacter');
+        $selectedCategory = $request->query('category');
 
-    // ログインしているユーザーのカテゴリーを取得
-    if(auth()->check()) {
-        $userCategories = auth()->user()->categories;
-    } else {
-        $userCategories = null;
-    }
+        // ログインしているユーザーのカテゴリーを取得
+        if(auth()->check()) {
+            $userCategories = auth()->user()->categories;
+        } else {
+            $userCategories = null;
+        }
 
-    // ユーザーごとにカテゴリーを取得
-    $categories = Category::where('user_id', auth()->id())->get();
-    
-    // ユーザーごとのスポットと保存した他人のスポットを取得
-    $spots = Spot::with(['images', 'map', 'character', 'tags' , 'categories', 'user'])
-        ->searchSpot($search)
-        ->where(function ($query) {
-            $query->where('user_id', auth()->id())
-                ->orWhereHas('categories', function ($query) {
-                    $query->where('user_id', auth()->id());
+        // ユーザーごとにカテゴリーを取得
+        $categories = Category::where('user_id', auth()->id())->get();
+        
+        // ユーザーごとのスポットと保存した他人のスポットを取得
+        $spots = Spot::with(['images', 'map', 'character', 'tags' , 'categories', 'user'])
+            ->searchSpot($search)
+            ->where(function ($query) {
+                $query->where('user_id', auth()->id())
+                    ->orWhereHas('categories', function ($query) {
+                        $query->where('user_id', auth()->id());
+                    });
+            })
+            ->when($selectedTag, function ($query, $selectedTag) {
+                return $query->whereHas('tags', function ($query) use ($selectedTag) {
+                    $query->where('name', $selectedTag);
                 });
-        })
-        ->when($selectedTag, function ($query, $selectedTag) {
-            return $query->whereHas('tags', function ($query) use ($selectedTag) {
-                $query->where('name', $selectedTag);
-            });
-        })
-        ->when($selectedMap, function ($query, $selectedMap) {
-            return $query->whereHas('map', function ($query) use ($selectedMap) {
-                $query->where('id', $selectedMap['id']);
-            });
-        })
-        ->when($selectedCharacter, function ($query, $selectedCharacter) {
-            return $query->whereHas('character', function ($query) use ($selectedCharacter) {
-                $query->where('id', $selectedCharacter['id']);
-            });
-        })
-        ->when($selectedCategory, function ($query, $selectedCategory) {
-            return $query->whereHas('categories', function ($query) use ($selectedCategory) {
-                $query->where('categories.id', $selectedCategory['id']);
-            });
-        })
-        ->paginate(12)
-        ->appends($request->all());
+            })
+            ->when($selectedMap, function ($query, $selectedMap) {
+                return $query->whereHas('map', function ($query) use ($selectedMap) {
+                    $query->where('id', $selectedMap['id']);
+                });
+            })
+            ->when($selectedCharacter, function ($query, $selectedCharacter) {
+                return $query->whereHas('character', function ($query) use ($selectedCharacter) {
+                    $query->where('id', $selectedCharacter['id']);
+                });
+            })
+            ->when($selectedCategory, function ($query, $selectedCategory) {
+                return $query->whereHas('categories', function ($query) use ($selectedCategory) {
+                    $query->where('categories.id', $selectedCategory['id']);
+                });
+            })
+            ->paginate(12)
+            ->appends($request->all());
 
-    // 各spotにshow_urlプロパティを追加
-    foreach ($spots as $spot) {
-        $spot->show_url = route('spots.show', ['spot' => $spot->id]);
-    }        
+        // 各spotにshow_urlプロパティを追加
+        foreach ($spots as $spot) {
+            $spot->show_url = route('spots.show', ['spot' => $spot->id]);
+        }        
 
-    return Inertia::render('Spots/Index', [
-        'user' => $user,
-        'spots' => $spots,
-        'categories' => $categories,
-        'selectedTag' => $selectedTag,
-        'selectedMap' => $selectedMap,
-        'selectedCharacter' => $selectedCharacter,
-        'selectedCategory' => $selectedCategory,
-        'characters' => $characters,
-        'maps' => $maps,
-        'tags' => $tags,
-        'userCategories' => $userCategories,
-    ]);
-}
+        return Inertia::render('Spots/Index', [
+            'user' => $user,
+            'spots' => $spots,
+            'categories' => $categories,
+            'selectedTag' => $selectedTag,
+            'selectedMap' => $selectedMap,
+            'selectedCharacter' => $selectedCharacter,
+            'selectedCategory' => $selectedCategory,
+            'characters' => $characters,
+            'maps' => $maps,
+            'tags' => $tags,
+            'userCategories' => $userCategories,
+        ]);
+    }
 
 
     /**
@@ -153,16 +153,23 @@ class SpotController extends Controller
             }
         
             foreach ($request->images as $image) {
-                // 画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
-                $image_path = Storage::putFileAs(
-                    'public/images',
-                    $image['image_path'],
-                    Str::random(20) . '.' . $image['image_path']->extension()
-                );
+                // s3に画像を保存
+                $image_path = Storage::disk('s3')->putFile('images', $image['image_path'], Str::random(20) . '.' . $image['image_path']->extension());
+
+                // 画像のURLを取得
+                $image_path = Storage::disk('s3')->url($image_path);
+
+
+                // // 画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
+                // $image_path = Storage::putFileAs(
+                //     'public/images',
+                //     $image['image_path'],
+                //     Str::random(20) . '.' . $image['image_path']->extension()
+                // );
         
-                // $image_pathの先頭のpublicをstorageに変更
-                $image_path = str_replace('public/', '', $image_path);
-                $image_path = "/storage/" . $image_path;
+                // // $image_pathの先頭のpublicをstorageに変更
+                // $image_path = str_replace('public/', '', $image_path);
+                // $image_path = "/storage/" . $image_path;
                 
                 $spot->images()->create([
                     'spot_id' => $spot->id,
