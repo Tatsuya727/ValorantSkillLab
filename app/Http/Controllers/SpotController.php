@@ -160,16 +160,6 @@ class SpotController extends Controller
                 $image_path = Storage::disk('s3')->url($image_path);
 
 
-                // // 画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
-                // $image_path = Storage::putFileAs(
-                //     'public/images',
-                //     $image['image_path'],
-                //     Str::random(20) . '.' . $image['image_path']->extension()
-                // );
-        
-                // // $image_pathの先頭のpublicをstorageに変更
-                // $image_path = str_replace('public/', '', $image_path);
-                // $image_path = "/storage/" . $image_path;
                 
                 $spot->images()->create([
                     'spot_id' => $spot->id,
@@ -286,6 +276,14 @@ class SpotController extends Controller
             // タグを削除
             $spot->tags()->detach();
 
+            // S3から関連する画像を削除
+            foreach ($spot->images as $image) {
+                // 画像のURLからS3のキーを取得
+                $path = parse_url($image->image_path, PHP_URL_PATH);
+                // S3から画像を削除
+                Storage::disk('s3')->delete($path);
+            }
+
             $spot->delete();
 
             session()->flash('message', '削除しました');
@@ -297,7 +295,7 @@ class SpotController extends Controller
             session()->flash('message', 'カテゴリーから削除しました');
 
             return to_route('spots.index');
-                }
+        }
     }
 
     public function togglePublic($id)
