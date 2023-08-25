@@ -22,6 +22,7 @@ class SpotFactory extends Factory
             'map_id' => MapFactory::new(),
             'character_id' => CharacterFactory::new(),
             'user_id' => UserFactory::new(),
+            'is_public' => true,
         ];
     }
 }
