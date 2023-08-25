@@ -155,7 +155,7 @@ class SpotController extends Controller
             foreach ($request->images as $image) {
 
                 // 本番環境の場合
-                if(app()->environment('production')) {
+                if (config('app.env') === 'production') { 
                     // 新しい画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
                     $image_path = Storage::disk('s3')->putFileAs(
                         'images',
