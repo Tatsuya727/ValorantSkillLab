@@ -110,7 +110,7 @@ const items = [
 
             <v-list-group value="Category" v-if="$page.props.auth.user">
                 <template v-slot:activator="{ props }">
-                    <v-list-item v-bind="props" prepend-icon="mdi-format-list-bulleted" title="マイリスト"></v-list-item>
+                    <v-list-item v-bind="props" prepend-icon="mdi-format-list-bulleted" title="マイリスト(カテゴリー)"></v-list-item>
                 </template>
 
                 <v-list-item @click="Inertia.get(route('spots.index'))" prepend-icon="mdi-select-all"> 全て </v-list-item>
