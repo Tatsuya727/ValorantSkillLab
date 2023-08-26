@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+import StoreCategory from '@/Components/original/StoreCategory.vue';
 
 const props = defineProps({
     spot: Object,
@@ -62,7 +63,12 @@ const timeout = ref(5000);
 
     <v-dialog v-model="saveDialog" max-width="400px">
         <v-card>
-            <v-card-title class="headline">保存先</v-card-title>
+            <div class="flex justify-between">
+                <v-card-title class="headline">保存先</v-card-title>
+                <v-card-title>
+                    <StoreCategory />
+                </v-card-title>
+            </div>
             <v-card-text>
                 <v-divider></v-divider>
                 <template v-for="category in props.userCategories" :key="category.id">
