@@ -9,13 +9,13 @@ use App\Models\User;
 use App\Models\Map;
 use App\Models\Character;
 use App\Models\Category;
+use App\Models\Image;
 use App\Models\Tag;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 
 class SpotController extends Controller
 {
@@ -161,25 +161,28 @@ class SpotController extends Controller
             }
         
             foreach ($request->images as $image) {
-                $img = Image::make($image['image_path']);
-            
-                // リサイズ
-                $img->resize(500, 500, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
-            
-                // 保存処理
-                if (config('app.env') === 'production') {
+
+                // 本番環境の場合
+                if (config('app.env') === 'production') { 
                     // s3に画像を保存
-                    $image_path = Storage::disk('s3')->put('images', (string) $img->encode(), 'public');
+                    $image_path = Storage::disk('s3')->putFile('images', $image['image_path'], Str::random(20) . '.' . $image['image_path']->extension());
+
+                    // 画像のURLを取得
                     $image_path = Storage::disk('s3')->url($image_path);
                 } else {
-                    $filename = Str::random(20) . '.' . $image['image_path']->extension();
-                    $img->save(storage_path('app/public/images/' . $filename));
-                    $image_path = "/storage/images/" . $filename;
+                    // 新しい画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
+                    $image_path = Storage::putFileAs(
+                        'public/images',
+                        $image['image_path'],
+                        Str::random(20) . '.' . $image['image_path']->extension()
+                    );
+
+                    // $image_pathの先頭のpublicをstorageに変更
+                    $image_path = str_replace('public/', '', $image_path);
+                    $image_path = "/storage/" . $image_path;
                 }
-            
+
+                
                 $spot->images()->create([
                     'spot_id' => $spot->id,
                     'image_path' => $image_path,
