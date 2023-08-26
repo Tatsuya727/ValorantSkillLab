@@ -74,6 +74,10 @@ Route::resource('/categories', CategoryController::class)
 Route::resource('/tags', TagController::class)
 ->middleware(['auth', 'check.verified']);
 
+Route::get('/about', function () {
+    return Inertia::render('About');
+})->name('about');
+
 Route::get('/welcome', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
