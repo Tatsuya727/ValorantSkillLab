@@ -2,6 +2,7 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import NavBar from '@/Components/original/NavBar.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Inertia } from '@inertiajs/inertia';
 
 const form = useForm({
     name: '',
@@ -11,8 +12,14 @@ const form = useForm({
 });
 
 const submit = () => {
-    console.log('submit');
-    form.post(route('register'), {
+    Inertia.post(route('register'), form, {
+        onSuccess: () => {
+            console.log('onSuccess');
+            form.reset();
+        },
+        onError: (errors) => {
+            console.log('onError');
+        },
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
