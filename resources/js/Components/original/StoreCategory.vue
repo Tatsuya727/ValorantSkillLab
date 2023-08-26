@@ -39,6 +39,7 @@ const storeCategory = () => {
                 <v-card-text>
                     <div class="text-center">
                         <label for="name" class="m-5 block text-lg font-medium text-gray-700">カテゴリー名</label>
+                        <p class="text-blue">最大15文字</p>
                         <input
                             type="text"
                             name="name"

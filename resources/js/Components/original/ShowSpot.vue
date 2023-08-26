@@ -3,6 +3,7 @@ import ImageModal from '@/Components/original/ImageModal.vue';
 import ShowMenu from '@/Components/original/ShowMenu.vue';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+import { useMobileDetection } from '@/Hooks/useMobileDetection';
 
 const props = defineProps({
     spot: {
@@ -19,6 +20,8 @@ const props = defineProps({
     },
     flash: Object,
 });
+
+const { isMobile } = useMobileDetection();
 
 const imageModal = ref({
     isOpen: false,
@@ -47,10 +50,10 @@ const filterSpotsByTag = (tag) => {
         <v-row justify="center">
             <v-col cols="12">
                 <div class="text-center">
-                    <h1 class="font-bold text-4xl text-white">{{ spot.title }}</h1>
-                    <h2 class="text-xl text-white">{{ spot.description }}</h2>
+                    <h1 class="font-bold text-white break-all">{{ spot.title }}</h1>
+                    <h1 class="text-white my-2 break-all">{{ spot.description }}</h1>
                     <!-- tagsのnameをすべて表示 -->
-                    <div class="flex justify-center my-5">
+                    <div class="flex justify-center my-3">
                         <div v-for="(tag, index) in spot.tags" :key="index">
                             <v-chip color="light-blue-lighten-5" class="py-1 px-3 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer" @click="filterSpotsByTag(tag.name)">{{
                                 tag.name
@@ -59,8 +62,10 @@ const filterSpotsByTag = (tag) => {
                     </div>
                 </div>
             </v-col>
-            <v-col cols="12">
-                <div class="flex flex-wrap space-4 mx-4">
+            <v-divider></v-divider>
+            <!-- デスクトップ -->
+            <v-col v-if="!isMobile" cols="12">
+                <div class="flex space-4 mx-4">
                     <div v-for="(image, index) in spot.images" :key="index" class="justify-center">
                         <v-img
                             :width="465"
@@ -75,6 +80,26 @@ const filterSpotsByTag = (tag) => {
                             {{ image.description }}
                         </div>
                         <div v-else class="border border-white p-2 text-white max-w-full break-words" style="max-width: 465px">説明なし</div>
+                    </div>
+                </div>
+            </v-col>
+            <!-- モバイル端末 -->
+            <v-col v-if="isMobile" cols="12">
+                <div class="flex flex-wrap space-4 mx-4">
+                    <div v-for="(image, index) in spot.images" :key="index" class="justify-center">
+                        <v-img
+                            :width="350"
+                            cover
+                            class="object-cover cursor-pointer transform transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg"
+                            :src="image.image_path"
+                            alt=""
+                            @click="openImageModal(image)"
+                            loading="lazy"
+                        ></v-img>
+                        <div v-if="image.description" class="border border-white p-2 text-white max-w-full break-words" style="max-width: 350px">
+                            {{ image.description }}
+                        </div>
+                        <div v-else class="border border-white p-2 text-white max-w-full break-words" style="max-width: 350px">説明なし</div>
                     </div>
                 </div>
             </v-col>
