@@ -9,13 +9,13 @@ use App\Models\User;
 use App\Models\Map;
 use App\Models\Character;
 use App\Models\Category;
-use App\Models\Image;
 use App\Models\Tag;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class SpotController extends Controller
 {
