@@ -77,7 +77,7 @@ const deleteCategory = (id) => {
             </v-card-title>
             <v-card-text class="font-medium mb-3">
                 「<span class="font-bold text-red-600">{{ category.name }}</span
-                >」を削除すると、関連するすべての内容も消えてしまいます。
+                >」を削除すると、この中にあるすべての内容も消えてしまいます。
             </v-card-text>
             <v-card-text class="font-medium mb-5">本当に削除しますか？</v-card-text>
             <v-card-actions class="justify-center">

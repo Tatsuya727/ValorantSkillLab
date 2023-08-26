@@ -34,7 +34,7 @@ const items = [
 <template>
     <v-app-bar color="grey-darken-3">
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title :class="{ hidden: isMobile }">
+        <v-toolbar-title>
             <Link href="/"> ValorantSkillLab </Link>
         </v-toolbar-title>
 
@@ -43,7 +43,8 @@ const items = [
         <v-spacer></v-spacer>
 
         <div class="mr-5 flex">
-            <v-btn class="mr-5 border bg-green" prepend-icon="mdi-pencil" @click="Inertia.get(route('spots.create'))">作成する</v-btn>
+            <v-btn v-if="!isMobile" class="mr-5 border bg-green" prepend-icon="mdi-pencil" @click="Inertia.get(route('spots.create'))">作成する</v-btn>
+
             <Link :href="route('login')" v-if="!$page.props.auth.user">
                 <v-btn class="border bg-blue">ログイン </v-btn>
             </Link>
@@ -56,6 +57,14 @@ const items = [
                     <v-btn v-if="$page.props.auth.user" class="mr-5" variant="outlined" prepend-icon="mdi-account" v-bind="props">{{ $page.props.auth.user.name }}</v-btn>
                 </template>
                 <v-list v-if="$page.props.auth.user">
+                    <v-list-item v-if="isMobile">
+                        <v-list-item-title>
+                            <Link :href="route('spots.create')" class="text-black">
+                                <v-icon class="mr-4">mdi-pencil</v-icon>
+                                作成する
+                            </Link>
+                        </v-list-item-title>
+                    </v-list-item>
                     <v-list-item>
                         <v-list-item-title>
                             <Link :href="route('categories.index')" class="text-black">

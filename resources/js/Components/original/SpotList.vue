@@ -33,6 +33,10 @@ const props = defineProps({
         type: Number,
         required: false,
     },
+    liked: {
+        type: Boolean,
+        required: false,
+    },
     userCategories: {
         type: Array,
         required: false,
@@ -42,7 +46,7 @@ const props = defineProps({
 
 // 選択した物が何もない場合
 const noSelected = computed(() => {
-    return !props.selectedMap && !props.selectedCharacter && !props.selectedTag && !props.selectedCategory;
+    return !props.selectedMap && !props.selectedCharacter && !props.selectedTag && !props.selectedCategory && !props.liked;
 });
 </script>
 
@@ -51,6 +55,7 @@ const noSelected = computed(() => {
     <v-row justify="center">
         <v-col cols="12">
             <h1 v-if="selectedCategory" class="mt-5 text-white text-center font-bold">{{ selectedCategory.name }}({{ spots.data.length }})</h1>
+            <h1 v-if="liked" class="mt-5 text-white text-center font-bold">いいね({{ spots.data.length }})</h1>
             <h1 v-if="noSelected" class="mt-5 text-white text-center font-bold">すべて表示({{ spots.data.length }})</h1>
         </v-col>
         <v-col cols="11" sm="12" md="12" lg="12">

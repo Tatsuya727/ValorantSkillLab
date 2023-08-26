@@ -34,6 +34,7 @@ class SpotController extends Controller
         $selectedMap = $request->query('selectedMap');
         $selectedCharacter = $request->query('selectedCharacter');
         $selectedCategory = $request->query('category');
+        $liked = $request->query('liked');
 
         // ログインしているユーザーのカテゴリーを取得
         if(auth()->check()) {
@@ -53,6 +54,12 @@ class SpotController extends Controller
                     ->orWhereHas('categories', function ($query) {
                         $query->where('user_id', auth()->id());
                     });
+            })
+            // liledがtrueの場合、ユーザーがいいねしたスポットのみ取得
+            ->when($liked, function ($query, $liked) {
+                return $query->whereHas('likedBy', function ($query) {
+                    $query->where('user_id', auth()->id());
+                });
             })
             ->when($selectedTag, function ($query, $selectedTag) {
                 return $query->whereHas('tags', function ($query) use ($selectedTag) {
@@ -90,6 +97,7 @@ class SpotController extends Controller
             'selectedMap' => $selectedMap,
             'selectedCharacter' => $selectedCharacter,
             'selectedCategory' => $selectedCategory,
+            'liked' => $liked,
             'characters' => $characters,
             'maps' => $maps,
             'tags' => $tags,

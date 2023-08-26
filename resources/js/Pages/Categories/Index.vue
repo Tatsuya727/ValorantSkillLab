@@ -105,6 +105,14 @@ const pageTitle = 'マイページ';
                             </div>
                             <!-- <div class="cursor-pointer text-center text-white text-xl font-bold font-sans">{{ category.name }} ({{ getSpotCountForCategory(category.id) }})</div> -->
                         </v-col>
+
+                        <!-- いいねしたspotを表示するカード -->
+                        <v-col cols="12" sm="6" md="4" lg="3" class="mt-10">
+                            <div class="ml-4 cursor-pointer text-center flex items-center justify-center relative" @click="Inertia.get(route('spots.index', { liked: true }))">
+                                <div class="w-full h-52 bg-gray-400 mr-4 rounded"></div>
+                                <div class="absolute cursor-pointer text-white text-xl font-bold font-sans">いいね</div>
+                            </div>
+                        </v-col>
                     </v-row>
                 </div>
             </v-container>

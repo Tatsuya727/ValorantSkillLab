@@ -5,7 +5,6 @@ import { useMobileDetection } from '@/Hooks/useMobileDetection';
 import SpotFilter from '@/Components/original/SpotFilter.vue';
 
 const props = defineProps({
-    resetSelectedTag: Function,
     maps: Array,
     characters: Array,
     tags: Array,
@@ -21,13 +20,25 @@ const { isMobile } = useMobileDetection();
 // 画面上部に表示されたタグをクリックすると、タグの絞り込みを解除する
 const resetSelectedTag = () => {
     props.selectedTag = '';
+    Inertia.get(route('sharespots.index', { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, category: props.selectedCategory }));
+};
 
-    // マップとキャラクターがあれば、それらを含めて絞り込みを行う
-    if (props.selectedMap && props.selectedCharacter) {
-        Inertia.get(route('sharespots.index'), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter });
-    } else {
-        Inertia.get(route('sharespots.index'));
-    }
+// マップの絞り込みを解除する
+const resetSelectedMap = () => {
+    props.selectedMap = '';
+    Inertia.get(route('sharespots.index', { selectedCharacter: props.selectedCharacter, selectedTag: props.selectedTag, category: props.selectedCategory }));
+};
+
+// キャラクターの絞り込みを解除する
+const resetSelectedCharacter = () => {
+    props.selectedCharacter = '';
+    Inertia.get(route('sharespots.index', { selectedMap: props.selectedMap, selectedTag: props.selectedTag, category: props.selectedCategory }));
+};
+
+// カテゴリーの絞り込みを解除する
+const resetSelectedCategory = () => {
+    props.selectedCategory = '';
+    Inertia.get(route('sharespots.index', { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, selectedTag: props.selectedTag }));
 };
 
 const search = ref('');
@@ -61,22 +72,24 @@ const resetSpots = () => {
                         <div class="text-grey ml-3 mt-2">
                             <div>
                                 マップ:
-                                <span v-if="selectedMap" class="text-green text-lg font-bold">{{ selectedMap.name }}</span>
+                                <v-chip v-if="selectedMap" color="light-blue-lighten-5" closable @click="resetSelectedMap">{{ selectedMap.name }}</v-chip>
                                 <span v-else class="text-grey text-lg font-bold">無し</span>
                             </div>
                             <div>
                                 キャラクター:
-                                <span v-if="selectedCharacter" class="text-green text-lg font-bold">{{ selectedCharacter.name }}</span>
+                                <v-chip v-if="selectedCharacter" class="mt-1" color="light-blue-lighten-5" closable @click="resetSelectedCharacter">{{ selectedCharacter.name }}</v-chip>
                                 <span v-else class="text-grey text-lg font-bold">無し</span>
                             </div>
                         </div>
                         <div class="text-grey ml-10 mt-3">
-                            タグ:
-                            <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
-                            <span v-else class="text-grey text-lg font-bold">無し</span>
+                            <div>
+                                タグ:
+                                <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
+                                <span v-else class="text-grey text-lg font-bold">無し</span>
+                            </div>
                             <div>
                                 カテゴリー:
-                                <span v-if="selectedCategory" class="text-green text-lg font-bold">{{ selectedCategory.name }}</span>
+                                <v-chip v-if="selectedCategory" class="mt-1" color="light-blue-lighten-5" closable @click="resetSelectedCategory">{{ selectedCategory.name }}</v-chip>
                                 <span v-else class="text-grey text-lg font-bold">無し</span>
                             </div>
                         </div>
@@ -113,24 +126,24 @@ const resetSpots = () => {
                     <div class="text-grey ml-3 mt-2">
                         <div>
                             マップ:
-                            <span v-if="selectedMap" class="text-green text-lg font-bold">{{ selectedMap.name }}</span>
+                            <v-chip v-if="selectedMap" color="light-blue-lighten-5" closable @click="resetSelectedMap">{{ selectedMap.name }}</v-chip>
                             <span v-else class="text-grey text-lg font-bold">無し</span>
                         </div>
                         <div>
                             キャラクター:
-                            <span v-if="selectedCharacter" class="text-green text-lg font-bold">{{ selectedCharacter.name }}</span>
+                            <v-chip v-if="selectedCharacter" class="mt-1" color="light-blue-lighten-5" closable @click="resetSelectedCharacter">{{ selectedCharacter.name }}</v-chip>
                             <span v-else class="text-grey text-lg font-bold">無し</span>
                         </div>
                     </div>
                     <div class="text-grey ml-10 mt-2">
                         <div>
                             タグ:
-                            <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
+                            <v-chip v-if="selectedTag" color="light-blue-lighten-5" closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
                             <span v-else class="text-grey text-lg font-bold">無し</span>
                         </div>
                         <div>
                             カテゴリー:
-                            <span v-if="selectedCategory" class="text-green text-lg font-bold">{{ selectedCategory.name }}</span>
+                            <v-chip v-if="selectedCategory" class="mt-1" color="light-blue-lighten-5" closable @click="resetSelectedCategory">{{ selectedCategory.name }}</v-chip>
                             <span v-else class="text-grey text-lg font-bold">無し</span>
                         </div>
                     </div>

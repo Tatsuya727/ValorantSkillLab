@@ -34,6 +34,10 @@ const props = defineProps({
         type: Object,
         required: false,
     },
+    liked: {
+        type: Boolean,
+        required: false,
+    },
     maps: {
         type: Array,
         required: false,
@@ -53,7 +57,8 @@ const props = defineProps({
     flash: Object,
 });
 
-const pageTitle = props.selectedCategory ? props.selectedCategory.name : 'すべて表示';
+// いいねがある場合はいいねページ、カテゴリーが選択されている場合はカテゴリー名、それ以外はすべて表示
+const pageTitle = props.liked ? 'いいねした投稿' : props.selectedCategory ? props.selectedCategory.name : 'すべて表示';
 </script>
 
 <template>
@@ -83,6 +88,7 @@ const pageTitle = props.selectedCategory ? props.selectedCategory.name : 'すべ
                         :selectedCharacter="selectedCharacter"
                         :selectedTag="selectedTag"
                         :selectedCategory="selectedCategory"
+                        :liked="liked"
                         :userCategories="userCategories"
                         :flash="flash"
                     />
