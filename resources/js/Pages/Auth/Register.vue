@@ -13,7 +13,7 @@ const form = useForm({
     password_confirmation: '',
 });
 
-const isMobile = useMobileDetection();
+const { isMobile } = useMobileDetection();
 
 const nameError = ref(null);
 const emailError = ref(null);

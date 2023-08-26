@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
+import { useMobileDetection } from '@/Hooks/useMobileDetection';
 
 const props = defineProps({
     pageTitle: {
@@ -9,6 +10,8 @@ const props = defineProps({
         default: '',
     },
 });
+
+const { isMobile } = useMobileDetection();
 
 const drawer = ref(null);
 const open = ref(['Category']);
@@ -31,11 +34,11 @@ const items = [
 <template>
     <v-app-bar color="grey-darken-3">
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>
+        <v-toolbar-title :class="{ hidden: isMobile }">
             <Link href="/"> ValorantSkillLab </Link>
         </v-toolbar-title>
 
-        <h2>{{ pageTitle }}</h2>
+        <h2 v-if="!isMobile">{{ pageTitle }}</h2>
 
         <v-spacer></v-spacer>
 
