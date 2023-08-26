@@ -46,14 +46,28 @@ const props = defineProps({
 
 const { isMobile } = useMobileDetection();
 
+// 画面上部に表示されたタグをクリックすると、タグの絞り込みを解除する
 const resetSelectedTag = () => {
     props.selectedTag = '';
-    // マップとキャラクターがあれば、それらを含めて絞り込みを行う
-    if (props.selectedMap || props.selectedCharacter || props.selectedCategory) {
-        Inertia.get(route('spots.index'), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, category: props.selectedCategory });
-    } else {
-        Inertia.get(route('spots.index'));
-    }
+    Inertia.get(route('spots.index', { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, category: props.selectedCategory }));
+};
+
+// マップの絞り込みを解除する
+const resetSelectedMap = () => {
+    props.selectedMap = '';
+    Inertia.get(route('spots.index', { selectedCharacter: props.selectedCharacter, selectedTag: props.selectedTag, category: props.selectedCategory }));
+};
+
+// キャラクターの絞り込みを解除する
+const resetSelectedCharacter = () => {
+    props.selectedCharacter = '';
+    Inertia.get(route('spots.index', { selectedMap: props.selectedMap, selectedTag: props.selectedTag, category: props.selectedCategory }));
+};
+
+// カテゴリーの絞り込みを解除する
+const resetSelectedCategory = () => {
+    props.selectedCategory = '';
+    Inertia.get(route('spots.index', { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, selectedTag: props.selectedTag }));
 };
 
 const search = ref('');
@@ -90,18 +104,18 @@ const resetSpots = () => {
             <div class="text-grey ml-3">
                 <div>
                     マップ:
-                    <span v-if="selectedMap" class="text-white text-lg font-bold">{{ selectedMap.name }}</span>
+                    <v-chip v-if="selectedMap" color="light-blue-lighten-5" closable @click="resetSelectedMap">{{ selectedMap.name }}</v-chip>
                     <span v-else class="text-white text-lg font-bold">無し</span>
                 </div>
                 <div>
                     キャラクター:
-                    <span v-if="selectedCharacter" class="text-white text-lg font-bold">{{ selectedCharacter.name }}</span>
+                    <v-chip v-if="selectedCharacter" color="light-blue-lighten-5" closable class="mt-1" @click="resetSelectedCharacter">{{ selectedCharacter.name }}</v-chip>
                     <span v-else class="text-white text-lg font-bold">無し</span>
                 </div>
             </div>
             <div class="text-grey ml-10 mt-3">
                 タグ:
-                <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
+                <v-chip v-if="selectedTag" color="light-blue-lighten-5" closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
             </div>
         </v-col>
         <v-col>
@@ -134,18 +148,18 @@ const resetSpots = () => {
             <div class="text-grey ml-10">
                 <div>
                     マップ:
-                    <span v-if="selectedMap" class="text-white text-lg font-bold">{{ selectedMap.name }}</span>
+                    <v-chip v-if="selectedMap" color="light-blue-lighten-5" closable @click="resetSelectedMap">{{ selectedMap.name }}</v-chip>
                     <span v-else class="text-white text-lg font-bold">無し</span>
                 </div>
                 <div>
                     キャラクター:
-                    <span v-if="selectedCharacter" class="text-white text-lg font-bold">{{ selectedCharacter.name }}</span>
+                    <v-chip v-if="selectedCharacter" color="light-blue-lighten-5" closable class="mt-1" @click="resetSelectedCharacter">{{ selectedCharacter.name }}</v-chip>
                     <span v-else class="text-white text-lg font-bold">無し</span>
                 </div>
             </div>
             <div class="text-grey ml-10 mt-3">
                 タグ:
-                <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
+                <v-chip v-if="selectedTag" color="light-blue-lighten-5" closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
             </div>
         </v-col>
     </v-row>
