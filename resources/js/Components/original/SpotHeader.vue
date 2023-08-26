@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import StoreCategory from '@/Components/original/StoreCategory.vue';
 import SpotFilter from '@/Components/original/SpotFilter.vue';
+import { useMobileDetection } from '@/Hooks/useMobileDetection';
 
 const props = defineProps({
     maps: {
@@ -42,9 +43,12 @@ const props = defineProps({
         required: true,
     },
 });
+
+const { isMobile } = useMobileDetection();
+
 const resetSelectedTag = () => {
     props.selectedTag = '';
-    // 選択したマップとキャラクターがあれば、それらを含めて絞り込みを行う
+    // マップとキャラクターがあれば、それらを含めて絞り込みを行う
     if (props.selectedMap || props.selectedCharacter || props.selectedCategory) {
         Inertia.get(route('spots.index'), { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, category: props.selectedCategory });
     } else {
@@ -64,7 +68,8 @@ const resetSpots = () => {
 </script>
 
 <template>
-    <v-row>
+    <!-- デスクトップ（モバイル以外） -->
+    <v-row v-if="!isMobile">
         <v-col cols="6" class="flex">
             <v-text-field data-test="search-input" id="name" label="検索" v-model="search" class="ml-5 text-white search-spots" @keyup.enter="searchSpots"></v-text-field>
             <v-btn @click="searchSpots" class="search-button ml-5 mt-3">検索</v-btn>
@@ -84,12 +89,12 @@ const resetSpots = () => {
         <v-col class="flex">
             <div class="text-grey ml-3">
                 <div>
-                    選択したマップ:
+                    マップ:
                     <span v-if="selectedMap" class="text-white text-lg font-bold">{{ selectedMap.name }}</span>
                     <span v-else class="text-white text-lg font-bold">無し</span>
                 </div>
                 <div>
-                    選択したキャラクター:
+                    キャラクター:
                     <span v-if="selectedCharacter" class="text-white text-lg font-bold">{{ selectedCharacter.name }}</span>
                     <span v-else class="text-white text-lg font-bold">無し</span>
                 </div>
@@ -101,6 +106,47 @@ const resetSpots = () => {
         </v-col>
         <v-col>
             <StoreCategory />
+        </v-col>
+    </v-row>
+    <!-- モバイル端末 -->
+    <v-row v-if="isMobile">
+        <v-col cols="12" class="flex justify-between">
+            <SpotFilter
+                :maps="maps"
+                :characters="characters"
+                :tags="tags"
+                :selectedTag="selectedTag"
+                :selectedMap="selectedMap"
+                :selectedCharacter="selectedCharacter"
+                :selectedCategory="selectedCategory"
+                :categories="categories"
+                :routeName="'spots.index'"
+            />
+            <div>
+                <v-btn @click="searchSpots" class="search-button mr-2 mt-3">検索</v-btn>
+                <v-btn v-if="!inCategory" @click="resetSpots" class="mx-2 mt-3" color="red">リセット</v-btn>
+            </div>
+        </v-col>
+        <v-col cols="12">
+            <v-text-field data-test="search-input" id="name" label="検索" v-model="search" class="mx-5 text-white search-spots" @keyup.enter="searchSpots"></v-text-field>
+        </v-col>
+        <v-col class="flex">
+            <div class="text-grey ml-10">
+                <div>
+                    マップ:
+                    <span v-if="selectedMap" class="text-white text-lg font-bold">{{ selectedMap.name }}</span>
+                    <span v-else class="text-white text-lg font-bold">無し</span>
+                </div>
+                <div>
+                    キャラクター:
+                    <span v-if="selectedCharacter" class="text-white text-lg font-bold">{{ selectedCharacter.name }}</span>
+                    <span v-else class="text-white text-lg font-bold">無し</span>
+                </div>
+            </div>
+            <div class="text-grey ml-10 mt-3">
+                タグ:
+                <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
+            </div>
         </v-col>
     </v-row>
 </template>

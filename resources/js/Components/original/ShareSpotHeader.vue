@@ -89,8 +89,8 @@ const resetSpots = () => {
                 </v-col>
             </v-row>
             <!-- モバイル端末 -->
-            <v-row v-if="isMobile">
-                <v-col cols="12" class="flex">
+            <v-row v-if="isMobile" justify="center">
+                <v-col cols="12" class="flex justify-between">
                     <SpotFilter
                         :maps="props.maps"
                         :characters="props.characters"
@@ -101,13 +101,15 @@ const resetSpots = () => {
                         :categories="props.categories"
                         :routeName="'sharespots.index'"
                     />
-                    <v-btn @click="searchSpots" class="search-button ml-5 mt-3">検索</v-btn>
-                    <v-btn @click="resetSpots" class="mx-2 mt-3" color="red">リセット</v-btn>
+                    <div>
+                        <v-btn @click="searchSpots" class="search-button ml-5 mt-3">検索</v-btn>
+                        <v-btn @click="resetSpots" class="mx-2 mt-3" color="red">リセット</v-btn>
+                    </div>
                 </v-col>
                 <v-col cols="12">
                     <v-text-field data-test="search-input" id="name" label="検索" v-model="search" class="mx-4 text-white search-spots" @keyup.enter="searchSpots"></v-text-field>
                 </v-col>
-                <v-col cols="12" class="flex">
+                <v-col cols="12" class="flex ml-10">
                     <div class="text-grey ml-3 mt-2">
                         <div>
                             マップ:
