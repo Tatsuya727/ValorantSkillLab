@@ -97,6 +97,7 @@ class SpotController extends Controller
             'selectedMap' => $selectedMap,
             'selectedCharacter' => $selectedCharacter,
             'selectedCategory' => $selectedCategory,
+            'liked' => $liked,
             'characters' => $characters,
             'maps' => $maps,
             'tags' => $tags,

@@ -34,6 +34,10 @@ const props = defineProps({
         type: Object,
         required: false,
     },
+    liked: {
+        type: Boolean,
+        required: false,
+    },
     maps: {
         type: Array,
         required: false,
@@ -83,6 +87,7 @@ const pageTitle = props.selectedCategory ? props.selectedCategory.name : 'すべ
                         :selectedCharacter="selectedCharacter"
                         :selectedTag="selectedTag"
                         :selectedCategory="selectedCategory"
+                        :liked="liked"
                         :userCategories="userCategories"
                         :flash="flash"
                     />
