@@ -64,12 +64,6 @@ const resetSelectedCharacter = () => {
     Inertia.get(route('spots.index', { selectedMap: props.selectedMap, selectedTag: props.selectedTag, category: props.selectedCategory }));
 };
 
-// カテゴリーの絞り込みを解除する
-const resetSelectedCategory = () => {
-    props.selectedCategory = '';
-    Inertia.get(route('spots.index', { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, selectedTag: props.selectedTag }));
-};
-
 const search = ref('');
 
 const searchSpots = () => {
