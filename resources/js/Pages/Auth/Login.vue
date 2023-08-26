@@ -4,6 +4,7 @@ import NavBar from '@/Components/original/NavBar.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
 import { ref } from 'vue';
+import { useMobileDetection } from '@/Hooks/useMobileDetection';
 
 defineProps({
     canResetPassword: {
@@ -13,6 +14,8 @@ defineProps({
         type: String,
     },
 });
+
+const { isMobile } = useMobileDetection();
 
 const form = useForm({
     email: '',
@@ -41,10 +44,10 @@ const pageTitle = 'ログイン';
 
     <v-app>
         <NavBar :pageTitle="pageTitle" />
-        <GuestLayout>
-            <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+        <GuestLayout :class="{ 'mt-10': isMobile }">
+            <!-- <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
                 {{ status }}
-            </div>
+            </div> -->
             <v-form @submit.prevent="submit">
                 <v-text-field label="メールアドレス" v-model="form.email" required autofocus autocomplete="username" :error-messages="form.errors.email" @keyup.enter="submit"></v-text-field>
                 <div v-if="emailError" class="text-red" v-for="error in emailError">・{{ error }}</div>
@@ -71,12 +74,12 @@ const pageTitle = 'ログイン';
                 </div>
             </v-form>
 
-            <div class="flex items-center justify-end mt-4">
-                <Link :href="route('register')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <div class="flex items-center mt-4">
+                <Link :href="route('register')">
                     <v-btn color="blue">アカウントを作成する</v-btn>
                 </Link>
                 <!-- google login -->
-                <Link :href="route('login.google')" class="ml-4">
+                <Link :href="route('login.google')">
                     <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" style="margin-left: 3em" />
                 </Link>
             </div>
