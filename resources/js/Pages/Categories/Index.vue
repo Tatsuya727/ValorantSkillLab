@@ -103,6 +103,7 @@ const pageTitle = 'マイページ';
                                 <!-- 名前 -->
                                 <div class="absolute cursor-pointer text-white text-xl font-bold font-sans">{{ category.name }} ({{ getSpotCountForCategory(category.id) }})</div>
                             </div>
+                            <!-- <div class="cursor-pointer text-center text-white text-xl font-bold font-sans">{{ category.name }} ({{ getSpotCountForCategory(category.id) }})</div> -->
                         </v-col>
                     </v-row>
                 </div>
