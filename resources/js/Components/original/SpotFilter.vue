@@ -95,7 +95,7 @@ const resetFilter = () => {
         <v-btn class="ml-5 mt-3" @click="dialog = true" color="primary">絞り込み</v-btn>
 
         <!-- デスクトップ（モバイル以外） -->
-        <v-dialog v-model="dialog" width="1400px" height="auto" min-height="900px" v-if="!isMobile">
+        <v-dialog v-model="dialog" width="1400px" v-if="!isMobile">
             <v-card>
                 <v-row no-gutters>
                     <!-- 画像とタブのセクション -->
