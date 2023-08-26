@@ -2,6 +2,8 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import NavBar from '@/Components/original/NavBar.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Inertia } from '@inertiajs/inertia';
+import { ref } from 'vue';
 
 defineProps({
     canResetPassword: {
@@ -18,12 +20,14 @@ const form = useForm({
     remember: false,
 });
 
+const emailError = ref(null);
+const passwordError = ref(null);
+
 const submit = () => {
-    form.post(route('login'), {
+    Inertia.post(route('login'), form, {
         onError: (errors) => {
-            console.log(errors);
-            console.log(errors.email);
-            console.log(errors.password);
+            emailError.value = errors.email;
+            passwordError.value = errors.password;
         },
         onFinish: () => form.reset('password'),
     });
@@ -43,6 +47,7 @@ const pageTitle = 'ログイン';
             </div>
             <v-form @submit.prevent="submit">
                 <v-text-field label="メールアドレス" v-model="form.email" required autofocus autocomplete="username" :error-messages="form.errors.email" @keyup.enter="submit"></v-text-field>
+                <div v-if="emailError" class="text-red" v-for="error in emailError">・{{ error }}</div>
                 <v-text-field
                     label="パスワード"
                     type="password"
@@ -52,6 +57,7 @@ const pageTitle = 'ログイン';
                     :error-messages="form.errors.password"
                     @keyup.enter="submit"
                 ></v-text-field>
+                <div v-if="passwordError" class="text-red" v-for="error in passwordError">・{{ error }}</div>
                 <v-checkbox v-model="form.remember" label="ログインしたままにする"></v-checkbox>
                 <div class="flex items-center justify-end mt-4">
                     <Link
