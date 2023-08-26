@@ -57,7 +57,8 @@ const props = defineProps({
     flash: Object,
 });
 
-const pageTitle = props.selectedCategory ? props.selectedCategory.name : 'すべて表示';
+// いいねがある場合はいいねページ、カテゴリーが選択されている場合はカテゴリー名、それ以外はすべて表示
+const pageTitle = props.liked ? 'いいねした投稿' : props.selectedCategory ? props.selectedCategory.name : 'すべて表示';
 </script>
 
 <template>
