@@ -85,6 +85,8 @@ const storeSpot = () => {
             onError: (responseErrors) => {
                 Object.assign(errors, responseErrors);
                 console.log('onError');
+                console.log(errors);
+                console.log(responseErrors);
                 console.log(errors.images.image_path);
             },
 
