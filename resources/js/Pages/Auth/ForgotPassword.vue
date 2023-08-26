@@ -1,10 +1,8 @@
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import { Inertia } from '@inertiajs/inertia';
 import { Head, useForm } from '@inertiajs/vue3';
+import { defineProps, ref } from 'vue';
 
 defineProps({
     status: {
@@ -16,8 +14,19 @@ const form = useForm({
     email: '',
 });
 
+const emailError = ref(null);
+
 const submit = () => {
-    form.post(route('password.email'));
+    Inertia.post(route('password.email'), form, {
+        onSuccess: () => {
+            form.reset();
+            console.log('onSuccess');
+        },
+        onError: (errors) => {
+            console.log('onError');
+            emailError.value = errors.email;
+        },
+    });
 };
 </script>
 
@@ -25,24 +34,30 @@ const submit = () => {
     <GuestLayout>
         <Head title="Forgot Password" />
 
-        <div class="mb-4 text-sm text-gray-600">パスワードを忘れた場合は、登録したメールアドレスを入力してください。パスワード再設定用のリンクを送信します。</div>
+        <v-row class="mb-4 text-sm text-gray-600">
+            <v-col cols="12"> パスワードを忘れた場合は、登録したメールアドレスを入力してください。パスワード再設定用のリンクを送信します。 </v-col>
+        </v-row>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
+        <v-row v-if="status" class="mb-4 font-medium text-sm text-green-600">
+            <v-col cols="12">
+                {{ status }}
+            </v-col>
+        </v-row>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+        <v-form>
+            <v-row>
+                <v-col cols="12">
+                    <v-text-field label="Email" id="email" type="email" v-model="form.email" required autofocus autocomplete="username" :error-messages="form.errors.email"></v-text-field>
+                </v-col>
+                <!-- エラーメッセージ -->
+                <div v-if="emailError" class="text-red" v-for="error in emailError">・{{ error }}</div>
+            </v-row>
 
-                <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus autocomplete="username" />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing"> パスワードを再設定する </PrimaryButton>
-            </div>
-        </form>
+            <v-row class="flex items-center justify-end mt-4">
+                <v-col cols="12" class="text-right">
+                    <v-btn @click="submit" color="primary"> パスワードを再設定する </v-btn>
+                </v-col>
+            </v-row>
+        </v-form>
     </GuestLayout>
 </template>
