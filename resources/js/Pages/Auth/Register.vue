@@ -4,6 +4,7 @@ import NavBar from '@/Components/original/NavBar.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
 import { ref } from 'vue';
+import { useMobileDetection } from '@/Hooks/useMobileDetection';
 
 const form = useForm({
     name: '',
@@ -11,6 +12,8 @@ const form = useForm({
     password: '',
     password_confirmation: '',
 });
+
+const isMobile = useMobileDetection();
 
 const nameError = ref(null);
 const emailError = ref(null);
@@ -42,7 +45,7 @@ const pageTitle = '新規登録';
 
     <v-app>
         <NavBar :pageTitle="pageTitle" />
-        <GuestLayout>
+        <GuestLayout :class="{ 'mt-15 ': isMobile }">
             <v-form>
                 <v-text-field label="名前" v-model="form.name" required autofocus autocomplete="name" persistent-hint hint="名前は30文字以内"></v-text-field>
                 <div v-if="nameError" class="text-red" v-for="error in nameError">・{{ error }}</div>
@@ -52,8 +55,8 @@ const pageTitle = '新規登録';
                 <div v-if="passwordError" class="text-red" v-for="error in passwordError">・{{ error }}</div>
                 <v-text-field label="パスワード再入力" type="password" v-model="form.password_confirmation" required autocomplete="new-password"></v-text-field>
                 <div v-if="passwordConfirmationError" class="text-red" v-for="error in passwordConfirmationError">・{{ error }}</div>
-                <div class="flex items-center justify-end mt-4">
-                    <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <div class="flex items-center justify-between mt-4">
+                    <Link :href="route('login')" class="underline text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         登録済みですか？
                     </Link>
                     <v-btn @click="submit" class="ml-4" color="success"> 新規登録 </v-btn>
