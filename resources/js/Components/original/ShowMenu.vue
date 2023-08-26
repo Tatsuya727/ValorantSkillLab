@@ -70,16 +70,17 @@ const publicDialog = ref(false);
 </script>
 <template>
     <div v-if="$page.props.auth.user">
-        <div v-if="$page.props.auth.user.id === props.spot.user.id" class="text-right">
-            <v-btn :color="spot.is_public ? 'success' : 'secondary'" @click="publicDialog = true"> 公開設定:{{ spot.is_public ? '公開中' : '非公開中' }} </v-btn>
+        <div v-if="$page.props.auth.user.id === props.spot.user.id" class="text-right mr-5">
+            <v-btn class="mr-5 mt-5" :color="spot.is_public ? 'success' : 'secondary'" @click="publicDialog = true"> 公開設定:{{ spot.is_public ? '公開中' : '非公開中' }} </v-btn>
 
             <!-- 公開設定のダイアログ -->
             <v-dialog v-model="publicDialog" width="auto">
                 <v-card>
                     <v-card-text class="font-bold">公開設定を変更しますか？</v-card-text>
                     <v-card-text class="font-bold">
-                        現在は<span :class="{ 'text-red': true, 'font-bold': true }">{{ spot.is_public ? '公開中' : '非公開' }}</span
-                        >です。
+                        現在は
+                        <span :class="{ 'text-red': true, 'font-bold': true }">{{ spot.is_public ? '公開中' : '非公開' }}</span>
+                        です。
                     </v-card-text>
                     <v-card-actions>
                         <v-btn :variant="'outlined'" :color="'success'" block @click="togglePublic(spot.id)">
