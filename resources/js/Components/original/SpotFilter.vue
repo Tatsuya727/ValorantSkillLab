@@ -205,7 +205,7 @@ const panel = ref(0);
         <v-dialog v-model="dialog" v-if="isMobile">
             <v-card>
                 <v-row no-gutters>
-                    <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
+                    <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center" class="sticky">
                         <v-tab :value="1">マップ</v-tab>
                         <v-tab :value="2">キャラクター</v-tab>
                         <v-tab :value="3">タグ</v-tab>
@@ -323,3 +323,12 @@ const panel = ref(0);
         </v-dialog>
     </div>
 </template>
+
+<style scoped>
+.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 99999;
+    background-color: white;
+}
+</style>
