@@ -48,9 +48,9 @@ const filterSpotsByTag = (tag) => {
             <v-col cols="12">
                 <div class="text-center">
                     <h1 class="font-bold text-4xl text-white">{{ spot.title }}</h1>
-                    <h2 class="text-xl text-white">{{ spot.description }}</h2>
+                    <h2 class="text-xl text-white my-2">{{ spot.description }}</h2>
                     <!-- tagsのnameをすべて表示 -->
-                    <div class="flex justify-center my-5">
+                    <div class="flex justify-center my-3">
                         <div v-for="(tag, index) in spot.tags" :key="index">
                             <v-chip color="light-blue-lighten-5" class="py-1 px-3 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer" @click="filterSpotsByTag(tag.name)">{{
                                 tag.name
@@ -59,6 +59,7 @@ const filterSpotsByTag = (tag) => {
                     </div>
                 </div>
             </v-col>
+            <v-divider></v-divider>
             <v-col cols="12">
                 <div class="flex flex-wrap space-4 mx-4">
                     <div v-for="(image, index) in spot.images" :key="index" class="justify-center">
