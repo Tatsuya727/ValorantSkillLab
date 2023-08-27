@@ -288,6 +288,9 @@ const pageTitle = '作成する';
                     </div>
                 </div>
 
+                <v-alert color="warning" icon="$warning" title="注意" text="現在、サーバーの問題で8MB以上の画像をアップロードすることができません。"></v-alert>
+
+                <!-- 画像 -->
                 <button type="button" @click="addImageForm" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">画像を追加</button>
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div v-for="(image, index) in form.images" :key="index" class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
