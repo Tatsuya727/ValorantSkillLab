@@ -77,6 +77,7 @@ const pageTitle = props.liked ? 'いいねした投稿' : props.selectedCategory
                         :maps="maps"
                         :characters="characters"
                         :tags="tags"
+                        :search="search"
                         :selectedTag="selectedTag"
                         :selectedMap="selectedMap"
                         :selectedCharacter="selectedCharacter"

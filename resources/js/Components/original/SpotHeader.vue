@@ -18,6 +18,10 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    search: {
+        type: String,
+        required: false,
+    },
     selectedTag: {
         type: Object,
         required: false,
@@ -64,7 +68,7 @@ const resetSelectedCharacter = () => {
     Inertia.get(route('spots.index', { selectedMap: props.selectedMap, selectedTag: props.selectedTag, category: props.selectedCategory }));
 };
 
-const search = ref('');
+const search = ref(props.search ? props.search : '');
 
 const searchSpots = () => {
     Inertia.get(route('spots.index', { search: search.value, category: props.selectedCategory }));
@@ -79,7 +83,7 @@ const resetSpots = () => {
     <!-- デスクトップ（モバイル以外） -->
     <v-row v-if="!isMobile">
         <v-col cols="6" class="flex">
-            <v-text-field data-test="search-input" id="name" label="検索" v-model="search" class="ml-5 text-white search-spots" @keyup.enter="searchSpots"></v-text-field>
+            <v-text-field data-test="search-input" id="name" label="検索" v-model="search" clearable="" class="ml-5 text-white search-spots" @keyup.enter="searchSpots"></v-text-field>
             <v-btn @click="searchSpots" class="search-button ml-5 mt-3">検索</v-btn>
             <v-btn v-if="!inCategory" @click="resetSpots" class="ml-2 mt-3" color="red">リセット</v-btn>
             <SpotFilter

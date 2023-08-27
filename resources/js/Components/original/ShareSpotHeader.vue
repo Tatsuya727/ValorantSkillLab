@@ -9,6 +9,7 @@ const props = defineProps({
     characters: Array,
     tags: Array,
     categories: Array,
+    search: String,
     selectedTag: Object,
     selectedMap: Object,
     selectedCharacter: Object,
@@ -41,7 +42,7 @@ const resetSelectedCategory = () => {
     Inertia.get(route('sharespots.index', { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, selectedTag: props.selectedTag }));
 };
 
-const search = ref('');
+const search = ref(props.search ? props.search : '');
 
 const searchSpots = () => {
     Inertia.get(route('sharespots.index', { search: search.value }));
@@ -96,7 +97,7 @@ const resetSpots = () => {
                     </div>
                 </v-col>
                 <v-col cols="6" class="flex">
-                    <v-text-field data-test="search-input" id="name" label="検索" v-model="search" class="ml-5 text-white search-spots" @keyup.enter="searchSpots"></v-text-field>
+                    <v-text-field data-test="search-input" id="name" label="検索" clearable="" v-model="search" class="ml-5 text-white search-spots" @keyup.enter="searchSpots"></v-text-field>
                     <v-btn @click="searchSpots" class="search-button ml-5 mt-3">検索</v-btn>
                     <v-btn @click="resetSpots" class="mx-2 mt-3" color="red">リセット</v-btn>
                 </v-col>
@@ -120,7 +121,7 @@ const resetSpots = () => {
                     </div>
                 </v-col>
                 <v-col cols="12">
-                    <v-text-field data-test="search-input" id="name" label="検索" v-model="search" class="mx-4 text-white search-spots" @keyup.enter="searchSpots"></v-text-field>
+                    <v-text-field data-test="search-input" id="name" label="検索" clearable="" v-model="search" class="mx-4 text-white search-spots" @keyup.enter="searchSpots"></v-text-field>
                 </v-col>
                 <v-col cols="12" class="flex ml-10">
                     <div class="text-grey ml-3 mt-2">

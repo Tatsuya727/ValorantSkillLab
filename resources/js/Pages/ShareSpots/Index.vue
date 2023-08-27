@@ -74,11 +74,12 @@ const pageTitle = props.search ? props.search : 'すべての投稿';
             <v-container fluid>
                 <div class="bg-neutral-700 pt-5 pb-10 mt-2 rounded">
                     <ShareSpotHeader
-                        :selectedTag="props.selectedTag"
                         :maps="props.maps"
                         :characters="props.characters"
                         :tags="props.tags"
                         :categories="props.categories"
+                        :search="props.search"
+                        :selectedTag="props.selectedTag"
                         :selectedMap="props.selectedMap"
                         :selectedCharacter="props.selectedCharacter"
                         :selectedCategory="props.selectedCategory"
