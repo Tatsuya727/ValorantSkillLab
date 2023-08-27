@@ -74,6 +74,14 @@ const items = [
                             </Link>
                         </v-list-item-title>
                     </v-list-item>
+                    <!-- <v-list-item>
+                        <v-list-item-title>
+                            <Link :href="route('users.index')" class="text-black">
+                                <v-icon class="mr-4">mdi-account</v-icon>
+                                ユーザーページ
+                            </Link>
+                        </v-list-item-title>
+                    </v-list-item> -->
                     <v-divider></v-divider>
                     <v-list-item>
                         <v-list-item-title>
