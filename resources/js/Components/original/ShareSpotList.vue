@@ -44,6 +44,14 @@ const props = defineProps({
     },
     flash: Object,
 });
+
+const filterMap = (map) => {
+    Inertia.get(route('sharespots.index', { selectedMap: map }));
+};
+
+const filterCharacter = (character) => {
+    Inertia.get(route('sharespots.index', { selectedCharacter: character }));
+};
 </script>
 
 <template>
@@ -75,21 +83,36 @@ const props = defineProps({
                         <ShareSpotMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
                     </div>
                     <div class="mb-4">
-                        <Link :href="spot.show_url">
-                            <v-tooltip :text="spot.title" location="top">
-                                <template v-slot:activator="{ props }">
-                                    <h2 v-bind="props" class="text-gray-700 text-white spot-title truncate">
-                                        {{ spot.title }}
-                                    </h2>
-                                </template>
-                            </v-tooltip>
-                            <p class="text-sm text-gray-700 text-grey">
-                                map: <span class="font-bold text-white map-name">{{ spot.map.name }}</span>
-                            </p>
-                            <p class="text-sm text-gray-700 text-grey">
-                                character: <span class="font-bold text-white character-name">{{ spot.character.name }}</span>
-                            </p>
-                        </Link>
+                        <v-tooltip :text="spot.title" location="top">
+                            <template v-slot:activator="{ props }">
+                                <h2 v-bind="props" class="text-gray-700 text-white spot-title truncate">
+                                    {{ spot.title }}
+                                </h2>
+                            </template>
+                        </v-tooltip>
+                        <p class="text-sm text-gray-700 text-grey">
+                            map:
+                            <span
+                                :class="{
+                                    'font-bold text-white map-name cursor-pointer hover:underline': !selectedMap,
+                                    'font-bold text-orange-400 map-name cursor-pointer hover:underline': selectedMap,
+                                }"
+                                @click="filterMap(spot.map)"
+                                >{{ spot.map.name }}</span
+                            >
+                        </p>
+                        <p class="text-sm text-gray-700 text-grey">
+                            character:
+                            <span
+                                :class="{
+                                    'font-bold text-white character-name cursor-pointer hover:underline': !selectedCharacter,
+                                    'font-bold text-orange-400 character-name cursor-pointer hover:underline': selectedCharacter,
+                                }"
+                                @click="filterCharacter(spot.character)"
+                            >
+                                {{ spot.character.name }}
+                            </span>
+                        </p>
                         <!-- タグの名前をすべて表示 -->
                         <div class="flex flex-wrap">
                             <LikeButton class="mt-2 mr-2" :spot="spot" />
