@@ -108,6 +108,7 @@ class ShareSpotController extends Controller
             'allSpotsCount' => $allSpotsCount,
             'spotsCount' => $spotsCount,
             'userCategories' => $userCategories,
+            'search' => $search,
             'selectedTag' => $selectedTag,
             'selectedMap' => $selectedMap,
             'selectedCharacter' => $selectedCharacter,

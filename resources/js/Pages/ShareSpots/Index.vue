@@ -38,6 +38,10 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    search: {
+        type: String,
+        required: false,
+    },
     selectedTag: {
         type: Object,
         required: false,
@@ -57,7 +61,8 @@ const props = defineProps({
     flash: Object,
 });
 
-const pageTitle = 'すべての投稿';
+// props.searchがある場合はprops.searchの値を、ない場合は'すべての投稿'を表示
+const pageTitle = props.search ? props.search : 'すべての投稿';
 </script>
 
 <template>

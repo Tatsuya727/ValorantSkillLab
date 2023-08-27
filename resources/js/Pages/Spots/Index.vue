@@ -18,6 +18,10 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    search: {
+        type: String,
+        required: false,
+    },
     selectedTag: {
         type: Object,
         required: false,
@@ -58,7 +62,7 @@ const props = defineProps({
 });
 
 // いいねがある場合はいいねページ、カテゴリーが選択されている場合はカテゴリー名、それ以外はすべて表示
-const pageTitle = props.liked ? 'いいねした投稿' : props.selectedCategory ? props.selectedCategory.name : 'すべて表示';
+const pageTitle = props.liked ? 'いいねした投稿' : props.selectedCategory ? props.selectedCategory.name : props.search ? props.search : 'すべて表示';
 </script>
 
 <template>

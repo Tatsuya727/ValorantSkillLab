@@ -93,6 +93,7 @@ class SpotController extends Controller
             'user' => $user,
             'spots' => $spots,
             'categories' => $categories,
+            'search' => $search,
             'selectedTag' => $selectedTag,
             'selectedMap' => $selectedMap,
             'selectedCharacter' => $selectedCharacter,
