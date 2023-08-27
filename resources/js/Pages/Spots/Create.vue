@@ -288,7 +288,7 @@ const pageTitle = '作成する';
                     </div>
                 </div>
 
-                <v-alert color="warning" icon="$warning" title="注意" text="現在、サーバーの問題で8MB以上の画像をアップロードすることができません。"></v-alert>
+                <v-alert color="warning" icon="$warning" title="注意" text="現在、サーバーの問題で8MB以上の画像をアップロードすることができません。申し訳ございません。"></v-alert>
 
                 <!-- 画像 -->
                 <button type="button" @click="addImageForm" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">画像を追加</button>

@@ -83,7 +83,7 @@ const dialogs = Array(props.spot.images.length)
                                     </div>
                                 </v-card-text>
                                 <v-card-actions>
-                                    <v-btn color="primary" block @click="dialog = false">閉じる</v-btn>
+                                    <v-btn color="primary" block @click="dialogs[index] = false">閉じる</v-btn>
                                 </v-card-actions>
                             </v-card>
                         </v-dialog>
