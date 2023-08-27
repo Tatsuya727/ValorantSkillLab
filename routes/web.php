@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\CharacterController;
+use App\Http\Controllers\UsersController;
 use App\Http\Controllers\SpotController;
 use App\Http\Controllers\ShareSpotController;
 use App\Http\Controllers\CategoryController;
@@ -39,6 +40,9 @@ Route::get('/auth/google/callback', [GoogleLoginController::class, 'handleGoogle
 
 // Route::resource("characters", CharacterController::class)
 // ->middleware(['auth']);
+
+Route::resource("users", UsersController::class)
+->middleware(['auth']);
 
 Route::resource("spots", SpotController::class)
 ->middleware(['auth', 'check.verified']);
