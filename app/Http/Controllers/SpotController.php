@@ -84,6 +84,8 @@ class SpotController extends Controller
             ->paginate(12)
             ->appends($request->all());
 
+        
+
         // 各spotにshow_urlプロパティを追加
         foreach ($spots as $spot) {
             $spot->show_url = route('spots.show', ['spot' => $spot->id]);
