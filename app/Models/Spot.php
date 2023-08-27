@@ -45,6 +45,30 @@ class Spot extends Model
             });
     }
 
+    /**
+     * いいねの数で並べ替えるスコープ
+     */
+    public function scopeOrderByLikes($query, $direction = 'desc')
+    {
+        return $query->withCount('likedBy')->orderBy('liked_by_count', $direction);
+    }
+
+    /**
+     * 作成日で並べ替えるスコープ
+     */
+    public function scopeOrderByCreatedAt($query, $direction = 'desc')
+    {
+        return $query->orderBy('created_at', $direction);
+    }
+
+    /**
+     * カテゴリの数で並べ替えるスコープ
+     */
+    public function scopeOrderByCategories($query, $direction = 'desc')
+    {
+        return $query->withCount('categories')->orderBy('categories_count', $direction);
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);
