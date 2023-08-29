@@ -44,22 +44,99 @@ const props = defineProps({
     },
     flash: Object,
 });
+
+const filterMap = (map) => {
+    Inertia.get(route('sharespots.index', { selectedMap: map }));
+};
+
+const filterCharacter = (character) => {
+    Inertia.get(route('sharespots.index', { selectedCharacter: character }));
+};
+
+const orderBy = ref('');
+
+const handleOrderBy = (item) => {
+    orderBy.value = item;
+    Inertia.get(route('sharespots.index', { orderBy: orderBy.value }));
+};
+
+const orderItems = [
+    {
+        title: 'デフォルト',
+        value: '',
+    },
+    {
+        title: 'いいねの数(多い順)',
+        value: 'likes',
+    },
+    {
+        title: '作成日(新しい順)',
+        value: 'created_at',
+    },
+    {
+        title: '保存された数(多い順)',
+        value: 'categories',
+    },
+];
 </script>
 
 <template>
-    <div>
-        <div v-if="props.spots.data.length === 0" class="mt-10 text-center text-white text-lg title">検索結果無し</div>
-        <div v-else-if="spotsCount < allSpotsCount" class="mt-5 text-center text-white text-lg title">
-            検索結果
-            <span class="text-3xl">{{ props.spotsCount }}</span>
-            件
+    <div class="flex justify-between items-center">
+        <div class="flex-grow text-center">
+            <div v-if="props.spots.data.length === 0" class="mt-10 text-white text-lg title">検索結果無し</div>
+            <div v-else-if="spotsCount < allSpotsCount" class="mt-5 text-white text-lg title">
+                検索結果
+                <span class="text-3xl">{{ props.spotsCount }}</span>
+                件
+            </div>
+            <div v-else class="mt-5 text-white text-lg title">
+                すべての投稿
+                <span class="text-3xl">{{ props.allSpotsCount }}</span>
+                件
+            </div>
         </div>
-        <div v-else class="mt-5 text-center text-white text-lg title">
-            すべての投稿
-            <span class="text-3xl">{{ props.allSpotsCount }}</span>
-            件
+        <div class="mr-5">
+            <v-menu>
+                <template v-slot:activator="{ props }">
+                    <v-btn color="" v-bind="props"><v-icon>mdi-sort-variant</v-icon>並べ替え</v-btn>
+                </template>
+                <v-list>
+                    <v-list-item v-for="(orderItem, index) in orderItems" :key="index" :value="index">
+                        <v-list-item-title @click="handleOrderBy(orderItem.value)">{{ orderItem.title }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </div>
     </div>
+
+    <!-- 
+    <v-btn @click="selectOrder('likes')">いいね</v-btn>
+    <v-btn @click="selectOrder('created_at')">作成日</v-btn>
+    <v-btn @click="selectOrder('categories')">カテゴリ</v-btn> -->
+
+    <!-- <div class="mt-5 mb-5 flex items-center">
+        <label for="sort" class="text-white mr-3">並べ替え: </label>
+        <v-select
+            id="sort"
+            v-model="orderBy"
+            @change="handleOrderBy"
+            :items="['', 'likes', 'created_at', 'categories']"
+            :menu-props="{ 'offset-y': true }"
+            class="w-64"
+            outlined
+            dense
+            :item-text="
+                (item) =>
+                    ({
+                        '': 'デフォルト',
+                        likes: 'いいねの数',
+                        created_at: '作成日',
+                        categories: 'カテゴリの数',
+                    }[item])
+            "
+        ></v-select>
+    </div> -->
+
     <Pagination class="mt-5 text-white" :links="props.spots.links"></Pagination>
 
     <v-row justify="center" class="mx-3">
@@ -75,21 +152,36 @@ const props = defineProps({
                         <ShareSpotMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
                     </div>
                     <div class="mb-4">
-                        <Link :href="spot.show_url">
-                            <v-tooltip :text="spot.title" location="top">
-                                <template v-slot:activator="{ props }">
-                                    <h2 v-bind="props" class="text-gray-700 text-white spot-title truncate">
-                                        {{ spot.title }}
-                                    </h2>
-                                </template>
-                            </v-tooltip>
-                            <p class="text-sm text-gray-700 text-grey">
-                                map: <span class="font-bold text-white map-name">{{ spot.map.name }}</span>
-                            </p>
-                            <p class="text-sm text-gray-700 text-grey">
-                                character: <span class="font-bold text-white character-name">{{ spot.character.name }}</span>
-                            </p>
-                        </Link>
+                        <v-tooltip :text="spot.title" location="top">
+                            <template v-slot:activator="{ props }">
+                                <h2 v-bind="props" class="text-gray-700 text-white spot-title truncate">
+                                    {{ spot.title }}
+                                </h2>
+                            </template>
+                        </v-tooltip>
+                        <p class="text-sm text-gray-700 text-grey">
+                            map:
+                            <span
+                                :class="{
+                                    'font-bold text-white map-name cursor-pointer hover:underline': !selectedMap,
+                                    'font-bold text-orange-400 map-name cursor-pointer hover:underline': selectedMap,
+                                }"
+                                @click="filterMap(spot.map)"
+                                >{{ spot.map.name }}</span
+                            >
+                        </p>
+                        <p class="text-sm text-gray-700 text-grey">
+                            character:
+                            <span
+                                :class="{
+                                    'font-bold text-white character-name cursor-pointer hover:underline': !selectedCharacter,
+                                    'font-bold text-orange-400 character-name cursor-pointer hover:underline': selectedCharacter,
+                                }"
+                                @click="filterCharacter(spot.character)"
+                            >
+                                {{ spot.character.name }}
+                            </span>
+                        </p>
                         <!-- タグの名前をすべて表示 -->
                         <div class="flex flex-wrap">
                             <LikeButton class="mt-2 mr-2" :spot="spot" />

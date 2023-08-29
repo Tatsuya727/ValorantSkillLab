@@ -21,7 +21,9 @@ class ShareSpotController extends Controller
         $selectedCharacter = $request->query('selectedCharacter');
         $selectedCategory = $request->query('category');
 
-        $spots = Spot::with(['images', 'map', 'character', 'tags', 'user', 'categories'])
+        $orderBy = $request->query('orderBy');
+
+        $spotsQuery  = Spot::with(['images', 'map', 'character', 'tags', 'user', 'categories'])
             ->where('is_public', true)
             ->withCount('likedBy')
             ->searchSpot($search)
@@ -44,9 +46,25 @@ class ShareSpotController extends Controller
                 return $query->whereHas('categories', function ($query) use ($selectedCategory) {
                     $query->where('categories.name', $selectedCategory['name']);
                 });
-            })
-            ->paginate(12)
-            ->appends($request->all());
+            });
+
+        switch ($orderBy) {
+            case 'likes':
+                $spotsQuery->orderByLikes();
+                break;
+            case 'created_at':
+                $spotsQuery->orderByCreatedAt();
+                break;
+            case 'categories':
+                $spotsQuery->orderByCategories();
+                break;
+            default:
+                break;
+        }
+        
+        $spots = $spotsQuery
+        ->paginate(12)
+        ->appends($request->all());
 
 
         // 各spotにis_liked_by_userプロパティを追加
@@ -108,6 +126,7 @@ class ShareSpotController extends Controller
             'allSpotsCount' => $allSpotsCount,
             'spotsCount' => $spotsCount,
             'userCategories' => $userCategories,
+            'search' => $search,
             'selectedTag' => $selectedTag,
             'selectedMap' => $selectedMap,
             'selectedCharacter' => $selectedCharacter,

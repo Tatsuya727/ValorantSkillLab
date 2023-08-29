@@ -44,7 +44,9 @@ const items = [
         <v-spacer></v-spacer>
 
         <div class="mr-5 flex">
-            <v-btn v-if="!isMobile" class="mr-5 border bg-green" prepend-icon="mdi-pencil" @click="Inertia.get(route('spots.create'))">作成する</v-btn>
+            <Link :href="route('spots.create')">
+                <v-btn v-if="!isMobile" class="mr-5 border bg-green" prepend-icon="mdi-pencil">作成する</v-btn>
+            </Link>
 
             <Link :href="route('login')" v-if="!$page.props.auth.user">
                 <v-btn class="border bg-blue">ログイン </v-btn>

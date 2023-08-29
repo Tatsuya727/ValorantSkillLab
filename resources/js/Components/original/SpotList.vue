@@ -1,6 +1,7 @@
 <script setup>
 import { Link } from '@inertiajs/inertia-vue3';
-import { defineEmits, ref, computed } from 'vue';
+import { computed } from 'vue';
+import { Inertia } from '@inertiajs/inertia';
 import SpotTags from '@/Components/original/SpotTags.vue';
 import SpotMenu from '@/Components/original/SpotMenu.vue';
 
@@ -48,6 +49,14 @@ const props = defineProps({
 const noSelected = computed(() => {
     return !props.selectedMap && !props.selectedCharacter && !props.selectedTag && !props.selectedCategory && !props.liked;
 });
+
+const filterMap = (map) => {
+    Inertia.get(route('spots.index', { selectedMap: map, category: props.selectedCategory }));
+};
+
+const filterCharacter = (character) => {
+    Inertia.get(route('spots.index', { selectedCharacter: character, category: props.selectedCategory }));
+};
 </script>
 
 <template>
@@ -82,10 +91,26 @@ const noSelected = computed(() => {
                                 </v-tooltip>
 
                                 <p class="text-sm text-gray-700 text-grey">
-                                    map: <span class="font-bold text-white map-name">{{ spot.map.name }}</span>
+                                    map:
+                                    <span
+                                        :class="{
+                                            'font-bold text-white map-name cursor-pointer hover:underline': !selectedMap,
+                                            'font-bold text-orange-400 map-name cursor-pointer hover:underline': selectedMap,
+                                        }"
+                                        @click="filterMap(spot.map)"
+                                        >{{ spot.map.name }}</span
+                                    >
                                 </p>
                                 <p class="text-sm text-gray-700 text-grey">
-                                    character: <span class="font-bold text-white character-name">{{ spot.character.name }}</span>
+                                    character:
+                                    <span
+                                        :class="{
+                                            'font-bold text-white character-name cursor-pointer hover:underline': !selectedCharacter,
+                                            'font-bold text-orange-400 character-name cursor-pointer hover:underline': selectedCharacter,
+                                        }"
+                                        @click="filterCharacter(spot.character)"
+                                        >{{ spot.character.name }}</span
+                                    >
                                 </p>
                                 <!-- タグの名前をすべて表示 -->
                                 <div class="flex flex-wrap mt-2">
