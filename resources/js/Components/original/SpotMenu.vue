@@ -4,7 +4,7 @@ import { Inertia } from '@inertiajs/inertia';
 import StoreCategory from '@/Components/original/StoreCategory.vue';
 
 const props = defineProps({
-    user: {
+    currentUser: {
         type: Object,
         required: true,
     },
@@ -20,7 +20,7 @@ const props = defineProps({
 });
 
 // spotの作成者がログインユーザーであるかどうか
-const isMySpot = props.spot.user_id === props.user.id;
+const isMySpot = props.spot.user_id === props.currentUser.id;
 
 const deleteSpotId = ref(null);
 

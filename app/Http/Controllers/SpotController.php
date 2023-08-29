@@ -24,7 +24,7 @@ class SpotController extends Controller
      */
     public function index(Request $request)
     {
-        $user = auth()->user();
+        $currentUser = auth()->user();
         $characters = Character::all();
         $maps = Map::all();
         $tags = Tag::all();
@@ -35,6 +35,7 @@ class SpotController extends Controller
         $selectedCharacter = $request->query('selectedCharacter');
         $selectedCategory = $request->query('category');
         $liked = $request->query('liked');
+        $userId = $request->query('user_id');
 
         // ログインしているユーザーのカテゴリーを取得
         if(auth()->check()) {
@@ -81,6 +82,9 @@ class SpotController extends Controller
                     $query->where('categories.id', $selectedCategory['id']);
                 });
             })
+            ->when($userId, function ($query, $userId) {
+                return $query->where('user_id', $userId);
+            })
             ->paginate(12)
             ->appends($request->all());
 
@@ -92,7 +96,7 @@ class SpotController extends Controller
         }        
 
         return Inertia::render('Spots/Index', [
-            'user' => $user,
+            'currentUser' => $currentUser,
             'spots' => $spots,
             'categories' => $categories,
             'search' => $search,
