@@ -38,6 +38,9 @@ const form = reactive({
     map_id: props.spot.map_id,
     character_id: props.spot.character_id,
     images: props.spot.images,
+    tags: props.spot.tags.map((tag) => tag.id),
+    is_public: props.spot.is_public,
+    categories: props.spot.categories[0].id,
 });
 
 const updateSpot = (id) => {
@@ -62,7 +65,8 @@ const updateSpot = (id) => {
     Inertia.put(`/spots/${id}`, formData);
 };
 
-const selectedTag = ref(null);
+// prop.spot.tagsのIDを初期値として設定
+const selectedTag = ref(props.spot.tags.map((tag) => tag.id));
 
 const addTag = () => {
     if (selectedTag.value && !form.tags.includes(selectedTag.value.id)) {
@@ -134,6 +138,8 @@ const pageTitle = '編集する';
                         <v-switch v-model="form.is_public" :label="form.is_public ? '公開' : '非公開'" color="green" inset></v-switch>
                     </div>
                 </div>
+                <div>{{ selectedTag }}</div>
+                <div>{{ form.categories }}</div>
 
                 <!-- タイトル -->
                 <div class="flex flex-wrap mb-6">

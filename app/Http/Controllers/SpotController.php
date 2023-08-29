@@ -229,7 +229,8 @@ class SpotController extends Controller
      */
     public function edit(Spot $spot)
     {
-        $spot = Spot::with('images')->find($spot->id);
+        $spot = Spot::with('images', 'tags', 'categories')
+                ->find($spot->id);
         $maps = Map::all();
         $characters = Character::all();
         $categories = Category::where('user_id', auth()->id())->get();
