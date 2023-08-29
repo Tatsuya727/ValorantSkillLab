@@ -48,22 +48,23 @@ class ShareSpotController extends Controller
                 });
             });
 
-            switch ($orderBy) {
-                case 'likes':
-                    $spotsQuery->orderByLikes();
-                    break;
-                case 'created_at':
-                    $spotsQuery->orderByCreatedAt();
-                    break;
-                case 'categories':
-                    $spotsQuery->orderByCategories();
-                    break;
-                default:
-                    break;
-            }
-            $spots = $spotsQuery
-            ->paginate(12)
-            ->appends($request->all());
+        switch ($orderBy) {
+            case 'likes':
+                $spotsQuery->orderByLikes();
+                break;
+            case 'created_at':
+                $spotsQuery->orderByCreatedAt();
+                break;
+            case 'categories':
+                $spotsQuery->orderByCategories();
+                break;
+            default:
+                break;
+        }
+        
+        $spots = $spotsQuery
+        ->paginate(12)
+        ->appends($request->all());
 
 
         // 各spotにis_liked_by_userプロパティを追加

@@ -52,22 +52,90 @@ const filterMap = (map) => {
 const filterCharacter = (character) => {
     Inertia.get(route('sharespots.index', { selectedCharacter: character }));
 };
+
+const orderBy = ref('');
+
+const handleOrderBy = (item) => {
+    orderBy.value = item;
+    Inertia.get(route('sharespots.index', { orderBy: orderBy.value }));
+};
+
+const orderItems = [
+    {
+        title: 'デフォルト',
+        value: '',
+    },
+    {
+        title: 'いいねの数',
+        value: 'likes',
+    },
+    {
+        title: '作成日',
+        value: 'created_at',
+    },
+    {
+        title: 'カテゴリの数',
+        value: 'categories',
+    },
+];
 </script>
 
 <template>
-    <div>
-        <div v-if="props.spots.data.length === 0" class="mt-10 text-center text-white text-lg title">検索結果無し</div>
-        <div v-else-if="spotsCount < allSpotsCount" class="mt-5 text-center text-white text-lg title">
-            検索結果
-            <span class="text-3xl">{{ props.spotsCount }}</span>
-            件
+    <div class="flex justify-between">
+        <div>
+            <div v-if="props.spots.data.length === 0" class="mt-10 text-center text-white text-lg title">検索結果無し</div>
+            <div v-else-if="spotsCount < allSpotsCount" class="mt-5 text-center text-white text-lg title">
+                検索結果
+                <span class="text-3xl">{{ props.spotsCount }}</span>
+                件
+            </div>
+            <div v-else class="mt-5 text-center text-white text-lg title">
+                すべての投稿
+                <span class="text-3xl">{{ props.allSpotsCount }}</span>
+                件
+            </div>
         </div>
-        <div v-else class="mt-5 text-center text-white text-lg title">
-            すべての投稿
-            <span class="text-3xl">{{ props.allSpotsCount }}</span>
-            件
+        <div class="text-right">
+            <v-menu>
+                <template v-slot:activator="{ props }">
+                    <v-btn color="primary" v-bind="props"><v-icon>mdi-sort-variant</v-icon></v-btn>
+                </template>
+                <v-list>
+                    <v-list-item v-for="(orderItem, index) in orderItems" :key="index" :value="index">
+                        <v-list-item-title @click="handleOrderBy(orderItem.value)">{{ orderItem.title }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </div>
     </div>
+    <!-- 
+    <v-btn @click="selectOrder('likes')">いいね</v-btn>
+    <v-btn @click="selectOrder('created_at')">作成日</v-btn>
+    <v-btn @click="selectOrder('categories')">カテゴリ</v-btn> -->
+
+    <!-- <div class="mt-5 mb-5 flex items-center">
+        <label for="sort" class="text-white mr-3">並べ替え: </label>
+        <v-select
+            id="sort"
+            v-model="orderBy"
+            @change="handleOrderBy"
+            :items="['', 'likes', 'created_at', 'categories']"
+            :menu-props="{ 'offset-y': true }"
+            class="w-64"
+            outlined
+            dense
+            :item-text="
+                (item) =>
+                    ({
+                        '': 'デフォルト',
+                        likes: 'いいねの数',
+                        created_at: '作成日',
+                        categories: 'カテゴリの数',
+                    }[item])
+            "
+        ></v-select>
+    </div> -->
+
     <Pagination class="mt-5 text-white" :links="props.spots.links"></Pagination>
 
     <v-row justify="center" class="mx-3">
