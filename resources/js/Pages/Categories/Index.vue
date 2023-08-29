@@ -27,6 +27,10 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    currentUser: {
+        type: Object,
+        required: true,
+    },
 });
 
 const selectedCategory = ref(null);
@@ -111,6 +115,13 @@ const pageTitle = 'マイページ';
                             <div class="ml-4 cursor-pointer text-center flex items-center justify-center relative" @click="Inertia.get(route('spots.index', { liked: true }))">
                                 <div class="w-full h-52 bg-gray-400 mr-4 rounded"></div>
                                 <div class="absolute cursor-pointer text-white text-xl font-bold font-sans">いいね</div>
+                            </div>
+                        </v-col>
+                        <!-- 自分が作成したspotを表示するカード -->
+                        <v-col cols="12" sm="6" md="4" lg="3" class="mt-10">
+                            <div class="ml-4 cursor-pointer text-center flex items-center justify-center relative" @click="Inertia.get(route('spots.index', { user_id: currentUser.id }))">
+                                <div class="w-full h-52 bg-gray-400 mr-4 rounded"></div>
+                                <div class="absolute cursor-pointer text-white text-xl font-bold font-sans">自分の投稿</div>
                             </div>
                         </v-col>
                     </v-row>
