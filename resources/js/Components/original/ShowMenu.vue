@@ -98,11 +98,11 @@ const publicDialog = ref(false);
                     <v-btn class="mt-5" icon="mdi-dots-horizontal" v-bind="props"></v-btn>
                 </template>
                 <v-list>
-                    <!-- <v-list-item>
+                    <v-list-item>
                         <Link :href="`/spots/${spot.id}/edit`">
                             <v-list-item-title class="text-black"><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
                         </Link>
-                    </v-list-item> -->
+                    </v-list-item>
                     <v-list-item>
                         <v-list-item-title @click="saveDialog = true" class="cursor-pointer open-update-dialog"><v-icon class="mr-2">mdi-content-save-all</v-icon>保存する</v-list-item-title>
                     </v-list-item>

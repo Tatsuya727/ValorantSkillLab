@@ -232,13 +232,23 @@ class SpotController extends Controller
         $spot = Spot::with('images')->find($spot->id);
         $maps = Map::all();
         $characters = Character::all();
+        $categories = Category::where('user_id', auth()->id())->get();
+        
+        $tags = Tag::all();
 
-        $spot->show_url = route('spots.show', ['spot' => $spot->id]);
+        // tagにそのタグを持つspotの数を追加
+        foreach ($tags as $tag) {
+            $tag->spotCount = Spot::whereHas('tags', function ($query) use ($tag) {
+                $query->where('name', $tag->name);
+            })->count();
+        }
 
         return Inertia::render('Spots/Edit', [
             'spot' => $spot,
             'maps' => $maps,
             'characters' => $characters,
+            'categories' => $categories,
+            'tags' => $tags,
         ]);
     }
 
