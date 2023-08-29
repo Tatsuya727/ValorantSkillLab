@@ -62,7 +62,7 @@ class Spot extends Model
     }
 
     /**
-     * カテゴリの数で並べ替えるスコープ
+     * カテゴリーの数で並べ替えるスコープ
      */
     public function scopeOrderByCategories($query, $direction = 'desc')
     {
