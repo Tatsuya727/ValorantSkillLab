@@ -78,7 +78,7 @@ const storeSpot = () => {
             formData.append(`tags[${index}]`, tagId);
         });
 
-        Inertia.post('/spots', formData, {
+        Inertia.post(route('spots.store'), formData, {
             onSuccess: () => {
                 console.log('onSuccess');
             },

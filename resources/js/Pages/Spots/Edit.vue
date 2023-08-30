@@ -1,8 +1,8 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import NavBar from '@/Components/original/NavBar.vue';
-import { computed, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
     spot: {
@@ -41,7 +41,7 @@ const form = reactive({
     is_public: props.spot.is_public,
     categories: props.spot.categories[0].id,
     images: props.spot.images.map((image) => ({
-        image_path: image.image_path,
+        file: image.image_path,
         preview: image.image_path,
         description: image.description,
     })),
@@ -49,11 +49,73 @@ const form = reactive({
 
 const updateSpot = () => {
     Inertia.put(route('spots.update', { spot: props.spot.id }), form, {
+        onSuccess: () => {
+            // formの中身をすべて表示する
+            for (let [key, value] of Object.entries(form)) {
+                console.log(`${key}: ${value}`);
+            }
+        },
         onError: (error) => {
             console.log(error);
+            // formの中身をすべて表示する
+            for (let [key, value] of Object.entries(form)) {
+                console.log(`${key}: ${value}`);
+            }
         },
     });
 };
+
+// const updateSpot = () => {
+//     try {
+//         const formData = new FormData();
+//         formData.append('title', form.title);
+//         formData.append('description', form.description);
+//         formData.append('map_id', form.map_id);
+//         formData.append('character_id', form.character_id);
+//         formData.append('is_public', form.is_public);
+//         formData.append('categories', form.categories);
+
+//         form.images.forEach((image, index) => {
+//             if (image.file) {
+//                 formData.append(`images[${index}][image_path]`, image.file);
+//             }
+//             if (image.description) {
+//                 formData.append(`images[${index}][description]`, image.description);
+//             }
+//         });
+
+//         form.tags.forEach((tag, index) => {
+//             formData.append(`tags[${index}]`, tag);
+//         });
+
+//         formData.append('_method', 'PUT');
+
+//         console.log(formData);
+//         for (let [key, value] of formData.entries()) {
+//             console.log(`${key}: ${value}`);
+//         }
+
+//         Inertia.put(route('spots.update', { spot: props.spot.id }), formData, {
+//             onSuccess: () => {
+//                 // formの中身をすべて表示する
+//                 for (let [key, value] of Object.entries(form)) {
+//                     console.log(`${key}: ${value}`);
+//                 }
+//             },
+//             onError: (error) => {
+//                 console.log(error);
+//                 // formの中身をすべて表示する
+//                 for (let [key, value] of Object.entries(form)) {
+//                     console.log(`${key}: ${value}`);
+//                 }
+//             },
+//             replace: false,
+//             preserveState: true,
+//         });
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
 
 // prop.spot.tagsのIDを初期値として設定
 const selectedTag = ref(props.spot.tags.map((tag) => tag.id));
@@ -69,23 +131,23 @@ const removeTag = (tag) => {
     form.tags = form.tags.filter((t) => t !== tag);
 };
 
-const onFileChange = (e, image) => {
-    image.file = e.target.files[0];
+// const onFileChange = (e, image) => {
+//     image.file = e.target.files[0];
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        image.preview = e.target.result;
-    };
-    reader.readAsDataURL(image.file);
-};
+//     const reader = new FileReader();
+//     reader.onload = (e) => {
+//         image.preview = e.target.result;
+//     };
+//     reader.readAsDataURL(image.file);
+// };
 
-const addImageForm = () => {
-    form.images.push({ image_path: null, description: null });
-};
+// const addImageForm = () => {
+//     form.images.push({ image_path: null, description: null });
+// };
 
-const removeImageForm = (index) => {
-    form.images.splice(index, 1);
-};
+// const removeImageForm = (index) => {
+//     form.images.splice(index, 1);
+// };
 
 const searchQuery = ref(''); // タグの検索クエリ
 
@@ -245,7 +307,7 @@ const pageTitle = '編集する';
                     </div>
                 </div>
 
-                <v-alert color="warning" icon="$warning" title="注意" text="現在、サーバーの問題で8MB以上の画像をアップロードすることができません。申し訳ございません。"></v-alert>
+                <!-- <v-alert color="warning" icon="$warning" title="注意" text="現在、サーバーの問題で8MB以上の画像をアップロードすることができません。申し訳ございません。"></v-alert> -->
 
                 <!-- 画像 -->
                 <button type="button" @click="addImageForm" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">画像を追加</button>
@@ -255,17 +317,18 @@ const pageTitle = '編集する';
                             <label class="mb-2 inline-block text-white dark:text-neutral-200 font-bold" for="image_path">
                                 {{ index === 0 ? '結果' : index === 1 ? 'ポジション' : '追加' + (index - 1) }}
                                 <span v-if="index === 0 || index === 1" class="text-red-500">*</span>
+                                <span class="ml-5 text-orange">画像の変更はできません。</span>
                             </label>
-                            <input
+                            <!-- <input
                                 class="cursor-pointer relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
                                 type="file"
                                 name="image_path"
                                 @change="(e) => onFileChange(e, image)"
                             />
-                            <div v-if="errors.images && errors.images[index]" class="text-red-500 mt-2">{{ errors.images[index].image_path }}</div>
+                            <div v-if="errors.images && errors.images[index]" class="text-red-500 mt-2">{{ errors.images[index].image_path }}</div> -->
                             <!-- 画像を選択するとプレビューを表示 -->
                             <img :src="image.preview" v-if="image.preview" class="mt-2 w-full h-auto" />
-                            <button v-if="index >= 2" type="button" @click="removeImageForm(index)" class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">削除</button>
+                            <!-- <button v-if="index >= 2" type="button" @click="removeImageForm(index)" class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">削除</button> -->
                         </div>
 
                         <label for="description" class="block text-sm font-medium text-white mb-2">説明</label>
