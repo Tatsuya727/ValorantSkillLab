@@ -70,6 +70,7 @@ class ShareSpotController extends Controller
         // 各spotにis_liked_by_userプロパティを追加
         foreach ($spots as $spot) {
             $spot->is_liked_by_user = $spot->likedBy->contains(auth()->id());
+            
         }
 
         // 検索条件に合致する全てのspotを取得
