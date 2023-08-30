@@ -23,10 +23,12 @@ const props = defineProps({
 
 const { isMobile } = useMobileDetection();
 
+const selectedTag = ref('');
+
 // タグを選択するとそのタグのスポットのみ表示する
 const filterSpotsByTag = (tag) => {
-    props.selectedTag = tag;
-    Inertia.get(route(props.routeName), { selectedTag: props.selectedTag });
+    selectedTag.value = tag;
+    Inertia.get(route(props.routeName), { selectedTag: selectedTag.value });
 };
 
 // props.spot.imagesの数だけdialog(index)を作成
