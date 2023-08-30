@@ -138,6 +138,9 @@ class ShareSpotController extends Controller
     {
         $spot = Spot::with(['images', 'tags', 'user', 'categories'])->find($spot->id);
 
+        $spot->is_liked_by_user = $spot->likedBy->contains(auth()->id());
+        $spot->liked_by_count = $spot->likedBy->count();
+
         // ログインしているユーザーのカテゴリーを取得
         if(auth()->check()) {
             $userCategories = auth()->user()->categories;

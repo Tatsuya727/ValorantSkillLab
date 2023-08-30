@@ -6,7 +6,7 @@ import SpotTags from '@/Components/original/SpotTags.vue';
 import SpotMenu from '@/Components/original/SpotMenu.vue';
 
 const props = defineProps({
-    user: {
+    currentUser: {
         type: Object,
         required: true,
     },
@@ -79,7 +79,7 @@ const filterCharacter = (character) => {
                         <!-- 情報 -->
                         <div class="p-4 bg-neutral-800">
                             <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
-                                <SpotMenu :user="user" :spot="spot" :userCategories="userCategories" :flash="flash" />
+                                <SpotMenu :currentUser="currentUser" :spot="spot" :userCategories="userCategories" :flash="flash" />
                             </div>
                             <div>
                                 <v-tooltip :text="spot.title" location="top">

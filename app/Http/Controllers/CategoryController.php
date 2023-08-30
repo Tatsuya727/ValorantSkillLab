@@ -24,9 +24,11 @@ class CategoryController extends Controller
                     });
             })
             ->get();
+
         $tags = Tag::all();
         $maps = Map::all();
         $characters = Character::all();
+        $currentUser = auth()->user();
 
         return Inertia::render('Categories/Index', [
             'categories' => $categories,
@@ -34,6 +36,7 @@ class CategoryController extends Controller
             'tags' => $tags,
             'maps' => $maps,
             'characters' => $characters,
+            'currentUser' => $currentUser,
         ]);
     }
 

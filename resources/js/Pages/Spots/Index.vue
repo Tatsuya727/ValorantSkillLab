@@ -6,7 +6,7 @@ import { defineProps, ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
 
 const props = defineProps({
-    user: {
+    currentUser: {
         type: Object,
         required: true,
     },
@@ -86,7 +86,7 @@ const pageTitle = props.liked ? 'いいねした投稿' : props.selectedCategory
                     />
 
                     <SpotList
-                        :user="user"
+                        :currentUser="currentUser"
                         :spots="spots"
                         :categories="categories"
                         :selectedMap="selectedMap"

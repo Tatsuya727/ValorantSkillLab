@@ -45,9 +45,6 @@ const pageTitle = 'ログイン';
     <v-app>
         <NavBar :pageTitle="pageTitle" />
         <GuestLayout :class="{ 'mt-15 ': isMobile }">
-            <!-- <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-                {{ status }}
-            </div> -->
             <v-form @submit.prevent="submit" class="mt-5">
                 <v-text-field label="メールアドレス" v-model="form.email" required autofocus autocomplete="username" :error-messages="form.errors.email" @keyup.enter="submit"></v-text-field>
                 <div v-if="emailError" class="text-red" v-for="error in emailError">・{{ error }}</div>
@@ -62,26 +59,32 @@ const pageTitle = 'ログイン';
                 ></v-text-field>
                 <div v-if="passwordError" class="text-red" v-for="error in passwordError">・{{ error }}</div>
                 <v-checkbox v-model="form.remember" label="ログインしたままにする"></v-checkbox>
-                <div class="flex items-center justify-between mt-4">
+                <v-btn size="x-large" block color="success" @click="submit"> ログイン </v-btn>
+            </v-form>
+
+            <div class="flex flex-col items-center mt-4">
+                <div class="mt-4">
                     <Link
                         v-if="canResetPassword"
                         :href="route('password.request')"
-                        class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 block mb-2"
                     >
                         パスワードをお忘れの場合
                     </Link>
-                    <v-btn :disabled="form.processing" color="success" class="ml-4" @click="submit"> ログイン </v-btn>
+                    <Link
+                        :href="route('register')"
+                        class="mt-4 underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 block"
+                    >
+                        アカウントを作成する
+                    </Link>
                 </div>
-            </v-form>
 
-            <div class="flex items-center mt-4">
-                <Link :href="route('register')">
-                    <v-btn color="blue">アカウントを作成する</v-btn>
-                </Link>
-                <!-- google login -->
-                <Link :href="route('login.google')">
-                    <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" style="margin-left: 3em" />
-                </Link>
+                <div class="flex justify-center items-center mt-10">
+                    <!-- google login -->
+                    <Link :href="route('login.google')">
+                        <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" />
+                    </Link>
+                </div>
             </div>
         </GuestLayout>
     </v-app>

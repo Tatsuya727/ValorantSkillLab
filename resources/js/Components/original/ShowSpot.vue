@@ -1,5 +1,4 @@
 <script setup>
-import ImageModal from '@/Components/original/ImageModal.vue';
 import ShowMenu from '@/Components/original/ShowMenu.vue';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
@@ -23,10 +22,12 @@ const props = defineProps({
 
 const { isMobile } = useMobileDetection();
 
+const selectedTag = ref('');
+
 // タグを選択するとそのタグのスポットのみ表示する
 const filterSpotsByTag = (tag) => {
-    props.selectedTag = tag;
-    Inertia.get(route(props.routeName), { selectedTag: props.selectedTag });
+    selectedTag.value = tag;
+    Inertia.get(route(props.routeName), { selectedTag: selectedTag.value });
 };
 
 // props.spot.imagesの数だけdialog(index)を作成
@@ -55,7 +56,7 @@ const dialogs = Array(props.spot.images.length)
             <v-divider></v-divider>
             <!-- デスクトップ -->
             <v-col v-if="!isMobile" cols="12">
-                <div class="flex space-4 mx-4">
+                <div class="flex flex-wrap space-4 mx-4">
                     <div v-for="(image, index) in spot.images" :key="index" class="justify-center">
                         <v-dialog :v-model="dialogs[index]" width="auto">
                             <template v-slot:activator="{ props }">

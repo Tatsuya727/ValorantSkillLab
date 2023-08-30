@@ -24,7 +24,7 @@ class SpotController extends Controller
      */
     public function index(Request $request)
     {
-        $user = auth()->user();
+        $currentUser = auth()->user();
         $characters = Character::all();
         $maps = Map::all();
         $tags = Tag::all();
@@ -35,6 +35,7 @@ class SpotController extends Controller
         $selectedCharacter = $request->query('selectedCharacter');
         $selectedCategory = $request->query('category');
         $liked = $request->query('liked');
+        $userId = $request->query('user_id');
 
         // ログインしているユーザーのカテゴリーを取得
         if(auth()->check()) {
@@ -81,6 +82,9 @@ class SpotController extends Controller
                     $query->where('categories.id', $selectedCategory['id']);
                 });
             })
+            ->when($userId, function ($query, $userId) {
+                return $query->where('user_id', $userId);
+            })
             ->paginate(12)
             ->appends($request->all());
 
@@ -92,7 +96,7 @@ class SpotController extends Controller
         }        
 
         return Inertia::render('Spots/Index', [
-            'user' => $user,
+            'currentUser' => $currentUser,
             'spots' => $spots,
             'categories' => $categories,
             'search' => $search,
@@ -207,6 +211,9 @@ class SpotController extends Controller
     {
         $spot = Spot::with(['images', 'tags', 'user', 'categories'])->find($spot->id);
 
+        $spot->is_liked_by_user = $spot->likedBy->contains(auth()->id());
+        $spot->liked_by_count = $spot->likedBy->count();
+
         // ログインしているユーザーのカテゴリーを取得
         if(auth()->check()) {
             $userCategories = auth()->user()->categories;
@@ -225,16 +232,27 @@ class SpotController extends Controller
      */
     public function edit(Spot $spot)
     {
-        $spot = Spot::with('images')->find($spot->id);
+        $spot = Spot::with('images', 'tags', 'categories')
+                ->find($spot->id);
         $maps = Map::all();
         $characters = Character::all();
+        $categories = Category::where('user_id', auth()->id())->get();
+        
+        $tags = Tag::all();
 
-        $spot->show_url = route('spots.show', ['spot' => $spot->id]);
+        // tagにそのタグを持つspotの数を追加
+        foreach ($tags as $tag) {
+            $tag->spotCount = Spot::whereHas('tags', function ($query) use ($tag) {
+                $query->where('name', $tag->name);
+            })->count();
+        }
 
         return Inertia::render('Spots/Edit', [
             'spot' => $spot,
             'maps' => $maps,
             'characters' => $characters,
+            'categories' => $categories,
+            'tags' => $tags,
         ]);
     }
 
@@ -243,52 +261,69 @@ class SpotController extends Controller
      */
     public function update(UpdateSpotRequest $request, Spot $spot)
     {
-        
-        // DB::transaction(function () use ($request, $spot) {
-        //     $spot->update([
-        //         'title' => $request->title,
-        //         'description' => $request->description,
-        //         'map_id' => $request->map_id,
-        //         'character_id' => $request->character_id,
-        //     ]);
-    
-        //     foreach ($request->images as $index => $image) {
-        //         // 新しい画像があれば更新、なければ既存の画像をそのまま使う
-        //         if (isset($image['image_path'])) {
-        //             // 新しい画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
-        //             $image_path = Storage::putFileAs(
-        //                 'public/images',
-        //                 $image['image_path'],
-        //                 Str::random(20) . '.' . $image['image_path']->extension()
-        //             );
-    
-        //             // $image_pathの先頭のpublicをstorageに変更
-        //             $image_path = str_replace('public/', '', $image_path);
-        //             $image_path = "/storage/" . $image_path;
-    
-        //             // 既存の画像があれば更新、なければ新規作成
-        //             if (isset($spot->images[$index])) {
-        //                 $spot->images[$index]->update([
-        //                     'image_path' => $image_path,
-        //                     'description' => $image['description'] ?? null,
-        //                 ]);
-        //             } else {
-        //                 $spot->images()->create([
-        //                     'spot_id' => $spot->id,
-        //                     'image_path' => $image_path,
-        //                     'description' => $image['description'] ?? null,
-        //                 ]);
-        //             }
-        //         } else if (isset($spot->images[$index])) {
-        //             // 画像がアップロードされていない場合でも、説明があれば更新
-        //             $spot->images[$index]->update([
-        //                 'description' => $image['description'] ?? null,
-        //             ]);
-        //         }
-        //     }
-        // });
-    
-        // return redirect()->route('spots.show', ['spot' => $spot->id]);
+        // dd($request->all());
+        DB::transaction(function () use ($request, $spot) {
+            $spot->title = $request->title;
+            $spot->description = $request->description;
+            $spot->map_id = $request->map_id;
+            $spot->character_id = $request->character_id;
+            $spot->is_public = $request->is_public;
+            $spot->save();
+
+            // タグの保存
+            if($request->tags) {
+                $spot->tags()->sync($request->tags);
+            }
+
+            // カテゴリーの保存
+            if ($request->categories) {
+                $spot->categories()->sync($request->categories);
+            }
+
+            // 画像の保存
+            foreach ($request->images as $image) {
+                // 説明のみ保存
+                $existingImage = $spot->images->where('image_path', $image['image_path'])->first();
+
+                $existingImage->description = $image['description'] ?? null;
+                $existingImage->save();
+                // if (!$existingImage) {
+                //     // 本番環境の場合
+                //     if (config('app.env') === 'production') { 
+                //         // s3に画像を保存
+                //         $image_path = Storage::disk('s3')->putFile('images', $image['image_path'], Str::random(20) . '.' . $image['image_path']->extension());
+
+                //         // 画像のURLを取得
+                //         $image_path = Storage::disk('s3')->url($image_path);
+                //     } else {
+                //         // 新しい画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
+                //         $image_path = Storage::putFileAs(
+                //             'public/images',
+                //             $image['image_path'],
+                //             Str::random(20) . '.' . $image['image_path']->extension()
+                //         );
+
+                //         // $image_pathの先頭のpublicをstorageに変更
+                //         $image_path = str_replace('public/', '', $image_path);
+                //         $image_path = "/storage/" . $image_path;
+                //     }
+                //     $spot->images()->create([
+                //         'spot_id' => $spot->id,
+                //         'image_path' => $image_path,
+                //         'description' => $image['description'] ?? null,
+                //     ]);
+                // } else {
+                //     // 既存の画像の説明を更新
+                //     $existingImage->description = $image['description'] ?? null;
+                //     $existingImage->save();
+                // }
+                
+            }
+        });
+
+        session()->flash('message', '更新しました');
+
+        return to_route('spots.show', ['spot' => $spot->id]);
     }
 
     /**
