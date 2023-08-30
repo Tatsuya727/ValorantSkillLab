@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
+import LikeButton from '@/Components/original/LikeButton.vue';
 
 const props = defineProps({
     spot: {
@@ -73,26 +74,6 @@ const publicDialog = ref(false);
         <div v-if="$page.props.auth.user.id === props.spot.user.id" class="text-right mr-5">
             <v-btn class="mr-5 mt-5" :color="spot.is_public ? 'success' : 'secondary'" @click="publicDialog = true"> 公開設定:{{ spot.is_public ? '公開中' : '非公開中' }} </v-btn>
 
-            <!-- 公開設定のダイアログ -->
-            <v-dialog v-model="publicDialog" width="auto">
-                <v-card>
-                    <v-card-text class="font-bold">公開設定を変更しますか？</v-card-text>
-                    <v-card-text class="font-bold">
-                        現在は
-                        <span :class="{ 'text-red': true, 'font-bold': true }">{{ spot.is_public ? '公開中' : '非公開' }}</span>
-                        です。
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn :variant="'outlined'" :color="'success'" block @click="togglePublic(spot.id)">
-                            {{ spot.is_public ? '非公開にする' : '公開にする' }}
-                        </v-btn>
-                    </v-card-actions>
-                    <v-card-actions>
-                        <v-btn variant="outlined" color="primary" block @click="publicDialog = false">キャンセル</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-
             <v-menu>
                 <template v-slot:activator="{ props }">
                     <v-btn class="mt-5" icon="mdi-dots-horizontal" v-bind="props"></v-btn>
@@ -112,23 +93,45 @@ const publicDialog = ref(false);
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <!-- 削除ボタンの確認ダイアログ -->
-            <v-dialog v-model="dialog" width="auto">
-                <v-card>
-                    <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
-                    <v-card-actions>
-                        <v-btn variant="outlined" color="error" block @click="deleteSpot(spot.id)">削除する</v-btn>
-                    </v-card-actions>
-                    <v-card-actions>
-                        <v-btn variant="outlined" color="primary" block @click="dialog = false">キャンセル</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
         </div>
     </div>
     <div v-else class="text-right m-10 pt-10 text-grey">
         作成者: <span class="text-blue">{{ spot.user.name }}</span>
     </div>
+    <LikeButton class="text-right mr-5 mt-5 text-lg" :spot="spot" />
+
+    <!-- 公開設定のダイアログ -->
+    <v-dialog v-model="publicDialog" width="auto">
+        <v-card>
+            <v-card-text class="font-bold">公開設定を変更しますか？</v-card-text>
+            <v-card-text class="font-bold">
+                現在は
+                <span :class="{ 'text-red': true, 'font-bold': true }">{{ spot.is_public ? '公開中' : '非公開' }}</span>
+                です。
+            </v-card-text>
+            <v-card-actions>
+                <v-btn :variant="'outlined'" :color="'success'" block @click="togglePublic(spot.id)">
+                    {{ spot.is_public ? '非公開にする' : '公開にする' }}
+                </v-btn>
+            </v-card-actions>
+            <v-card-actions>
+                <v-btn variant="outlined" color="primary" block @click="publicDialog = false">キャンセル</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+    <!-- 削除ボタンの確認ダイアログ -->
+    <v-dialog v-model="dialog" width="auto">
+        <v-card>
+            <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
+            <v-card-actions>
+                <v-btn variant="outlined" color="error" block @click="deleteSpot(spot.id)">削除する</v-btn>
+            </v-card-actions>
+            <v-card-actions>
+                <v-btn variant="outlined" color="primary" block @click="dialog = false">キャンセル</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 
     <v-dialog v-model="saveDialog" max-width="400px">
         <v-card>

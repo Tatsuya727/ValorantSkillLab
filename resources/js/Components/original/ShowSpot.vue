@@ -1,5 +1,4 @@
 <script setup>
-import ImageModal from '@/Components/original/ImageModal.vue';
 import ShowMenu from '@/Components/original/ShowMenu.vue';
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';

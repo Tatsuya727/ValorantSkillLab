@@ -1,5 +1,4 @@
 <script setup>
-
 import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
@@ -17,11 +16,12 @@ const toggleLike = (spot) => {
         Inertia.post(route('likes.store', props.spot.id));
     }
 };
+
+console.log(props.spot);
 </script>
 
 <template>
     <div class="text-white">
-
         <div>
             <div v-if="spot.is_liked_by_user" @click="toggleLike(spot)" class="cursor-pointer">
                 <v-icon color="pink">mdi-heart</v-icon>
@@ -31,7 +31,6 @@ const toggleLike = (spot) => {
                 <v-icon>mdi-heart-outline</v-icon>
                 {{ spot.liked_by_count }}
             </div>
-
         </div>
     </div>
 </template>
