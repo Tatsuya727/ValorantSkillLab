@@ -53,6 +53,10 @@ describe('SpotList.vue', () => {
             id: 1,
             name: 'Test User',
         },
+        currentUser: {
+            id: 1,
+            name: 'Test User',
+        },
         flash: {
             message: 'Test Message',
             success: true,
