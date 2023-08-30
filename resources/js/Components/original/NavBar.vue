@@ -28,7 +28,6 @@ const items = [
     { text: 'このアプリについて', icon: 'mdi-information', route: 'about' },
     { text: '作成する', icon: 'mdi-pencil', route: 'spots.create' },
     { text: 'すべての投稿', icon: 'mdi-account-supervisor', route: 'sharespots.index' },
-    { text: '自分の投稿', icon: 'mdi-account', route: 'users.index' },
     { text: 'カテゴリー', icon: 'mdi-account', route: 'categories.index' },
 ];
 </script>
@@ -125,6 +124,8 @@ const items = [
                 </template>
 
                 <v-list-item @click="Inertia.get(route('spots.index'))" prepend-icon="mdi-select-all"> 全て </v-list-item>
+                <v-list-item @click="Inertia.get(route('spots.index', { liked: true }))" prepend-icon="mdi-heart"> いいね </v-list-item>
+                <v-list-item @click="Inertia.get(route('spots.index', { user_id: $page.props.auth.user.id }))" prepend-icon="mdi-account"> 自分の投稿 </v-list-item>
                 <v-list-item
                     v-for="category in $page.props.NavCategories"
                     :key="category.id"
