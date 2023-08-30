@@ -68,14 +68,6 @@ const saveSpot = () => {
     );
 };
 
-const alreadySaved = () => {
-    if (props.flash.massage === '既に保存されています') {
-        return true;
-    } else {
-        return false;
-    }
-};
-
 const snackbar = ref(false);
 
 const timeout = ref(5000);

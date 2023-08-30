@@ -16,8 +16,6 @@ const toggleLike = (spot) => {
         Inertia.post(route('likes.store', props.spot.id));
     }
 };
-
-console.log(props.spot);
 </script>
 
 <template>
