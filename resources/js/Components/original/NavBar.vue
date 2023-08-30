@@ -29,6 +29,7 @@ const items = [
     { text: '作成する', icon: 'mdi-pencil', route: 'spots.create' },
     { text: 'すべての投稿', icon: 'mdi-account-supervisor', route: 'sharespots.index' },
     { text: 'カテゴリー', icon: 'mdi-account', route: 'categories.index' },
+    { text: 'ユーザー', icon: 'mdi-account', route: 'users.index' },
 ];
 </script>
 
