@@ -41,7 +41,7 @@ const form = reactive({
     is_public: props.spot.is_public,
     categories: props.spot.categories[0].id,
     images: props.spot.images.map((image) => ({
-        file: image.image_path,
+        image_path: image.image_path,
         preview: image.image_path,
         description: image.description,
     })),
@@ -184,12 +184,12 @@ const pageTitle = '編集する';
         <v-main class="bg-zinc-900 flex justify-center min-h-screen mt-10">
             <v-form @submit.prevent="updateSpot" class="w-full max-w-7xl bg-neutral-700 p-10 rounded">
                 <!-- 公開非公開の設定 -->
-                <!-- <div class="flex flex-wrap mb-6">
+                <div class="flex flex-wrap mb-6">
                     <div class="w-30 px-3 text-white">
                         <label for="is_public" class="block text-sm font-medium mb-2">公開設定</label>
                         <v-switch v-model="form.is_public" :label="form.is_public ? '公開' : '非公開'" color="green" inset></v-switch>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- タイトル -->
                 <div class="flex flex-wrap mb-6">

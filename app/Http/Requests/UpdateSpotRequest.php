@@ -26,7 +26,7 @@ class UpdateSpotRequest extends FormRequest
             'description' =>  ['required','max:255'],
             'map_id' =>       ['required', 'exists:maps,id', 'integer'],
             'character_id' => ['required', 'exists:characters,id', 'integer'],
-            'is_public' =>    ['integer'],
+            'is_public' =>    ['boolean'],
             'images.*.description' => ['max:255'],
             'categories' =>   ['required'],
             'tags' =>         ['array', 'max:3'],

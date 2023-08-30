@@ -279,37 +279,41 @@ class SpotController extends Controller
 
             // 画像の保存
             foreach ($request->images as $image) {
+                // 説明のみ保存
                 $existingImage = $spot->images->where('image_path', $image['image_path'])->first();
-                if (!$existingImage) {
-                    // 本番環境の場合
-                    // if (config('app.env') === 'production') { 
-                    //     // s3に画像を保存
-                    //     $image_path = Storage::disk('s3')->putFile('images', $image['image_path'], Str::random(20) . '.' . $image['image_path']->extension());
 
-                    //     // 画像のURLを取得
-                    //     $image_path = Storage::disk('s3')->url($image_path);
-                    // } else {
-                    //     // 新しい画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
-                    //     $image_path = Storage::putFileAs(
-                    //         'public/images',
-                    //         $image['image_path'],
-                    //         Str::random(20) . '.' . $image['image_path']->extension()
-                    //     );
+                $existingImage->description = $image['description'] ?? null;
+                $existingImage->save();
+                // if (!$existingImage) {
+                //     // 本番環境の場合
+                //     if (config('app.env') === 'production') { 
+                //         // s3に画像を保存
+                //         $image_path = Storage::disk('s3')->putFile('images', $image['image_path'], Str::random(20) . '.' . $image['image_path']->extension());
 
-                    //     // $image_pathの先頭のpublicをstorageに変更
-                    //     $image_path = str_replace('public/', '', $image_path);
-                    //     $image_path = "/storage/" . $image_path;
-                    // }
-                    // $spot->images()->create([
-                    //     'spot_id' => $spot->id,
-                    //     'image_path' => $image_path,
-                    //     'description' => $image['description'] ?? null,
-                    // ]);
-                } else {
-                    // 既存の画像の説明を更新
-                    $existingImage->description = $image['description'] ?? null;
-                    $existingImage->save();
-                }
+                //         // 画像のURLを取得
+                //         $image_path = Storage::disk('s3')->url($image_path);
+                //     } else {
+                //         // 新しい画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
+                //         $image_path = Storage::putFileAs(
+                //             'public/images',
+                //             $image['image_path'],
+                //             Str::random(20) . '.' . $image['image_path']->extension()
+                //         );
+
+                //         // $image_pathの先頭のpublicをstorageに変更
+                //         $image_path = str_replace('public/', '', $image_path);
+                //         $image_path = "/storage/" . $image_path;
+                //     }
+                //     $spot->images()->create([
+                //         'spot_id' => $spot->id,
+                //         'image_path' => $image_path,
+                //         'description' => $image['description'] ?? null,
+                //     ]);
+                // } else {
+                //     // 既存の画像の説明を更新
+                //     $existingImage->description = $image['description'] ?? null;
+                //     $existingImage->save();
+                // }
                 
             }
         });
