@@ -37,32 +37,22 @@ const form = reactive({
     description: props.spot.description,
     map_id: props.spot.map_id,
     character_id: props.spot.character_id,
-    images: props.spot.images,
     tags: props.spot.tags.map((tag) => tag.id),
     is_public: props.spot.is_public,
     categories: props.spot.categories[0].id,
+    images: props.spot.images.map((image) => ({
+        image_path: image.image_path,
+        preview: image.image_path,
+        description: image.description,
+    })),
 });
 
-const updateSpot = (id) => {
-    const formData = new FormData();
-    formData.append('title', form.title);
-    formData.append('description', form.description);
-    formData.append('map_id', form.map_id);
-    formData.append('character_id', form.character_id);
-
-    form.images.forEach((image, index) => {
-        if (image.file) {
-            formData.append(`images[${index}][image_path]`, image.file);
-            formData.append(`images[${index}][description]`, image.description);
-        }
+const updateSpot = () => {
+    Inertia.put(route('spots.update', { spot: props.spot.id }), form, {
+        onError: (error) => {
+            console.log(error);
+        },
     });
-
-    // formDataの内容を確認
-    for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-    }
-
-    Inertia.put(`/spots/${id}`, formData);
 };
 
 // prop.spot.tagsのIDを初期値として設定
@@ -138,8 +128,6 @@ const pageTitle = '編集する';
                         <v-switch v-model="form.is_public" :label="form.is_public ? '公開' : '非公開'" color="green" inset></v-switch>
                     </div>
                 </div>
-                <div>{{ selectedTag }}</div>
-                <div>{{ form.categories }}</div>
 
                 <!-- タイトル -->
                 <div class="flex flex-wrap mb-6">
@@ -294,7 +282,7 @@ const pageTitle = '編集する';
                     type="submit"
                     class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-4"
                 >
-                    作成
+                    更新
                 </button>
             </v-form>
         </v-main>

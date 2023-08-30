@@ -259,51 +259,64 @@ class SpotController extends Controller
     public function update(UpdateSpotRequest $request, Spot $spot)
     {
         
-        // DB::transaction(function () use ($request, $spot) {
-        //     $spot->update([
-        //         'title' => $request->title,
-        //         'description' => $request->description,
-        //         'map_id' => $request->map_id,
-        //         'character_id' => $request->character_id,
-        //     ]);
-    
-        //     foreach ($request->images as $index => $image) {
-        //         // 新しい画像があれば更新、なければ既存の画像をそのまま使う
-        //         if (isset($image['image_path'])) {
-        //             // 新しい画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
-        //             $image_path = Storage::putFileAs(
-        //                 'public/images',
-        //                 $image['image_path'],
-        //                 Str::random(20) . '.' . $image['image_path']->extension()
-        //             );
-    
-        //             // $image_pathの先頭のpublicをstorageに変更
-        //             $image_path = str_replace('public/', '', $image_path);
-        //             $image_path = "/storage/" . $image_path;
-    
-        //             // 既存の画像があれば更新、なければ新規作成
-        //             if (isset($spot->images[$index])) {
-        //                 $spot->images[$index]->update([
-        //                     'image_path' => $image_path,
-        //                     'description' => $image['description'] ?? null,
-        //                 ]);
-        //             } else {
-        //                 $spot->images()->create([
-        //                     'spot_id' => $spot->id,
-        //                     'image_path' => $image_path,
-        //                     'description' => $image['description'] ?? null,
-        //                 ]);
-        //             }
-        //         } else if (isset($spot->images[$index])) {
-        //             // 画像がアップロードされていない場合でも、説明があれば更新
-        //             $spot->images[$index]->update([
-        //                 'description' => $image['description'] ?? null,
-        //             ]);
-        //         }
-        //     }
-        // });
-    
-        // return redirect()->route('spots.show', ['spot' => $spot->id]);
+        DB::transaction(function () use ($request, $spot) {
+            $spot->title = $request->title;
+            $spot->description = $request->description;
+            $spot->map_id = $request->map_id;
+            $spot->character_id = $request->character_id;
+            $spot->is_public = $request->is_public;
+            $spot->save();
+
+            // タグの保存
+            if($request->tags) {
+                $spot->tags()->sync($request->tags);
+            }
+
+            // カテゴリーの保存
+            if ($request->categories) {
+                $spot->categories()->sync($request->categories);
+            }
+
+            // 画像の保存
+            foreach ($request->images as $image) {
+                $existingImage = $spot->images->where('image_path', $image['image_path'])->first();
+                if (!$existingImage) {
+                    // 本番環境の場合
+                    if (config('app.env') === 'production') { 
+                        // s3に画像を保存
+                        $image_path = Storage::disk('s3')->putFile('images', $image['image_path'], Str::random(20) . '.' . $image['image_path']->extension());
+
+                        // 画像のURLを取得
+                        $image_path = Storage::disk('s3')->url($image_path);
+                    } else {
+                        // 新しい画像をランダムな名前でputFileAsを使いstorage/app/public/imagesに保存
+                        $image_path = Storage::putFileAs(
+                            'public/images',
+                            $image['image_path'],
+                            Str::random(20) . '.' . $image['image_path']->extension()
+                        );
+
+                        // $image_pathの先頭のpublicをstorageに変更
+                        $image_path = str_replace('public/', '', $image_path);
+                        $image_path = "/storage/" . $image_path;
+                    }
+                    $spot->images()->create([
+                        'spot_id' => $spot->id,
+                        'image_path' => $image_path,
+                        'description' => $image['description'] ?? null,
+                    ]);
+                } else {
+                    // 既存の画像の説明を更新
+                    $existingImage->description = $image['description'] ?? null;
+                    $existingImage->save();
+                }
+                
+            }
+        });
+
+        session()->flash('message', '更新しました');
+
+        return to_route('spots.show', ['spot' => $spot->id]);
     }
 
     /**
