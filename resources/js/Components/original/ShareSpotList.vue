@@ -109,34 +109,6 @@ const orderItems = [
         </div>
     </div>
 
-    <!-- 
-    <v-btn @click="selectOrder('likes')">いいね</v-btn>
-    <v-btn @click="selectOrder('created_at')">作成日</v-btn>
-    <v-btn @click="selectOrder('categories')">カテゴリ</v-btn> -->
-
-    <!-- <div class="mt-5 mb-5 flex items-center">
-        <label for="sort" class="text-white mr-3">並べ替え: </label>
-        <v-select
-            id="sort"
-            v-model="orderBy"
-            @change="handleOrderBy"
-            :items="['', 'likes', 'created_at', 'categories']"
-            :menu-props="{ 'offset-y': true }"
-            class="w-64"
-            outlined
-            dense
-            :item-text="
-                (item) =>
-                    ({
-                        '': 'デフォルト',
-                        likes: 'いいねの数',
-                        created_at: '作成日',
-                        categories: 'カテゴリの数',
-                    }[item])
-            "
-        ></v-select>
-    </div> -->
-
     <Pagination class="mt-5 text-white" :links="props.spots.links"></Pagination>
 
     <v-row justify="center" class="mx-3">
