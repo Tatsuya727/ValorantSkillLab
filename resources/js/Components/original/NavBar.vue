@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link, usePage } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 import { useMobileDetection } from '@/Hooks/useMobileDetection';
 
@@ -26,9 +26,10 @@ const selectCategory = (category) => {
 
 const items = [
     { text: 'このアプリについて', icon: 'mdi-information', route: 'about' },
-    { text: 'マイページ', icon: 'mdi-account', route: 'categories.index' },
     { text: '作成する', icon: 'mdi-pencil', route: 'spots.create' },
     { text: 'すべての投稿', icon: 'mdi-account-supervisor', route: 'sharespots.index' },
+    { text: '自分の投稿', icon: 'mdi-account', route: 'users.index' },
+    { text: 'カテゴリー', icon: 'mdi-account', route: 'categories.index' },
 ];
 </script>
 
@@ -120,7 +121,7 @@ const items = [
 
             <v-list-group value="Category" v-if="$page.props.auth.user">
                 <template v-slot:activator="{ props }">
-                    <v-list-item v-bind="props" prepend-icon="mdi-format-list-bulleted" title="マイリスト(カテゴリー)"></v-list-item>
+                    <v-list-item v-bind="props" prepend-icon="mdi-format-list-bulleted" title="マイリスト"></v-list-item>
                 </template>
 
                 <v-list-item @click="Inertia.get(route('spots.index'))" prepend-icon="mdi-select-all"> 全て </v-list-item>
