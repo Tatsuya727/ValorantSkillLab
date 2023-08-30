@@ -55,7 +55,7 @@ const dialogs = Array(props.spot.images.length)
             <v-divider></v-divider>
             <!-- デスクトップ -->
             <v-col v-if="!isMobile" cols="12">
-                <div class="flex space-4 mx-4">
+                <div class="flex flex-wrap space-4 mx-4">
                     <div v-for="(image, index) in spot.images" :key="index" class="justify-center">
                         <v-dialog :v-model="dialogs[index]" width="auto">
                             <template v-slot:activator="{ props }">

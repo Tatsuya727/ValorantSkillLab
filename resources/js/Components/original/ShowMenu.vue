@@ -100,7 +100,7 @@ const publicDialog = ref(false);
                 <v-list>
                     <v-list-item>
                         <Link :href="`/spots/${spot.id}/edit`">
-                            <v-list-item-title class="text-black"><v-icon>mdi-pencil</v-icon>編集する(作成中)</v-list-item-title>
+                            <v-list-item-title class="text-black"><v-icon>mdi-pencil</v-icon>編集する</v-list-item-title>
                         </Link>
                     </v-list-item>
                     <v-list-item>
