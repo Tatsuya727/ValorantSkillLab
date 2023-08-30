@@ -4,6 +4,7 @@ import { computed } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import SpotTags from '@/Components/original/SpotTags.vue';
 import SpotMenu from '@/Components/original/SpotMenu.vue';
+import LikeButton from '@/Components/original/LikeButton.vue';
 
 const props = defineProps({
     currentUser: {
@@ -114,6 +115,7 @@ const filterCharacter = (character) => {
                                 </p>
                                 <!-- タグの名前をすべて表示 -->
                                 <div class="flex flex-wrap mt-2">
+                                    <LikeButton class="mt-2 mr-2" :spot="spot" />
                                     <SpotTags
                                         :tags="spot.tags"
                                         :selectedTag="selectedTag"
