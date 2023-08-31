@@ -65,7 +65,7 @@ const dialogs = Array(props.spot.images.length)
                                     cover
                                     class="object-cover cursor-pointer transform transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg"
                                     :src="image.image_path"
-                                    alt=""
+                                    alt="画像"
                                     v-bind="props"
                                     loading="lazy"
                                 ></v-img>
@@ -77,15 +77,12 @@ const dialogs = Array(props.spot.images.length)
 
                             <v-card>
                                 <v-card-text>
-                                    <div class="mt-3 text-center">
+                                    <div class="my-3 text-center">
                                         <div v-if="image.description" class="border p-2 text-gray-500">{{ image.description }}</div>
                                         <div v-else class="border p-2 text-gray-500">説明なし</div>
-                                        <v-img :width="1000" :src="image.image_path" alt="" class="w-full h-1/2"></v-img>
+                                        <v-img :width="1000" :src="image.image_path" alt="画像" class="w-full h-1/2"></v-img>
                                     </div>
                                 </v-card-text>
-                                <v-card-actions>
-                                    <v-btn color="primary" block @click="dialogs[index] = false">閉じる</v-btn>
-                                </v-card-actions>
                             </v-card>
                         </v-dialog>
                     </div>
@@ -100,7 +97,7 @@ const dialogs = Array(props.spot.images.length)
                             cover
                             class="object-cover cursor-pointer transform transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg"
                             :src="image.image_path"
-                            alt=""
+                            alt="画像"
                             @click="dialog === true"
                             loading="lazy"
                         ></v-img>
