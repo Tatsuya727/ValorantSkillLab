@@ -45,7 +45,7 @@ const resetSelectedCategory = () => {
 const search = ref(props.search ? props.search : '');
 
 const searchSpots = () => {
-    Inertia.get(route('sharespots.index', { search: search.value }));
+    Inertia.get(route('sharespots.index', { selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, selectedTag: props.selectedTag, search: search.value }));
 };
 
 const resetSpots = () => {
@@ -63,6 +63,7 @@ const resetSpots = () => {
                         :maps="props.maps"
                         :characters="props.characters"
                         :tags="props.tags"
+                        :search="props.search"
                         :selectedTag="props.selectedTag"
                         :selectedMap="props.selectedMap"
                         :selectedCharacter="props.selectedCharacter"

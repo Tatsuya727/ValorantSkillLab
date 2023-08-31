@@ -58,6 +58,10 @@ const props = defineProps({
         type: Object,
         required: false,
     },
+    orderBy: {
+        type: String,
+        required: false,
+    },
     flash: Object,
 });
 
@@ -91,9 +95,11 @@ const pageTitle = props.search ? props.search : 'すべての投稿';
                         :allSpotsCount="props.allSpotsCount"
                         :spotsCount="props.spotsCount"
                         :userCategories="props.userCategories"
+                        :search="props.search"
                         :selectedMap="props.selectedMap"
                         :selectedCharacter="props.selectedCharacter"
                         :flash="props.flash"
+                        :orderBy="props.orderBy"
                     />
                 </div>
             </v-container>
