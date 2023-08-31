@@ -88,7 +88,7 @@ const setHorizontal = () => {
             <h1 v-if="liked" class="mt-5 text-white text-center font-bold">いいね({{ spots.data.length }})</h1>
             <h1 v-if="noSelected" class="mt-5 text-white text-center font-bold">すべて表示({{ spots.data.length }})</h1>
         </div>
-        <div class="ml-8 mt-2">
+        <div class="mr-8 mt-2">
             <v-icon @click="setHorizontal" class="text-white cursor-pointer mr-3">mdi-apps</v-icon>
             <v-icon @click="setVertical" class="text-white cursor-pointer">mdi-menu</v-icon>
         </div>
@@ -108,14 +108,14 @@ const setHorizontal = () => {
                     <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
                         <SpotMenu :currentUser="currentUser" :spot="spot" :userCategories="userCategories" :flash="flash" />
                     </div>
-                    <div>
+                    <div class="mb-4 pt-3 pl-2">
                         <Link :href="spot.show_url" class="flex-1">
-                            <h2 class="text-gray-700 text-white spot-title truncate">
+                            <h1 class="text-gray-700 text-white spot-title whitespace-normal">
                                 {{ spot.title }}
-                            </h2>
+                            </h1>
                         </Link>
 
-                        <p class="text-sm text-gray-700 text-grey">
+                        <p class="text-lg text-gray-700 text-grey mt-7">
                             map:
                             <span
                                 :class="{
@@ -126,7 +126,7 @@ const setHorizontal = () => {
                                 >{{ spot.map.name }}</span
                             >
                         </p>
-                        <p class="text-sm text-gray-700 text-grey">
+                        <p class="text-lg text-gray-700 text-grey">
                             character:
                             <span
                                 :class="{
@@ -138,7 +138,7 @@ const setHorizontal = () => {
                             >
                         </p>
                         <!-- タグの名前をすべて表示 -->
-                        <div class="flex flex-wrap mt-2">
+                        <div class="flex flex-wrap mt-5">
                             <LikeButton class="mt-2 mr-2" :spot="spot" />
                             <SpotTags
                                 :tags="spot.tags"
