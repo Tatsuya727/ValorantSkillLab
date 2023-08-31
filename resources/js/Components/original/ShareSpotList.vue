@@ -42,6 +42,10 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    orderBy: {
+        type: String,
+        required: false,
+    },
     flash: Object,
 });
 
@@ -120,7 +124,15 @@ const orderItems = [
                 </template>
                 <v-list>
                     <v-list-item v-for="(orderItem, index) in orderItems" :key="index" :value="index">
-                        <v-list-item-title @click="handleOrderBy(orderItem.value)">{{ orderItem.title }}</v-list-item-title>
+                        <v-list-item-title @click="handleOrderBy(orderItem.value)">
+                            <!-- チェックマークが表示される場合 -->
+                            <v-icon v-if="props.orderBy === orderItem.value" class="mr-1">mdi-check</v-icon>
+
+                            <!-- チェックマークが表示されない場合、透明なアイコンを表示 -->
+                            <v-icon v-else class="mr-1" style="opacity: 0">mdi-check</v-icon>
+
+                            {{ orderItem.title }}
+                        </v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>

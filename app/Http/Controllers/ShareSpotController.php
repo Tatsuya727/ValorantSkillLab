@@ -132,6 +132,7 @@ class ShareSpotController extends Controller
             'selectedMap' => $selectedMap,
             'selectedCharacter' => $selectedCharacter,
             'selectedCategory' => $selectedCategory,
+            'orderBy' => $orderBy,
         ]);
     }
 
