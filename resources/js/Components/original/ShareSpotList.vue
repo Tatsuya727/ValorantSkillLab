@@ -88,6 +88,7 @@ const setHorizontal = () => {
     isVertical.value = false;
     localStorage.setItem('isVertical', 'false');
 };
+
 const orderItems = [
     {
         title: 'デフォルト',
