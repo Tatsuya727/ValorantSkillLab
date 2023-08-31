@@ -57,7 +57,7 @@ const orderBy = ref('');
 
 const handleOrderBy = (item) => {
     orderBy.value = item;
-    Inertia.get(route('sharespots.index', { orderBy: orderBy.value }));
+    Inertia.get(route('sharespots.index', { orderBy: orderBy.value, selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, selectedTag: props.selectedTag }));
 };
 
 onMounted(() => {
