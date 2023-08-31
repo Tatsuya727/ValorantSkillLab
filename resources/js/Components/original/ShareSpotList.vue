@@ -145,15 +145,11 @@ const orderItems = [
                     <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
                         <ShareSpotMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
                     </div>
-                    <div class="mb-4">
-                        <v-tooltip :text="spot.title" location="top">
-                            <template v-slot:activator="{ props }">
-                                <h2 v-bind="props" class="text-gray-700 text-white spot-title white-space-normal">
-                                    {{ spot.title }}
-                                </h2>
-                            </template>
-                        </v-tooltip>
-                        <p class="text-sm text-gray-700 text-grey">
+                    <div class="mb-4 pt-5 pl-2">
+                        <h2 class="text-gray-700 text-white spot-title whitespace-normal">
+                            {{ spot.title }}
+                        </h2>
+                        <p class="text-lg text-gray-700 text-grey mt-7">
                             map:
                             <span
                                 :class="{
@@ -164,7 +160,7 @@ const orderItems = [
                                 >{{ spot.map.name }}</span
                             >
                         </p>
-                        <p class="text-sm text-gray-700 text-grey">
+                        <p class="text-lg text-gray-700 text-grey">
                             character:
                             <span
                                 :class="{
@@ -176,8 +172,8 @@ const orderItems = [
                                 {{ spot.character.name }}
                             </span>
                         </p>
-                        <!-- タグの名前をすべて表示 -->
-                        <div class="flex flex-wrap">
+                        <!-- いいねとタグの名前をすべて表示 -->
+                        <div class="flex flex-wrap mt-5">
                             <LikeButton class="mt-2 mr-2" :spot="spot" />
                             <SpotTags :tags="spot.tags" :selectedTag="selectedTag" :selectedMap="props.selectedMap" :selectedCharacter="props.selectedCharacter" :routeName="'sharespots.index'" />
                         </div>
@@ -185,7 +181,7 @@ const orderItems = [
                     <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
                         <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
                         <!-- ユーザーネーム -->
-                        <div class="text-green">{{ spot.user.name }}</div>
+                        <div class="text-green mr-2">{{ spot.user.name }}</div>
                     </div>
                 </div>
             </div>
