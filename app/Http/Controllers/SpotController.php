@@ -36,6 +36,9 @@ class SpotController extends Controller
         $selectedCategory = $request->query('category');
         $liked = $request->query('liked');
         $userId = $request->query('user_id');
+        
+        $orderBy = $request->query('orderBy');
+
 
         // ログインしているユーザーのカテゴリーを取得
         if(auth()->check()) {
@@ -48,7 +51,7 @@ class SpotController extends Controller
         $categories = Category::where('user_id', auth()->id())->get();
         
         // ユーザーごとのスポットと保存した他人のスポットを取得
-        $spots = Spot::with(['images', 'map', 'character', 'tags' , 'categories', 'user'])
+        $spotsQuery = Spot::with(['images', 'map', 'character', 'tags' , 'categories', 'user'])
             ->searchSpot($search)
             ->where(function ($query) {
                 $query->where('user_id', auth()->id())
@@ -84,7 +87,23 @@ class SpotController extends Controller
             })
             ->when($userId, function ($query, $userId) {
                 return $query->where('user_id', $userId);
-            })
+            });
+
+        switch ($orderBy) {
+            case 'likes':
+                $spotsQuery->orderByLikes();
+                break;
+            case 'created_at':
+                $spotsQuery->orderByCreatedAt();
+                break;
+            case 'categories':
+                $spotsQuery->orderByCategories();
+                break;
+            default:
+                break;
+        }
+
+        $spots = $spotsQuery
             ->paginate(12)
             ->appends($request->all());
 
@@ -113,6 +132,7 @@ class SpotController extends Controller
             'maps' => $maps,
             'tags' => $tags,
             'userCategories' => $userCategories,
+            'orderBy' => $orderBy,
         ]);
     }
 

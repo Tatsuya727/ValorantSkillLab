@@ -58,6 +58,10 @@ const props = defineProps({
         type: Array,
         required: false,
     },
+    orderBy: {
+        type: String,
+        required: false,
+    },
     flash: Object,
 });
 
@@ -95,6 +99,7 @@ const pageTitle = props.liked ? 'いいねした投稿' : props.selectedCategory
                         :selectedCategory="selectedCategory"
                         :liked="liked"
                         :userCategories="userCategories"
+                        :orderBy="orderBy"
                         :flash="flash"
                     />
                 </div>

@@ -6,7 +6,7 @@ import Pagination from '@/Components/original/Pagination.vue';
 import LikeButton from '@/Components/original/LikeButton.vue';
 import ShareSpotMenu from '@/Components/original/ShareSpotMenu.vue';
 import SpotTags from '@/Components/original/SpotTags.vue';
-
+import OrderButton from '@/Components/original/OrderButton.vue';
 import dayjs from 'dayjs';
 
 const props = defineProps({
@@ -59,15 +59,6 @@ const filterMap = (map) => {
 
 const filterCharacter = (character) => {
     Inertia.get(route('sharespots.index', { selectedCharacter: character }));
-};
-
-const orderBy = ref('');
-
-const handleOrderBy = (item) => {
-    orderBy.value = item;
-    Inertia.get(
-        route('sharespots.index', { orderBy: orderBy.value, selectedMap: props.selectedMap, selectedCharacter: props.selectedCharacter, selectedTag: props.selectedTag, search: props.search })
-    );
 };
 
 onMounted(() => {
@@ -125,21 +116,14 @@ const orderItems = [
             </div>
         </div>
         <div class="mr-5 flex">
-            <v-menu>
-                <template v-slot:activator="{ props }">
-                    <v-btn color="" v-bind="props"><v-icon>mdi-sort-variant</v-icon>並べ替え</v-btn>
-                </template>
-                <v-list>
-                    <v-list-item v-for="(orderItem, index) in orderItems" :key="index" :value="index">
-                        <v-list-item-title @click="handleOrderBy(orderItem.value)">
-                            <v-icon v-if="props.orderBy === orderItem.value" class="mr-1">mdi-check</v-icon>
-                            <v-icon v-else class="mr-1" style="opacity: 0">mdi-check</v-icon>
-
-                            {{ orderItem.title }}
-                        </v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
+            <OrderButton
+                :selectedMap="props.selectedMap"
+                :selectedCharacter="props.selectedCharacter"
+                :selectedTag="props.selectedTag"
+                :search="props.search"
+                :orderBy="props.orderBy"
+                :routeName="'sharespots.index'"
+            />
             <div class="ml-8 mt-2">
                 <v-icon @click="setHorizontal" class="text-white cursor-pointer mr-3">mdi-apps</v-icon>
                 <v-icon @click="setVertical" class="text-white cursor-pointer">mdi-menu</v-icon>

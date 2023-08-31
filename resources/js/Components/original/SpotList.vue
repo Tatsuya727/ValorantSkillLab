@@ -6,6 +6,7 @@ import SpotTags from '@/Components/original/SpotTags.vue';
 import SpotMenu from '@/Components/original/SpotMenu.vue';
 import LikeButton from '@/Components/original/LikeButton.vue';
 import Pagination from '@/Components/original/Pagination.vue';
+import OrderButton from '@/Components/original/OrderButton.vue';
 
 const props = defineProps({
     currentUser: {
@@ -42,6 +43,10 @@ const props = defineProps({
     },
     userCategories: {
         type: Array,
+        required: false,
+    },
+    orderBy: {
+        type: String,
         required: false,
     },
     flash: Object,
@@ -88,9 +93,19 @@ const setHorizontal = () => {
             <h1 v-if="liked" class="mt-5 text-white text-center font-bold">いいね({{ spots.data.length }})</h1>
             <h1 v-if="noSelected" class="mt-5 text-white text-center font-bold">すべて表示({{ spots.data.length }})</h1>
         </div>
-        <div class="mr-8 mt-2">
-            <v-icon @click="setHorizontal" class="text-white cursor-pointer mr-3">mdi-apps</v-icon>
-            <v-icon @click="setVertical" class="text-white cursor-pointer">mdi-menu</v-icon>
+        <div class="mr-5 flex">
+            <OrderButton
+                :selectedMap="props.selectedMap"
+                :selectedCharacter="props.selectedCharacter"
+                :selectedTag="props.selectedTag"
+                :search="props.search"
+                :orderBy="props.orderBy"
+                :routeName="'spots.index'"
+            />
+            <div class="ml-8 mt-2">
+                <v-icon @click="setHorizontal" class="text-white cursor-pointer mr-3">mdi-apps</v-icon>
+                <v-icon @click="setVertical" class="text-white cursor-pointer">mdi-menu</v-icon>
+            </div>
         </div>
     </div>
 
