@@ -1,6 +1,6 @@
 <script setup>
 import { Link } from '@inertiajs/inertia-vue3';
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, onMounted } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import Pagination from '@/Components/original/Pagination.vue';
 import LikeButton from '@/Components/original/LikeButton.vue';
@@ -60,14 +60,23 @@ const handleOrderBy = (item) => {
     Inertia.get(route('sharespots.index', { orderBy: orderBy.value }));
 };
 
+onMounted(() => {
+    const savedState = localStorage.getItem('isVertical');
+    if (savedState !== null) {
+        isVertical.value = savedState === 'true';
+    }
+});
+
 const isVertical = ref(false);
 
 const setVertical = () => {
     isVertical.value = true;
+    localStorage.setItem('isVertical', 'true');
 };
 
 const setHorizontal = () => {
     isVertical.value = false;
+    localStorage.setItem('isVertical', 'false');
 };
 const orderItems = [
     {
