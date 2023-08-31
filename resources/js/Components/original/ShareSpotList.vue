@@ -60,7 +60,7 @@ const handleOrderBy = (item) => {
     Inertia.get(route('sharespots.index', { orderBy: orderBy.value }));
 };
 
-const isVertical = ref(true);
+const isVertical = ref(false);
 
 const setVertical = () => {
     isVertical.value = true;
