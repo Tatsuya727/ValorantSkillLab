@@ -7,6 +7,7 @@ import SpotMenu from '@/Components/original/SpotMenu.vue';
 import LikeButton from '@/Components/original/LikeButton.vue';
 import Pagination from '@/Components/original/Pagination.vue';
 import OrderButton from '@/Components/original/OrderButton.vue';
+import dayjs from 'dayjs';
 
 const props = defineProps({
     currentUser: {
@@ -164,7 +165,11 @@ const setHorizontal = () => {
                                 :routeName="'spots.index'"
                             />
                         </div>
-                        <div class="text-green text-right">{{ spot.user.name }}</div>
+                        <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
+                            <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
+                            <!-- ユーザーネーム -->
+                            <div class="text-green mr-2">{{ spot.user.name }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -216,7 +221,7 @@ const setHorizontal = () => {
                             >
                         </p>
                         <!-- タグの名前をすべて表示 -->
-                        <div class="flex flex-wrap mt-2">
+                        <div class="flex flex-wrap mt-2 mb-3">
                             <LikeButton class="mt-2 mr-2" :spot="spot" />
                             <SpotTags
                                 :tags="spot.tags"
@@ -227,7 +232,11 @@ const setHorizontal = () => {
                                 :routeName="'spots.index'"
                             />
                         </div>
-                        <div class="text-green text-right">{{ spot.user.name }}</div>
+                        <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
+                            <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
+                            <!-- ユーザーネーム -->
+                            <div class="text-green mr-2">{{ spot.user.name }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
