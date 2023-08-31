@@ -84,6 +84,8 @@ const setHorizontal = () => {
     isVertical.value = false;
     localStorage.setItem('isVertical', 'false');
 };
+
+console.log(props.spots.links);
 </script>
 
 <template>
@@ -111,7 +113,6 @@ const setHorizontal = () => {
     </div>
 
     <Pagination class="mt-5 text-white" :links="props.spots.links"></Pagination>
-
     <v-row v-if="isVertical" justify="center" class="mx-3">
         <v-col v-for="spot in props.spots.data" :key="spot.id" cols="10" sm="12" md="10" lg="10" class="mt-10">
             <div class="flex flex-row rounded relative h-full">

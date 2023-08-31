@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils';
 import SpotList from '../original/SpotList.vue';
 import SpotTags from '../original/SpotTags.vue';
 import SpotMenu from '../original/SpotMenu.vue';
+import Pagination from '../original/Pagination.vue';
 import { Inertia } from '@inertiajs/inertia';
 
 describe('SpotList.vue', () => {
@@ -46,6 +47,18 @@ describe('SpotList.vue', () => {
                         id: 2,
                         name: 'Test User2',
                     },
+                },
+            ],
+            links: [
+                {
+                    url: 'http://localhost/spots?page=1',
+                    label: 1,
+                    active: true,
+                },
+                {
+                    url: 'http://localhost/spots?page=2',
+                    label: 2,
+                    active: false,
                 },
             ],
         },
