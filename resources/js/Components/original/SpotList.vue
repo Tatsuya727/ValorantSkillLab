@@ -84,8 +84,6 @@ const setHorizontal = () => {
     isVertical.value = false;
     localStorage.setItem('isVertical', 'false');
 };
-
-console.log(props.spots.links);
 </script>
 
 <template>

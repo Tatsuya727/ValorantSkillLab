@@ -80,16 +80,13 @@ const storeSpot = () => {
 
         Inertia.post(route('spots.store'), formData, {
             onSuccess: () => {
-                console.log('onSuccess');
+                console.log('success');
             },
             onError: (responseErrors) => {
                 Object.assign(errors, responseErrors);
-                console.log('onError');
+                console.log('error');
                 console.log(errors);
-                console.log(responseErrors);
-                console.log(errors.images.image_path);
             },
-
             onFinish: () => {
                 console.log('finish');
             },
