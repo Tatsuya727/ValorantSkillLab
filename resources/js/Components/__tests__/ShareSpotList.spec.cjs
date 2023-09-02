@@ -5,32 +5,72 @@ import ShareSpotList from '../original/ShareSpotList.vue';
 import { Inertia } from '@inertiajs/inertia';
 
 describe('ヘッダーとリストの組み合わせテスト', () => {
-    const spots = {
-        data: [
-            {
-                id: 1,
-                show_url: 'url',
-                images: [{ image_path: 'path' }],
-                title: 'title1',
-                map: { name: 'mapName' },
-                character: { name: 'characterName' },
-                tags: [{ name: 'tag1' }],
-                user_id: 1,
-            },
-            {
-                id: 2,
-                show_url: 'url',
-                images: [{ image_path: 'path' }],
-                title: 'title2',
-                map: { name: 'mapName' },
-                character: { name: 'characterName' },
-                tags: [{ name: 'tag2' }],
-                user_id: 1,
-            },
-        ],
-        links: {
-            prev: 'prev',
-            next: 'next',
+    const propsData = {
+        spots: {
+            data: [
+                {
+                    id: 1,
+                    title: 'Test Title',
+                    description: 'Test Description',
+                    tags: [{ name: 'Tag1' }, { name: 'Tag2' }],
+                    map: { name: 'Map1' },
+                    character: { name: 'Character1' },
+                    images: [
+                        { image_path: 'test.jpg', description: 'test' },
+                        { image_path: 'test2.jpg', description: 'test2' },
+                    ],
+                    category: { name: 'Category1' },
+                    user_id: 1,
+
+                    user: {
+                        id: 1,
+                        name: 'Test User',
+                    },
+                },
+                {
+                    id: 2,
+                    title: 'Test Title2',
+                    description: 'Test Description2',
+                    tags: [{ name: 'Tag3' }, { name: 'Tag4' }],
+                    map: { name: 'Map2' },
+                    character: { name: 'Character2' },
+                    images: [
+                        { image_path: 'test.jpg', description: 'test' },
+                        { image_path: 'test2.jpg', description: 'test2' },
+                    ],
+                    category: { name: 'Category2' },
+                    user_id: 2,
+
+                    user: {
+                        id: 2,
+                        name: 'Test User2',
+                    },
+                },
+            ],
+            links: [
+                {
+                    url: 'http://localhost/spots?page=1',
+                    label: 1,
+                    active: true,
+                },
+                {
+                    url: 'http://localhost/spots?page=2',
+                    label: 2,
+                    active: false,
+                },
+            ],
+        },
+        user: {
+            id: 1,
+            name: 'Test User',
+        },
+        currentUser: {
+            id: 1,
+            name: 'Test User',
+        },
+        flash: {
+            message: 'Test Message',
+            success: true,
         },
     };
 
@@ -51,16 +91,12 @@ describe('ヘッダーとリストの組み合わせテスト', () => {
         expect(url).toBe('mocked-route-for-sharespots.index');
     };
 
-    const header_wrapper = mount(ShareSpotHeader);
-    const list_wrapper = mount(ShareSpotList, {
-        props: {
-            spots: spots,
-            user: user,
-        },
+    const wrapper = mount(ShareSpotList, {
+        propsData,
     });
 
     it('投稿があるときは「すべての投稿」と表示されている', () => {
-        const title = header_wrapper.find('.title');
+        const title = wrapper.find('.title');
         expect(title.text()).toBe('すべての投稿');
     });
 
