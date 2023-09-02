@@ -49,18 +49,10 @@ const form = reactive({
 
 const updateSpot = () => {
     Inertia.put(route('spots.update', { spot: props.spot.id }), form, {
-        onSuccess: () => {
-            // formの中身をすべて表示する
-            for (let [key, value] of Object.entries(form)) {
-                console.log(`${key}: ${value}`);
-            }
-        },
+        onSuccess: () => {},
         onError: (error) => {
             console.log(error);
             // formの中身をすべて表示する
-            for (let [key, value] of Object.entries(form)) {
-                console.log(`${key}: ${value}`);
-            }
         },
     });
 };

@@ -80,16 +80,13 @@ const storeSpot = () => {
 
         Inertia.post(route('spots.store'), formData, {
             onSuccess: () => {
-                console.log('onSuccess');
+                console.log('success');
             },
             onError: (responseErrors) => {
                 Object.assign(errors, responseErrors);
-                console.log('onError');
+                console.log('error');
                 console.log(errors);
-                console.log(responseErrors);
-                console.log(errors.images.image_path);
             },
-
             onFinish: () => {
                 console.log('finish');
             },
@@ -288,10 +285,11 @@ const pageTitle = '作成する';
                     </div>
                 </div>
 
-                <v-alert color="warning" icon="$warning" title="注意" text="現在、サーバーの問題で8MB以上の画像をアップロードすることができません。申し訳ございません。"></v-alert>
+                <!-- <v-alert color="warning" icon="$warning" title="注意" text="アップロードできる画像の最大サイズは8MBです。"></v-alert> -->
 
                 <!-- 画像 -->
                 <button type="button" @click="addImageForm" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">画像を追加</button>
+                <p class="text-red-500 mt-2">注: アップロードできる画像の最大サイズは2MBです。</p>
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div v-for="(image, index) in form.images" :key="index" class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <div class="my-5">
@@ -305,7 +303,7 @@ const pageTitle = '作成する';
                                 name="image_path"
                                 @change="(e) => onFileChange(e, image)"
                             />
-                            <div v-if="errors.images && errors.images[index]" class="text-red-500 mt-2">{{ errors.images[index].image_path }}</div>
+                            <div v-if="errors['images.' + index + '.image_path']" class="text-red-500 mt-2">{{ errors['images.' + index + '.image_path'][0] }}</div>
                             <!-- 画像を選択するとプレビューを表示 -->
                             <img :src="image.preview" v-if="image.preview" class="mt-2 w-full h-auto" />
                             <button v-if="index >= 2" type="button" @click="removeImageForm(index)" class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">削除</button>

@@ -81,7 +81,7 @@ return [
     'mac_address' => ':attributeには、有効なMACアドレスを指定してください。',
     'max' => [
         'numeric' => ':attributeには、:max以下の数字を指定してください。',
-        'file' => ':attributeには、:max kb以下のファイルを指定してください。',
+        'file' => '画像のサイズが大きすぎます。',
         'string' => ':attributeは、:max文字以下で指定してください。',
         'array' => ':attributeは:max個以下指定してください。',
     ],
