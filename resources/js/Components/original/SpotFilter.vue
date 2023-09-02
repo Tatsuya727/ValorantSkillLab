@@ -98,7 +98,7 @@ const panel = ref(0);
 
 <template>
     <div class="text-center">
-        <v-btn class="ml-5 mt-3" @click="dialog = true" color="primary">絞り込み</v-btn>
+        <v-btn class="ml-5 mt-3 filtering-btn" @click="dialog = true" color="primary">絞り込み</v-btn>
 
         <!-- デスクトップ（モバイル以外） -->
         <v-dialog v-model="dialog" width="1400px" v-if="!isMobile">
