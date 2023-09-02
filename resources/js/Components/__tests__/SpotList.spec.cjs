@@ -2,8 +2,6 @@ import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 import SpotList from '../original/SpotList.vue';
 import SpotTags from '../original/SpotTags.vue';
-import SpotMenu from '../original/SpotMenu.vue';
-import Pagination from '../original/Pagination.vue';
 import { Inertia } from '@inertiajs/inertia';
 
 describe('SpotList.vue', () => {
@@ -84,7 +82,6 @@ describe('SpotList.vue', () => {
     };
 
     const wrapper = mount(SpotList, { propsData });
-    const tag_wrapper = mount(SpotTags);
 
     it('タグが表示される', () => {
         const tag = wrapper.find('.common-tag');
@@ -116,10 +113,11 @@ describe('SpotList.vue', () => {
         expect(characters[0].text()).toBe('Character1');
     });
 
-    // it('タイトルが表示される', () => {
-    //     const titles = wrapper.findAll('.spot-title');
+    it('作成者が表示される', () => {
+        console.log(wrapper.html());
+        const users = wrapper.findAll('.user-name');
 
-    //     expect(titles[0].exists()).toBeTruthy();
-    //     expect(titles[0].text()).toBe('Test Title');
-    // });
+        expect(users[0].exists()).toBeTruthy();
+        expect(users[0].text()).toBe('Test User');
+    });
 });

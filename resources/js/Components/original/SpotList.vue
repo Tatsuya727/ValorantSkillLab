@@ -167,7 +167,7 @@ const setHorizontal = () => {
                         <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
                             <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
                             <!-- ユーザーネーム -->
-                            <div class="text-green mr-2">{{ spot.user.name }}</div>
+                            <div class="text-green mr-2 user-name">{{ spot.user.name }}</div>
                         </div>
                     </div>
                 </div>
@@ -234,7 +234,7 @@ const setHorizontal = () => {
                         <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
                             <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
                             <!-- ユーザーネーム -->
-                            <div class="text-green mr-2">{{ spot.user.name }}</div>
+                            <div class="text-green mr-2 user-name">{{ spot.user.name }}</div>
                         </div>
                     </div>
                 </div>

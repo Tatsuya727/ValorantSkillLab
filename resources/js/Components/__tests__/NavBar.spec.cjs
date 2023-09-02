@@ -89,7 +89,6 @@ describe('ログインしている場合', () => {
     const wrapper = createWrapper(testUser);
 
     it('ログインボタンと新規登録ボタンが表示されない', () => {
-        console.log(wrapper.html());
         expect(wrapper.find('a[href="mocked-route-for-login').exists()).toBeFalsy();
         expect(wrapper.find('a[href="mocked-route-for-register').exists()).toBeFalsy();
     });
