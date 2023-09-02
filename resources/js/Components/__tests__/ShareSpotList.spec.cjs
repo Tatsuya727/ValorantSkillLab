@@ -101,6 +101,43 @@ describe('ヘッダーとリストの組み合わせテスト', () => {
         expect(title.text()).toBe('すべての投稿 ' + propsData.allSpotsCount + ' 件');
     });
 
+    it('タグが表示される', () => {
+        const tag = wrapper.find('.common-tag');
+
+        expect(tag.exists()).toBeTruthy();
+    });
+
+    it('タグがクリックされたらそのタグの色が変わる', async () => {
+        const tag = wrapper.findAll('.common-tag');
+        await tag[0].trigger('click');
+
+        const selectedTag = wrapper.find('.selected-tag');
+
+        expect(selectedTag).toBeTruthy();
+        expect(selectedTag.text()).toBe('Tag1');
+    });
+
+    it('マップが表示される', () => {
+        const maps = wrapper.findAll('.map-name');
+
+        expect(maps[0].exists()).toBeTruthy();
+        expect(maps[0].text()).toBe('Map1');
+    });
+
+    it('キャラクターが表示される', () => {
+        const characters = wrapper.findAll('.character-name');
+
+        expect(characters[0].exists()).toBeTruthy();
+        expect(characters[0].text()).toBe('Character1');
+    });
+
+    it('作成者が表示される', () => {
+        console.log(wrapper.html());
+        const users = wrapper.findAll('.user-name');
+
+        expect(users[0].exists()).toBeTruthy();
+        expect(users[0].text()).toBe('Test User');
+    });
     // it('タグをクリックするとリストが更新される', async () => {
     //     const tag = list_wrapper.findAll('.tag');
     //     const title = list_wrapper.findAll('h1');
