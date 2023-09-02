@@ -138,44 +138,10 @@ describe('ヘッダーとリストの組み合わせテスト', () => {
         expect(users[0].exists()).toBeTruthy();
         expect(users[0].text()).toBe('Test User');
     });
-    // it('タグをクリックするとリストが更新される', async () => {
-    //     const tag = list_wrapper.findAll('.tag');
-    //     const title = list_wrapper.findAll('h1');
 
-    //     // 1つ目と2つ目のタイトルが表示されていることを確認
-    //     expect(title[0].text()).toBe('title1');
-    //     expect(title[1].text()).toBe('title2');
+    it('いいねボタンが表示される', () => {
+        const likeButtons = wrapper.findAll('.like-btn');
 
-    //     console.log(tag[0].text());
-    //     // 1つ目のタグをクリック
-    //     await list_wrapper.vm.filterSpotsByTag('tag1');
-    //     expect(list_wrapper.vm.selectedTag).toBe('tag1');
-    //     expect(list_wrapper.find('.selected-tag').text()).toBe('tag1');
-
-    //     console.log(title[0].text());
-    //     console.log(title[1].text());
-
-    //     // 1つ目のspotが表示されていることを確認
-    //     expect(title[0].text()).toBe('title1');
-
-    //     // 2つ目のspotが表示されていないことを確認
-    //     // expect(title[1].exists()).toBeFalsy();
-    // });
-
-    // it('検索するとリストが更新される', () => {
-    //     const search = header_wrapper.findComponent('v-text-field.search-spots');
-    //     const button = header_wrapper.find('v-btn.search-button');
-    //     const title = list_wrapper.findAll('h1');
-
-    //     // 1つ目と2つ目のタイトルが表示されていることを確認
-    //     expect(title[0].text()).toBe('title1');
-    //     expect(title[1].text()).toBe('title2');
-    //     // 検索ワードを入力
-    //     search.setValue('title1');
-    //     // 検索ボタンをクリック
-    //     button.trigger('click');
-    //     // 1つ目のタイトルのみ表示されていることを確認
-    //     expect(title[0].text()).toBe('title1');
-    //     expect(title[1].exists()).toBeFalsy();
-    // });
+        expect(likeButtons[0].exists()).toBeTruthy();
+    });
 });
