@@ -36,25 +36,32 @@ describe('NavBar.vue', () => {
         },
     });
 
-    it('does something with NavBar', () => {
+    const isMobile = false;
+
+    it('正しいタイトル', () => {
+        console.log(wrapper.html());
         const title = wrapper.find('v-toolbar-title');
 
         expect(title.text()).toBe('ValorantSkillLab');
     });
+
+    it('サイドメニューのリンクが正しい', () => {
+        const sideMenu = wrapper.find('v-list.side-menu');
+        const sideMenuLinks = sideMenu.findAll('a');
+
+        expect(sideMenuLinks[0].attributes('href')).toBe('mocked-route-for-about');
+        expect(sideMenuLinks[1].attributes('href')).toBe('mocked-route-for-spots.create');
+        expect(sideMenuLinks[2].attributes('href')).toBe('mocked-route-for-sharespots.index');
+        expect(sideMenuLinks[3].attributes('href')).toBe('mocked-route-for-categories.index');
+        expect(sideMenuLinks[4].attributes('href')).toBe('mocked-route-for-spots.index');
+
+        expect(sideMenuLinks[0].text()).toBe('このアプリについて');
+        expect(sideMenuLinks[1].text()).toBe('作成する');
+        expect(sideMenuLinks[2].text()).toBe('すべての投稿');
+        expect(sideMenuLinks[3].text()).toBe('カテゴリー');
+        expect(sideMenuLinks[4].text()).toBe('全て');
+    });
 });
-
-// // app barのタイトルを検証
-
-// it('正しいリンク', () => {
-//     // コンポーネントをマウント
-//     const wrapper = setup();
-
-//     // 各リンクが正しいhrefを持っているか検証
-//     // expect(wrapper.find('a[href="route(\'maps.index\')"]').exists()).toBeTruthy();
-//     // expect(wrapper.find('a[href="route(\'characters.index\')"]').exists()).toBeTruthy();
-//     expect(wrapper.find('a[href="route(\'categories.index\')"]').exists()).toBeTruthy();
-//     expect(wrapper.find('a[href="route(\'spots.create\')"]').exists()).toBeTruthy();
-// });
 
 // describe('ログインしていない場合', () => {
 //     it('ログインボタンと新規登録ボタンが表示される', () => {
