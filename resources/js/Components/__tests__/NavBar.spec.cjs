@@ -1,35 +1,33 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 import NavBar from '../original/NavBar.vue';
+import { Inertia } from '@inertiajs/inertia';
 
-function setup(user = null) {
-    const route = (name) => `route('${name}')`;
-    const $page = {
-        props: {
-            auth: {
-                user: user,
+describe('NavBar.vue', () => {
+    global.route = (name) => `mocked-route-for-${name}`;
+
+    // Inertia.getをモック
+    Inertia.get = (url) => {
+        expect(url).toBe('mocked-route-for-spots.index');
+    };
+
+    const testUser = {
+        id: 1,
+        name: 'test',
+    };
+
+    const mocks = {
+        $page: {
+            props: {
+                auth: {
+                    user: testUser,
+                },
             },
         },
     };
 
-    const wrapper = mount(NavBar, {
-        global: {
-            provide: {
-                route,
-            },
-            mocks: {
-                $page,
-            },
-        },
-    });
-
-    return wrapper;
-}
-
-describe('NavBar.vue', () => {
     it('正しいタイトル', () => {
-        // ダミーのroute関数を作成
-        const wrapper = setup();
+        const wrapper = mount(NavBar, { mocks });
         console.log(wrapper.html());
 
         // // app barのタイトルを検証

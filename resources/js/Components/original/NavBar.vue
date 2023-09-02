@@ -45,7 +45,7 @@ const items = [
         <v-spacer></v-spacer>
 
         <div class="mr-5 flex">
-            <Link :href="route('spots.create')">
+            <!-- <Link :href="route('spots.create')">
                 <v-btn v-if="!isMobile" class="mr-5 border bg-green" prepend-icon="mdi-pencil">作成する</v-btn>
             </Link>
 
@@ -55,7 +55,7 @@ const items = [
 
             <Link :href="route('register')" v-if="!$page.props.auth.user">
                 <v-btn class="ml-2">新規登録</v-btn>
-            </Link>
+            </Link> -->
             <v-menu transition="slide-y-transition">
                 <template v-slot:activator="{ props }">
                     <v-btn v-if="$page.props.auth.user" class="mr-5" variant="outlined" prepend-icon="mdi-account" v-bind="props">{{ $page.props.auth.user.name }}</v-btn>
