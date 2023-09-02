@@ -72,6 +72,7 @@ describe('ヘッダーとリストの組み合わせテスト', () => {
             message: 'Test Message',
             success: true,
         },
+        allSpotsCount: 2,
     };
 
     const user = {
@@ -95,9 +96,9 @@ describe('ヘッダーとリストの組み合わせテスト', () => {
         propsData,
     });
 
-    it('投稿があるときは「すべての投稿」と表示されている', () => {
+    it('投稿があるときは「すべての投稿 何件」と表示されている', () => {
         const title = wrapper.find('.title');
-        expect(title.text()).toBe('すべての投稿');
+        expect(title.text()).toBe('すべての投稿 ' + propsData.allSpotsCount + ' 件');
     });
 
     // it('タグをクリックするとリストが更新される', async () => {
