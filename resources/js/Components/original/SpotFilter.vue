@@ -139,9 +139,9 @@ const panel = ref(0);
                                 </v-card-title>
                                 <v-card-text class="mx-10 text-center">
                                     <!-- <v-autocomplete label="タグを検索" :items="tags" item-value="id" item-title="name" clearable chips variant="outlined"></v-autocomplete> -->
-                                    <div class="flex">
+                                    <div class="flex flex-wrap">
                                         <div v-for="tag in tags" :key="tag.id">
-                                            <v-chip @click="selectTags(tag)" class="m-2" color="blue" close>{{ tag.name }}</v-chip>
+                                            <v-chip @click="selectTags(tag)" class="m-2 whitespace-normal" color="blue" close>{{ tag.name }}</v-chip>
                                         </div>
                                     </div>
                                 </v-card-text>
@@ -151,7 +151,7 @@ const panel = ref(0);
                                     <div>カテゴリーを選択</div>
                                 </v-card-title>
                                 <v-card-text class="mx-10 text-center">
-                                    <div class="flex">
+                                    <div class="flex flex-wrap">
                                         <div v-for="category in categories" :key="category.id">
                                             <v-chip @click="selectCategory(category)" class="m-2" color="blue" close>{{ category.name }}</v-chip>
                                         </div>
