@@ -46,7 +46,7 @@ const dialogs = Array(props.spot.images.length)
                     <!-- tagsのnameをすべて表示 -->
                     <div class="flex justify-center my-3">
                         <div v-for="(tag, index) in spot.tags" :key="index">
-                            <v-chip color="light-blue-lighten-5" class="py-1 px-3 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer" @click="filterSpotsByTag(tag.name)">{{
+                            <v-chip color="light-blue-lighten-5" class="tag py-1 px-3 ml-4 bg-sky-300 text-cyan-800 rounded-full text-sm cursor-pointer" @click="filterSpotsByTag(tag.name)">{{
                                 tag.name
                             }}</v-chip>
                         </div>
@@ -63,7 +63,7 @@ const dialogs = Array(props.spot.images.length)
                                 <v-img
                                     :width="465"
                                     cover
-                                    class="object-cover cursor-pointer transform transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg"
+                                    class="spot-img object-cover cursor-pointer transform transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg"
                                     :src="image.image_path"
                                     alt="画像"
                                     v-bind="props"
@@ -78,8 +78,8 @@ const dialogs = Array(props.spot.images.length)
                             <v-card>
                                 <v-card-text>
                                     <div class="my-3 text-center">
-                                        <div v-if="image.description" class="border p-2 text-gray-500">{{ image.description }}</div>
-                                        <div v-else class="border p-2 text-gray-500">説明なし</div>
+                                        <div v-if="image.description" class="border p-2 text-gray-500 img-description">{{ image.description }}</div>
+                                        <div v-else class="border p-2 text-gray-500 no-img-description">説明なし</div>
                                         <v-img :width="1000" :src="image.image_path" alt="画像" class="w-full h-1/2"></v-img>
                                     </div>
                                 </v-card-text>
@@ -95,7 +95,7 @@ const dialogs = Array(props.spot.images.length)
                         <v-img
                             :width="350"
                             cover
-                            class="object-cover cursor-pointer transform transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg"
+                            class="spot-img object-cover cursor-pointer transform transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg"
                             :src="image.image_path"
                             alt="画像"
                             @click="dialog === true"

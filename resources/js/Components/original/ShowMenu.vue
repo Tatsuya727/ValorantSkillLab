@@ -70,7 +70,7 @@ const dialog = ref(false);
 const publicDialog = ref(false);
 </script>
 <template>
-    <div v-if="$page.props.auth.user">
+    <div v-if="$page && $page.props.auth.user">
         <div v-if="$page.props.auth.user.id === props.spot.user.id" class="text-right mr-5">
             <v-btn class="mr-5 mt-5" :color="spot.is_public ? 'success' : 'secondary'" @click="publicDialog = true"> 公開設定:{{ spot.is_public ? '公開中' : '非公開中' }} </v-btn>
 
