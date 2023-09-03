@@ -7,6 +7,7 @@ import SpotMenu from '@/Components/original/SpotMenu.vue';
 import LikeButton from '@/Components/original/LikeButton.vue';
 import Pagination from '@/Components/original/Pagination.vue';
 import OrderButton from '@/Components/original/OrderButton.vue';
+import { useMobileDetection } from '@/Hooks/useMobileDetection';
 import dayjs from 'dayjs';
 
 const props = defineProps({
@@ -52,6 +53,8 @@ const props = defineProps({
     },
     flash: Object,
 });
+
+const { isMobile } = useMobileDetection();
 
 // 選択した物が何もない場合
 const noSelected = computed(() => {
@@ -103,7 +106,7 @@ const setHorizontal = () => {
                 :orderBy="props.orderBy"
                 :routeName="'spots.index'"
             />
-            <div class="ml-8 mt-2">
+            <div v-if="!isMobile" class="ml-8 mt-2">
                 <v-icon @click="setHorizontal" class="text-white cursor-pointer mr-3">mdi-apps</v-icon>
                 <v-icon @click="setVertical" class="text-white cursor-pointer">mdi-menu</v-icon>
             </div>

@@ -54,8 +54,6 @@ const orderItems = [
         value: 'categories',
     },
 ];
-
-console.log(props.orderBy);
 </script>
 <template>
     <v-menu>
