@@ -46,8 +46,8 @@ const orderItems = [
         value: 'likes',
     },
     {
-        title: '作成日(新しい順)',
-        value: 'created_at',
+        title: '作成日(古い順)',
+        value: 'created_at, desc',
     },
     {
         title: '保存された数(多い順)',
