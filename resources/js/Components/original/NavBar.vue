@@ -36,11 +36,11 @@ const items = [
 <template>
     <v-app-bar color="grey-darken-3">
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>
+        <v-toolbar-title v-if="!isMobile">
             <Link href="/"> ValorantSkillLab </Link>
         </v-toolbar-title>
 
-        <h2 v-if="!isMobile">{{ pageTitle }}</h2>
+        <h2>{{ pageTitle }}</h2>
 
         <v-spacer></v-spacer>
 
