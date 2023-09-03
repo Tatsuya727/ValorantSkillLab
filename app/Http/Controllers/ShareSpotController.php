@@ -24,6 +24,7 @@ class ShareSpotController extends Controller
         $orderBy = $request->query('orderBy');
 
         $spotsQuery  = Spot::with(['images', 'map', 'character', 'tags', 'user', 'categories'])
+            ->orderBy('created_at', 'desc')
             ->where('is_public', true)
             ->withCount('likedBy')
             ->searchSpot($search)
