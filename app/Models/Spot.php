@@ -56,7 +56,7 @@ class Spot extends Model
     /**
      * 作成日で並べ替えるスコープ
      */
-    public function scopeOrderByCreatedAt($query, $direction = 'desc')
+    public function scopeOrderByCreatedAt($query, $direction = 'asc')
     {
         return $query->orderBy('created_at', $direction);
     }
