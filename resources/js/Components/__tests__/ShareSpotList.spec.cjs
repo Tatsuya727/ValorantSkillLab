@@ -152,7 +152,7 @@ describe('ヘッダーとリストの組み合わせテスト', () => {
 
         expect(orderButtons[0].text()).toBe('デフォルト');
         expect(orderButtons[1].text()).toBe('いいねの数(多い順)');
-        expect(orderButtons[2].text()).toBe('作成日(新しい順)');
+        expect(orderButtons[2].text()).toBe('作成日(古い順)');
         expect(orderButtons[3].text()).toBe('保存された数(多い順)');
     });
 });
