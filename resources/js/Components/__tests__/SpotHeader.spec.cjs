@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import ShareSpotHeader from '../original/ShareSpotHeader.vue';
+import SpotHeader from '../original/SpotHeader.vue';
 
-describe('ShareSpotHeader.vue', () => {
+describe('SpotHeader.vue', () => {
     const propsData = {
         maps: [],
         characters: [],
@@ -23,7 +23,7 @@ describe('ShareSpotHeader.vue', () => {
 
     const isMobile = false;
 
-    const wrapper = mount(ShareSpotHeader, { propsData });
+    const wrapper = mount(SpotHeader, { propsData });
 
     it('検索ボタンが存在する', () => {
         expect(wrapper.find('.search-button').exists()).toBe(true);
@@ -47,10 +47,6 @@ describe('ShareSpotHeader.vue', () => {
 
     it('タグの絞り込みが正しく表示される', () => {
         expect(wrapper.find('v-chip.selected-tag').text()).toBe(propsData.selectedTag);
-    });
-
-    it('カテゴリーの絞り込みが正しく表示される', () => {
-        expect(wrapper.find('v-chip.selected-category').text()).toBe(propsData.selectedCategory.name);
     });
 
     it('絞り込みボタンが存在する', () => {

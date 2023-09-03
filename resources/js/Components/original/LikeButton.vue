@@ -21,11 +21,11 @@ const toggleLike = (spot) => {
 <template>
     <div class="text-white">
         <div>
-            <div v-if="spot.is_liked_by_user" @click="toggleLike(spot)" class="cursor-pointer">
+            <div v-if="spot.is_liked_by_user" @click="toggleLike(spot)" class="cursor-pointer like-btn">
                 <v-icon color="pink">mdi-heart</v-icon>
                 {{ spot.liked_by_count }}
             </div>
-            <div v-else @click="toggleLike(spot)" class="cursor-pointer">
+            <div v-else @click="toggleLike(spot)" class="cursor-pointer like-btn">
                 <v-icon>mdi-heart-outline</v-icon>
                 {{ spot.liked_by_count }}
             </div>

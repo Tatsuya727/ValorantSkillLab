@@ -102,18 +102,18 @@ const resetSpots = () => {
             <div class="text-grey ml-3">
                 <div>
                     マップ:
-                    <v-chip v-if="selectedMap" color="light-blue-lighten-5" closable @click="resetSelectedMap">{{ selectedMap.name }}</v-chip>
+                    <v-chip v-if="selectedMap" class="selected-map" color="light-blue-lighten-5" closable @click="resetSelectedMap">{{ selectedMap.name }}</v-chip>
                     <span v-else class="text-white text-lg font-bold">無し</span>
                 </div>
                 <div>
                     キャラクター:
-                    <v-chip v-if="selectedCharacter" color="light-blue-lighten-5" closable class="mt-1" @click="resetSelectedCharacter">{{ selectedCharacter.name }}</v-chip>
+                    <v-chip v-if="selectedCharacter" color="light-blue-lighten-5" closable class="mt-1 selected-character" @click="resetSelectedCharacter">{{ selectedCharacter.name }}</v-chip>
                     <span v-else class="text-white text-lg font-bold">無し</span>
                 </div>
             </div>
             <div class="text-grey ml-10 mt-3">
                 タグ:
-                <v-chip v-if="selectedTag" color="light-blue-lighten-5" closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
+                <v-chip v-if="selectedTag" color="light-blue-lighten-5" class="selected-tag" closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
             </div>
         </v-col>
         <v-col>

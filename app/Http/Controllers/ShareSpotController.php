@@ -66,33 +66,11 @@ class ShareSpotController extends Controller
         ->paginate(12)
         ->appends($request->all());
 
-
         // 各spotにis_liked_by_userプロパティを追加
         foreach ($spots as $spot) {
             $spot->is_liked_by_user = $spot->likedBy->contains(auth()->id());
             
         }
-
-        // 検索条件に合致する全てのspotを取得
-        $allSpots = Spot::with(['images', 'map', 'character', 'tags', 'categories', 'user'])
-            ->where('is_public', true)
-            ->searchSpot($search)
-            ->when($selectedTag, function ($query, $selectedTag) {
-                return $query->whereHas('tags', function ($query) use ($selectedTag) {
-                    $query->where('name', $selectedTag);
-                });
-            })
-            ->when($selectedMap, function ($query, $selectedMap) {
-                return $query->whereHas('map', function ($query) use ($selectedMap) {
-                    $query->where('id', $selectedMap['id']);
-                });
-            })
-            ->when($selectedCharacter, function ($query, $selectedCharacter) {
-                return $query->whereHas('character', function ($query) use ($selectedCharacter) {
-                    $query->where('id', $selectedCharacter['id']);
-                });
-            })
-            ->get();
 
         // ログインしているユーザーのカテゴリーを取得
         if(auth()->check()) {
@@ -101,11 +79,11 @@ class ShareSpotController extends Controller
             $userCategories = null;
         }
       
-        // Spotの合計数
-        $allSpotsCount = Spot::count();
+        // is_publicがtrueのSpotの合計数
+        $allSpotsCount = Spot::where('is_public', true)->count();
 
         // $spotsの合計数
-        $spotsCount = $allSpots->count();
+        $spotsCount = $spotsQuery->count();
 
         // 各spotにshow_urlプロパティを追加
         foreach ($spots as $spot) {

@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import SpotList from '../original/SpotList.vue';
-import SpotTags from '../original/SpotTags.vue';
+import ShareSpotHeader from '../original/ShareSpotHeader.vue';
+import ShareSpotList from '../original/ShareSpotList.vue';
 import { Inertia } from '@inertiajs/inertia';
 
-describe('SpotList.vue', () => {
+describe('ヘッダーとリストの組み合わせテスト', () => {
     const propsData = {
         spots: {
             data: [
@@ -72,16 +72,34 @@ describe('SpotList.vue', () => {
             message: 'Test Message',
             success: true,
         },
+        allSpotsCount: 2,
     };
+
+    const user = {
+        id: 1,
+        name: 'name',
+        email: 'email',
+        email_verified_at: 'email_verified_at',
+        created_at: 'created_at',
+        updated_at: 'updated_at',
+    };
+
     // route関数をモック
     global.route = (name) => `mocked-route-for-${name}`;
 
     // Inertia.getをモック
     Inertia.get = (url) => {
-        expect(url).toBe('mocked-route-for-spots.index');
+        expect(url).toBe('mocked-route-for-sharespots.index');
     };
 
-    const wrapper = mount(SpotList, { propsData });
+    const wrapper = mount(ShareSpotList, {
+        propsData,
+    });
+
+    it('投稿があるときは「すべての投稿 何件」と表示されている', () => {
+        const title = wrapper.find('.title');
+        expect(title.text()).toBe('すべての投稿 ' + propsData.allSpotsCount + ' 件');
+    });
 
     it('タグが表示される', () => {
         const tag = wrapper.find('.common-tag');
@@ -119,5 +137,22 @@ describe('SpotList.vue', () => {
 
         expect(users[0].exists()).toBeTruthy();
         expect(users[0].text()).toBe('Test User');
+    });
+
+    it('いいねボタンが表示される', () => {
+        const likeButtons = wrapper.findAll('.like-btn');
+
+        expect(likeButtons[0].exists()).toBeTruthy();
+    });
+
+    it('並べ替えボタンが表示される', () => {
+        const orderButtons = wrapper.findAll('.order-btn');
+
+        expect(orderButtons[0].exists()).toBeTruthy();
+
+        expect(orderButtons[0].text()).toBe('デフォルト');
+        expect(orderButtons[1].text()).toBe('いいねの数(多い順)');
+        expect(orderButtons[2].text()).toBe('作成日(新しい順)');
+        expect(orderButtons[3].text()).toBe('保存された数(多い順)');
     });
 });

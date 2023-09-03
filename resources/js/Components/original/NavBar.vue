@@ -49,18 +49,20 @@ const items = [
                 <v-btn v-if="!isMobile" class="mr-5 border bg-green" prepend-icon="mdi-pencil">作成する</v-btn>
             </Link>
 
-            <Link :href="route('login')" v-if="!$page.props.auth.user">
+            <Link :href="route('login')" v-if="!$page && $page.props.auth.user">
                 <v-btn class="border bg-blue">ログイン </v-btn>
             </Link>
 
-            <Link :href="route('register')" v-if="!$page.props.auth.user">
+            <Link :href="route('register')" v-if="!$page && $page.props.auth.user">
                 <v-btn class="ml-2">新規登録</v-btn>
             </Link>
             <v-menu transition="slide-y-transition">
                 <template v-slot:activator="{ props }">
-                    <v-btn v-if="$page.props.auth.user" class="mr-5" variant="outlined" prepend-icon="mdi-account" v-bind="props">{{ $page.props.auth.user.name }}</v-btn>
+                    <v-btn v-if="$page && $page.props.auth.user" class="mr-5" variant="outlined" prepend-icon="mdi-account" v-bind="props">
+                        {{ $page.props.auth.user.name }}
+                    </v-btn>
                 </template>
-                <v-list v-if="$page.props.auth.user">
+                <v-list v-if="$page && $page.props.auth.user">
                     <v-list-item v-if="isMobile">
                         <v-list-item-title>
                             <Link :href="route('spots.create')" class="text-black">
@@ -100,7 +102,7 @@ const items = [
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" color="grey-darken-3">
         <v-sheet color="grey-darken-4" class="pa-4">
-            <div v-if="$page.props.auth.user" class="username">{{ $page.props.auth.user.name }}</div>
+            <div v-if="$page && $page.props.auth.user" class="username">{{ $page && $page.props.auth.user.name }}</div>
             <div v-else>
                 <Link :href="route('login')">
                     <v-btn>ログイン </v-btn>
@@ -112,21 +114,27 @@ const items = [
             </div>
         </v-sheet>
 
-        <v-list v-model:opened="open">
+        <v-list v-model:opened="open" class="side-menu">
             <v-list-item v-for="(item, i) in items" :key="i" :value="item" :prepend-icon="item.icon">
                 <Link :href="route(item.route)">
                     <v-list-item-title v-text="item.text"></v-list-item-title>
                 </Link>
             </v-list-item>
 
-            <v-list-group value="Category" v-if="$page.props.auth.user">
+            <v-list-group value="Category" v-if="$page && $page.props.auth.user">
                 <template v-slot:activator="{ props }">
                     <v-list-item v-bind="props" prepend-icon="mdi-format-list-bulleted" title="マイリスト"></v-list-item>
                 </template>
 
-                <v-list-item @click="Inertia.get(route('spots.index'))" prepend-icon="mdi-select-all"> 全て </v-list-item>
-                <v-list-item @click="Inertia.get(route('spots.index', { liked: true }))" prepend-icon="mdi-heart"> いいね </v-list-item>
-                <v-list-item @click="Inertia.get(route('spots.index', { user_id: $page.props.auth.user.id }))" prepend-icon="mdi-account"> 自分の投稿 </v-list-item>
+                <v-list-item @click="Inertia.get(route('spots.index'))" prepend-icon="mdi-select-all">
+                    <Link :href="route('spots.index')">全て</Link>
+                </v-list-item>
+                <v-list-item @click="Inertia.get(route('spots.index', { liked: true }))" prepend-icon="mdi-heart">
+                    <Link :href="route('spots.index', { liked: true })">いいね</Link>
+                </v-list-item>
+                <v-list-item @click="Inertia.get(route('spots.index', { user_id: $page && $page.props.auth.user.id }))" prepend-icon="mdi-account">
+                    <Link :href="route('spots.index', { user_id: $page && $page.props.auth.user.id })">自分の投稿</Link>
+                </v-list-item>
                 <v-list-item
                     v-for="category in $page.props.NavCategories"
                     :key="category.id"
@@ -136,16 +144,6 @@ const items = [
                     prepend-icon="mdi-format-list-bulleted"
                 ></v-list-item>
             </v-list-group>
-
-            <!-- <v-list-item prepend-icon="mdi-pencil">
-                <Link :href="route('spots.create')" :class="{ 'text-blue-500': $page.component === 'Spots/Create' }"> 作成する </Link>
-            </v-list-item>
-
-            <v-list-item prepend-icon="mdi-account-supervisor">
-                <Link :href="route('sharespots.index')" :class="{ 'text-blue-500': $page.component === 'ShareSpots/Index' }">
-                    <v-list-item-title>みんなの投稿</v-list-item-title>
-                </Link>
-            </v-list-item> -->
         </v-list>
     </v-navigation-drawer>
 </template>

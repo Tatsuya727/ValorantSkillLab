@@ -98,7 +98,7 @@ const panel = ref(0);
 
 <template>
     <div class="text-center">
-        <v-btn class="ml-5 mt-3" @click="dialog = true" color="primary">絞り込み</v-btn>
+        <v-btn class="ml-5 mt-3 filtering-btn" @click="dialog = true" color="primary">絞り込み</v-btn>
 
         <!-- デスクトップ（モバイル以外） -->
         <v-dialog v-model="dialog" width="1400px" v-if="!isMobile">
@@ -117,7 +117,7 @@ const panel = ref(0);
                                 <v-card-title class="text-center">マップを選択</v-card-title>
                                 <v-card-text class="flex flex-wrap">
                                     <div v-for="map in maps" :key="map.id" class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/3 p-2">
-                                        <v-img class="cursor-pointer" @click="selectMap(map)" :width="400" cover :src="map.image_path" :alt="map.name" loading="lazy"></v-img>
+                                        <v-img class="cursor-pointer map-img" @click="selectMap(map)" :width="400" cover :src="map.image_path" :alt="map.name" loading="lazy"></v-img>
                                     </div>
                                 </v-card-text>
                             </v-window-item>
@@ -165,7 +165,7 @@ const panel = ref(0);
                     <v-col cols="3" class="items-center justify-center">
                         <div class="mt-10">
                             <v-autocomplete
-                                class="m-3"
+                                class="m-3 map-select"
                                 label="マップ"
                                 v-model="selectedMap"
                                 :items="maps"
@@ -176,7 +176,7 @@ const panel = ref(0);
                                 return-object
                             ></v-autocomplete>
                             <v-autocomplete
-                                class="m-3"
+                                class="m-3 character-select"
                                 label="キャラクター"
                                 v-model="selectedCharacter"
                                 :items="characters"
@@ -187,9 +187,9 @@ const panel = ref(0);
                                 return-object
                             >
                             </v-autocomplete>
-                            <v-autocomplete class="m-3" label="タグ" v-model="selectedTag" :items="tags" item-title="name" item-value="name" clearable variant="outlined"></v-autocomplete>
+                            <v-autocomplete class="m-3 tag-select" label="タグ" v-model="selectedTag" :items="tags" item-title="name" item-value="name" clearable variant="outlined"></v-autocomplete>
                             <v-autocomplete
-                                class="m-3"
+                                class="m-3 category-select"
                                 label="カテゴリー"
                                 v-model="selectedCategory"
                                 :items="categories"

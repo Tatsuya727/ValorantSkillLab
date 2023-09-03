@@ -65,8 +65,7 @@ const orderItems = [
                 <v-list-item-title @click="handleOrderBy(orderItem.value)">
                     <v-icon v-if="props.orderBy === orderItem.value" class="mr-1">mdi-check</v-icon>
                     <v-icon v-else class="mr-1" style="opacity: 0">mdi-check</v-icon>
-
-                    {{ orderItem.title }}
+                    <span class="order-btn">{{ orderItem.title }}</span>
                 </v-list-item-title>
             </v-list-item>
         </v-list>

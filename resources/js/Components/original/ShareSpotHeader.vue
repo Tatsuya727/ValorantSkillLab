@@ -74,24 +74,26 @@ const resetSpots = () => {
                         <div class="text-grey ml-3 mt-2">
                             <div>
                                 マップ:
-                                <v-chip v-if="selectedMap" color="light-blue-lighten-5" closable @click="resetSelectedMap">{{ selectedMap.name }}</v-chip>
+                                <v-chip v-if="selectedMap" color="light-blue-lighten-5" class="selected-map" closable @click="resetSelectedMap">{{ selectedMap.name }}</v-chip>
                                 <span v-else class="text-grey text-lg font-bold">無し</span>
                             </div>
                             <div>
                                 キャラクター:
-                                <v-chip v-if="selectedCharacter" class="mt-1" color="light-blue-lighten-5" closable @click="resetSelectedCharacter">{{ selectedCharacter.name }}</v-chip>
+                                <v-chip v-if="selectedCharacter" class="mt-1 selected-character" color="light-blue-lighten-5" closable @click="resetSelectedCharacter">
+                                    {{ selectedCharacter.name }}
+                                </v-chip>
                                 <span v-else class="text-grey text-lg font-bold">無し</span>
                             </div>
                         </div>
                         <div class="text-grey ml-10 mt-3">
                             <div>
                                 タグ:
-                                <v-chip v-if="selectedTag" color="light-blue-lighten-5" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
+                                <v-chip v-if="selectedTag" color="light-blue-lighten-5 " class="selected-tag" close closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
                                 <span v-else class="text-grey text-lg font-bold">無し</span>
                             </div>
                             <div>
                                 カテゴリー:
-                                <v-chip v-if="selectedCategory" class="mt-1" color="light-blue-lighten-5" closable @click="resetSelectedCategory">{{ selectedCategory.name }}</v-chip>
+                                <v-chip v-if="selectedCategory" class="mt-1 selected-category" color="light-blue-lighten-5" closable @click="resetSelectedCategory">{{ selectedCategory.name }}</v-chip>
                                 <span v-else class="text-grey text-lg font-bold">無し</span>
                             </div>
                         </div>
@@ -128,24 +130,24 @@ const resetSpots = () => {
                     <div class="text-grey ml-3 mt-2">
                         <div>
                             マップ:
-                            <v-chip v-if="selectedMap" color="light-blue-lighten-5" closable @click="resetSelectedMap">{{ selectedMap.name }}</v-chip>
+                            <v-chip v-if="selectedMap" color="light-blue-lighten-5 selected-map" closable @click="resetSelectedMap">{{ selectedMap.name }}</v-chip>
                             <span v-else class="text-grey text-lg font-bold">無し</span>
                         </div>
                         <div>
                             キャラクター:
-                            <v-chip v-if="selectedCharacter" class="mt-1" color="light-blue-lighten-5" closable @click="resetSelectedCharacter">{{ selectedCharacter.name }}</v-chip>
+                            <v-chip v-if="selectedCharacter" class="mt-1" color="light-blue-lighten-5 selected-character" closable @click="resetSelectedCharacter">{{ selectedCharacter.name }}</v-chip>
                             <span v-else class="text-grey text-lg font-bold">無し</span>
                         </div>
                     </div>
                     <div class="text-grey ml-10 mt-2">
                         <div>
                             タグ:
-                            <v-chip v-if="selectedTag" color="light-blue-lighten-5" closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
+                            <v-chip v-if="selectedTag" color="light-blue-lighten-5 selected-tag" closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
                             <span v-else class="text-grey text-lg font-bold">無し</span>
                         </div>
                         <div>
                             カテゴリー:
-                            <v-chip v-if="selectedCategory" class="mt-1" color="light-blue-lighten-5" closable @click="resetSelectedCategory">{{ selectedCategory.name }}</v-chip>
+                            <v-chip v-if="selectedCategory" class="mt-1" color="light-blue-lighten-5 selected-category" closable @click="resetSelectedCategory">{{ selectedCategory.name }}</v-chip>
                             <span v-else class="text-grey text-lg font-bold">無し</span>
                         </div>
                     </div>
