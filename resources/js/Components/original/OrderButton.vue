@@ -39,7 +39,7 @@ const handleOrderBy = (item) => {
 const orderItems = [
     {
         title: 'デフォルト',
-        value: '',
+        value: 'created_at',
     },
     {
         title: 'いいねの数(多い順)',
@@ -54,6 +54,8 @@ const orderItems = [
         value: 'categories',
     },
 ];
+
+console.log(props.orderBy);
 </script>
 <template>
     <v-menu>
