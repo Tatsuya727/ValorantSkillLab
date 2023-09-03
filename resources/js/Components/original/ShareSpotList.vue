@@ -7,6 +7,7 @@ import LikeButton from '@/Components/original/LikeButton.vue';
 import ShareSpotMenu from '@/Components/original/ShareSpotMenu.vue';
 import SpotTags from '@/Components/original/SpotTags.vue';
 import OrderButton from '@/Components/original/OrderButton.vue';
+import { useMobileDetection } from '@/Hooks/useMobileDetection';
 import dayjs from 'dayjs';
 
 const props = defineProps({
@@ -53,6 +54,8 @@ const props = defineProps({
     flash: Object,
 });
 
+const { isMobile } = useMobileDetection();
+
 const filterMap = (map) => {
     Inertia.get(route('sharespots.index', { selectedMap: map }));
 };
@@ -79,25 +82,6 @@ const setHorizontal = () => {
     isVertical.value = false;
     localStorage.setItem('isVertical', 'false');
 };
-
-const orderItems = [
-    {
-        title: 'デフォルト',
-        value: '',
-    },
-    {
-        title: 'いいねの数(多い順)',
-        value: 'likes',
-    },
-    {
-        title: '作成日(新しい順)',
-        value: 'created_at',
-    },
-    {
-        title: '保存された数(多い順)',
-        value: 'categories',
-    },
-];
 </script>
 
 <template>
@@ -124,7 +108,7 @@ const orderItems = [
                 :orderBy="props.orderBy"
                 :routeName="'sharespots.index'"
             />
-            <div class="ml-8 mt-2">
+            <div v-if="!isMobile" class="ml-8 mt-2">
                 <v-icon @click="setHorizontal" class="text-white cursor-pointer mr-3">mdi-apps</v-icon>
                 <v-icon @click="setVertical" class="text-white cursor-pointer">mdi-menu</v-icon>
             </div>

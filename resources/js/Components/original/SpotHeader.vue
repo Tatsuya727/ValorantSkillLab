@@ -114,6 +114,7 @@ const resetSpots = () => {
             <div class="text-grey ml-10 mt-3">
                 タグ:
                 <v-chip v-if="selectedTag" color="light-blue-lighten-5" class="selected-tag" closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
+                <span v-else class="text-white text-lg font-bold">無し</span>
             </div>
         </v-col>
         <v-col>
@@ -158,6 +159,7 @@ const resetSpots = () => {
             <div class="text-grey ml-10 mt-3">
                 タグ:
                 <v-chip v-if="selectedTag" color="light-blue-lighten-5" closable @click="resetSelectedTag"> {{ selectedTag }} </v-chip>
+                <span v-else class="text-white text-lg font-bold">無し</span>
             </div>
         </v-col>
     </v-row>

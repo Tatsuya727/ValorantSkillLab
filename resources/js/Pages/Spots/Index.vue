@@ -38,6 +38,10 @@ const props = defineProps({
         type: Object,
         required: false,
     },
+    userId: {
+        type: Number,
+        required: false,
+    },
     liked: {
         type: Boolean,
         required: false,
@@ -66,7 +70,7 @@ const props = defineProps({
 });
 
 // いいねがある場合はいいねページ、カテゴリーが選択されている場合はカテゴリー名、それ以外はすべて表示
-const pageTitle = props.liked ? 'いいねした投稿' : props.selectedCategory ? props.selectedCategory.name : props.search ? props.search : 'すべて表示';
+const pageTitle = props.liked ? 'いいねした投稿' : props.selectedCategory ? props.selectedCategory.name : props.search ? props.search : props.userId ? '自分の投稿' : 'マイリスト(すべて)';
 </script>
 
 <template>
