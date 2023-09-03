@@ -26,6 +26,7 @@ class SpotControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    // ログイン済みユーザーのみがspots.indexにアクセスできる
     public function test_index_displays_spots_for_authenticated_user()
     {
         $user = User::factory()->create();
@@ -45,6 +46,7 @@ class SpotControllerTest extends TestCase
             );
     }
 
+    // ログイン済みユーザーのみがspots.createにアクセスできる
     public function test_create_displays_create_form_for_authenticated_user()
     {
         $user = User::factory()->create();
@@ -61,6 +63,7 @@ class SpotControllerTest extends TestCase
             );
     }
 
+    // spotを作成すると、データベースに新しいspotが作成され、categories.indexにリダイレクトされる
     public function test_store_creates_a_new_spot_and_redirects()
     {
         Storage::fake('public');  // フェイクのストレージを作成
@@ -99,6 +102,7 @@ class SpotControllerTest extends TestCase
 
     }
 
+    // ログイン済みユーザーのみがspots.showにアクセスできる
     public function test_show_displays_spot_details()
     {
         $user = User::factory()->create();
@@ -113,6 +117,7 @@ class SpotControllerTest extends TestCase
             );
     }
 
+    // ログイン済みユーザーのみがspots.editにアクセスできる
     public function test_edit_displays_edit_form_for_authenticated_user()
     {
         $user = User::factory()->create();
@@ -129,8 +134,45 @@ class SpotControllerTest extends TestCase
             );
     }
 
+    // spotを更新すると、データベースが更新され、spots.showにリダイレクトされる
+    public function test_edit_updates_the_spot_and_redirects()
+    {
+        Storage::fake('public');  // フェイクのストレージを作成
 
+        $user = User::factory()->create();
+        $spot = Spot::factory()->create(['user_id' => $user->id]);
+        $map = MapFactory::new()->create();
+        $character = CharacterFactory::new()->create();
+        $category = CategoryFactory::new()->create();
+        $tag = TagFactory::new()->create();
 
+        $this->actingAs($user);
+
+        // テストデータ
+        $data = [
+            'title' => 'New Spot',
+            'description' => 'Spot Description',
+            'map_id' => $map->id,
+            'character_id' => $character->id,
+            'images' => [
+                
+            ],
+            'categories' => [
+                $category->id,
+            ],
+            'tags' => [
+                $tag->id,
+            ],
+            'is_public' => '1',
+        ];
+
+        $response = $this->put(route('spots.update', $spot), $data);
+
+        $this->assertDatabaseHas('spots', ['title' => 'New Spot', 'user_id' => $user->id]);
+        $response->assertRedirect(route('spots.show', $spot));
+    }
+
+    // spotを削除すると、データベースからspotが削除され、spots.indexにリダイレクトされる
     public function test_destroy_deletes_the_spot_and_redirects()
     {
         $user = User::factory()->create();
