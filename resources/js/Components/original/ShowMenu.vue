@@ -72,7 +72,7 @@ const publicDialog = ref(false);
 <template>
     <div v-if="$page && $page.props.auth.user">
         <div v-if="$page.props.auth.user.id === props.spot.user.id" class="text-right mr-5">
-            <v-btn class="mr-5 mt-5" :color="spot.is_public ? 'success' : 'secondary'" @click="publicDialog = true"> 公開設定:{{ spot.is_public ? '公開中' : '非公開中' }} </v-btn>
+            <v-btn class="mr-5 mt-5 open-dialog-title" :color="spot.is_public ? 'success' : 'secondary'" @click="publicDialog = true"> 公開設定:{{ spot.is_public ? '公開中' : '非公開中' }} </v-btn>
 
             <v-menu>
                 <template v-slot:activator="{ props }">
@@ -95,13 +95,13 @@ const publicDialog = ref(false);
             </v-menu>
         </div>
     </div>
-    <div v-else class="text-right m-10 pt-10 text-grey">
+    <div v-else class="text-right m-10 pt-10 text-grey user-name">
         作成者: <span class="text-blue">{{ spot.user.name }}</span>
     </div>
     <LikeButton class="text-right mr-5 mt-5 text-lg" :spot="spot" />
 
     <!-- 公開設定のダイアログ -->
-    <v-dialog v-model="publicDialog" width="auto">
+    <v-dialog v-model="publicDialog" width="auto" class="public-dialog">
         <v-card>
             <v-card-text class="font-bold">公開設定を変更しますか？</v-card-text>
             <v-card-text class="font-bold">
@@ -121,7 +121,7 @@ const publicDialog = ref(false);
     </v-dialog>
 
     <!-- 削除ボタンの確認ダイアログ -->
-    <v-dialog v-model="dialog" width="auto">
+    <v-dialog v-model="dialog" width="auto" class="delete-dialog">
         <v-card>
             <v-card-text class="font-bold">本当に削除しますか？</v-card-text>
             <v-card-actions>
@@ -133,7 +133,8 @@ const publicDialog = ref(false);
         </v-card>
     </v-dialog>
 
-    <v-dialog v-model="saveDialog" max-width="400px">
+    <!-- 保存ボタンの確認ダイアログ -->
+    <v-dialog v-model="saveDialog" max-width="400px" class="save-dialog">
         <v-card>
             <v-card-title class="headline">保存先</v-card-title>
             <v-card-text>
