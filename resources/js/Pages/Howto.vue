@@ -15,12 +15,9 @@ const pageTitle = 'アプリの使い方';
                 <div class="ml-5">
                     <h2>
                         <v-icon>mdi-square</v-icon>
-                        <span> アプリの説明</span>
+                        <span>作成する</span>
                     </h2>
-                    <div class="ml-3 mt-5">このアプリはValorantの空爆やセットアップなどを保存、投稿することができるアプリです。</div>
-                    <div class="ml-3 mt-5">色んなキャラクターを使っていると定点を良く忘れるけどいちいちyoutubeやtwitterで探すのも面倒だったのでまとめられるサイトを自分用に作りました。</div>
-                    <div class="ml-3 mt-3">試合中のラウンドの合間にも見ることができるようにと思って作っています。</div>
-                    <div class="ml-3 mt-3">また、投稿された空爆やセットアップは、他のユーザーに公開することもできます。</div>
+                    <v-img :width="400" class="border-double" aspect-ratio="16/9" cover src="images\Howto\作成.png"></v-img>
 
                     <h2 class="mt-10">
                         <v-icon>mdi-square</v-icon>
