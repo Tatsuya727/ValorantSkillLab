@@ -1,8 +1,18 @@
 <script setup>
 import NavBar from '@/Components/original/NavBar.vue';
 import { Head } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const pageTitle = 'アプリの使い方';
+
+const selectedImage = ref(null);
+
+const dialog = ref(false);
+
+const openDialog = (image) => {
+    dialog.value = true;
+    selectedImage.value = image;
+};
 </script>
 
 <template>
@@ -13,45 +23,117 @@ const pageTitle = 'アプリの使い方';
         <v-main class="bg-zinc-900">
             <div class="bg-neutral-700 pt-5 pb-10 mt-5 mx-5 rounded text-gray-200">
                 <div class="ml-5">
-                    <h2>
-                        <v-icon>mdi-square</v-icon>
-                        <span>作成する</span>
-                    </h2>
-                    <v-img :width="400" class="border-double" aspect-ratio="16/9" cover src="images\Howto\作成.png"></v-img>
+                    <v-row>
+                        <v-col cols="12">
+                            <h2>
+                                <v-icon>mdi-square</v-icon>
+                                <span>作成する</span>
+                            </h2>
+                        </v-col>
+                        <v-col cols="12" class="m-3">
+                            <div class="mb-3 text-lg">作成ページで作成すると選んだカテゴリーのページに保存されます。</div>
+                            <div class="mb-3 text-lg">画像は最低2つ必要です。3つ、4つと画像を追加することもできます。</div>
+                            <div class="mb-3 text-lg">「結果」に空爆がどこに飛ぶかやスキルをどこに設置するかなどの画像を置きます。</div>
+                            <div class="mb-3 text-lg">「ポジション」にどこからスキルを打つか、投げるかがわかる画像を置きます。</div>
+                        </v-col>
+                        <v-col cols="12" class="flex mb-20 border-b">
+                            <div class="text-center">
+                                <v-img :width="400" class="border-double cursor-pointer" @click="openDialog('images\\Howto\\作成.png')" aspect-ratio="16/9" cover src="images\Howto\作成.png"></v-img>
+                                <p>作成ページ</p>
+                            </div>
+                            <div class="text-center">
+                                <v-img
+                                    :width="400"
+                                    class="border-double cursor-pointer"
+                                    @click="openDialog('images\\Howto\\作成完了(カテゴリー).png')"
+                                    aspect-ratio="16/9"
+                                    cover
+                                    src="images\Howto\作成完了(カテゴリー).png"
+                                ></v-img>
+                                <p>カテゴリーページ</p>
+                            </div>
+                        </v-col>
 
-                    <h2 class="mt-10">
-                        <v-icon>mdi-square</v-icon>
-                        <span>主な機能</span>
-                    </h2>
-                    <ul class="ml-3 mt-5">
-                        <li>・ 空爆やセットアップなどのポジションを作成、投稿</li>
-                        <li>・ マイリストに保存</li>
-                        <li>・ フィルタリング機能(マップ、キャラクター、タグ、カテゴリー)</li>
-                    </ul>
+                        <v-img :width="400" class="border-double cursor-pointer" @click="openDialog('images\\Howto\\Show.png')" aspect-ratio="16/9" cover src="images\Howto\Show.png"></v-img>
+                        <v-img
+                            :width="400"
+                            class="border-double cursor-pointer"
+                            @click="openDialog('images\\Howto\\showメニュー.png')"
+                            aspect-ratio="16/9"
+                            cover
+                            src="images\Howto\showメニュー.png"
+                        ></v-img>
+                        <v-img :width="400" class="border-double cursor-pointer" @click="openDialog('images\\Howto\\Spot保存.png')" aspect-ratio="16/9" cover src="images\Howto\Spot保存.png"></v-img>
+                        <v-img
+                            :width="400"
+                            class="border-double cursor-pointer"
+                            @click="openDialog('images\\Howto\\Spot保存ダイアログ.png')"
+                            aspect-ratio="16/9"
+                            cover
+                            src="images\Howto\Spot保存ダイアログ.png"
+                        ></v-img>
+                        <v-img
+                            :width="400"
+                            class="border-double cursor-pointer"
+                            @click="openDialog('images\\Howto\\カテゴリー作成ダイアログ.png')"
+                            aspect-ratio="16/9"
+                            cover
+                            src="images\Howto\カテゴリー作成ダイアログ.png"
+                        ></v-img>
+                        <v-img
+                            :width="400"
+                            class="border-double cursor-pointer"
+                            @click="openDialog('images\\Howto\\カテゴリー内.png')"
+                            aspect-ratio="16/9"
+                            cover
+                            src="images\Howto\カテゴリー内.png"
+                        ></v-img>
+                        <v-img :width="400" class="border-double cursor-pointer" @click="openDialog('images\\Howto\\タグ選択.png')" aspect-ratio="16/9" cover src="images\Howto\タグ選択.png"></v-img>
+                        <v-img
+                            :width="400"
+                            class="border-double cursor-pointer"
+                            @click="openDialog('images\\Howto\\フィルタリング.png')"
+                            aspect-ratio="16/9"
+                            cover
+                            src="images\Howto\フィルタリング.png"
+                        ></v-img>
+                        <v-img
+                            :width="400"
+                            class="border-double cursor-pointer"
+                            @click="openDialog('images\\Howto\\マップ選択.png')"
+                            aspect-ratio="16/9"
+                            cover
+                            src="images\Howto\マップ選択.png"
+                        ></v-img>
+                        <v-img :width="400" class="border-double cursor-pointer" @click="openDialog('images\\Howto\\公開設定.png')" aspect-ratio="16/9" cover src="images\Howto\公開設定.png"></v-img>
+                        <v-img
+                            :width="400"
+                            class="border-double cursor-pointer"
+                            @click="openDialog('images\\Howto\\公開設定(非公開).png')"
+                            aspect-ratio="16/9"
+                            cover
+                            src="images\Howto\公開設定(非公開).png"
+                        ></v-img>
+                        <v-img
+                            :width="400"
+                            class="border-double cursor-pointer"
+                            @click="openDialog('images\\Howto\\表示切替(縦).png')"
+                            aspect-ratio="16/9"
+                            cover
+                            src="images\Howto\表示切替(縦).png"
+                        ></v-img>
+                        <v-img :width="400" class="border-double cursor-pointer" @click="openDialog('images\\Howto\\並び替え.png')" aspect-ratio="16/9" cover src="images\Howto\並び替え.png"></v-img>
+                    </v-row>
 
-                    <h2 class="mt-10">
-                        <v-icon>mdi-square</v-icon>
-                        <span>ご意見やご要望について</span>
-                    </h2>
-                    <div class="ml-3 mt-5">ご意見やご要望がありましたら、以下のX(Twitter)のDMまでお願いします。</div>
-                    <a href="https://twitter.com/ryuu0727" target="_blank" class="m-5">
-                        <v-btn class="text-black bg-blue"> <v-icon>mdi-twitter</v-icon>Twitter </v-btn>
-                    </a>
-
-                    <h2 class="mt-10">
-                        <v-icon>mdi-square</v-icon>
-                        <span>注意事項</span>
-                    </h2>
-                    <div class="ml-3 mt-5">本アプリはChromeで開発しているため、他のブラウザーで意図したとおりに表示されない可能性があります。ご了承ください。</div>
-
-                    <div class="justify-end text-right mt-10">
-                        <a href="https://twitter.com/ryuu0727" target="_blank" class="m-5">
-                            <v-btn class="text-black bg-blue"> <v-icon>mdi-twitter</v-icon>Twitter </v-btn>
-                        </a>
-                        <a href="https://github.com/Tatsuya727" target="_blank" class="m-5">
-                            <v-btn class="text-white bg-black"><v-icon>mdi-github</v-icon>Github</v-btn>
-                        </a>
-                    </div>
+                    <v-dialog v-model="dialog" width="auto">
+                        <v-card>
+                            <v-card-text>
+                                <div class="my-3 text-center">
+                                    <v-img :width="1400" :src="selectedImage" alt="画像" class="w-full h-1/2"></v-img>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </v-dialog>
                 </div>
             </div>
         </v-main>
