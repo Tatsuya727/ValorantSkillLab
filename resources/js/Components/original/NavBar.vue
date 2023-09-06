@@ -26,6 +26,7 @@ const selectCategory = (category) => {
 
 const items = [
     { text: 'このアプリについて', icon: 'mdi-information', route: 'about' },
+    { text: 'アプリの使い方', icon: 'mdi-help-circle', route: 'howto' },
     { text: '作成する', icon: 'mdi-pencil', route: 'spots.create' },
     { text: 'すべての投稿', icon: 'mdi-account-supervisor', route: 'sharespots.index' },
     { text: 'カテゴリー', icon: 'mdi-account', route: 'categories.index' },
