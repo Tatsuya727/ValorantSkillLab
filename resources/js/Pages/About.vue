@@ -1,6 +1,6 @@
 <script setup>
 import NavBar from '@/Components/original/NavBar.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 
 const pageTitle = 'このアプリについて';
 </script>
@@ -31,6 +31,13 @@ const pageTitle = 'このアプリについて';
                         <li>・ マイリストに保存</li>
                         <li>・ フィルタリング機能(マップ、キャラクター、タグ、カテゴリー)</li>
                     </ul>
+
+                    <h2 class="mt-10">
+                        <v-icon>mdi-square</v-icon>
+                        <span>アプリの使い方</span>
+                    </h2>
+                    <div class="ml-3 mt-5">アプリの使い方は以下のページをご覧ください。</div>
+                    <Link href="/howto" class="m-5"><v-btn>アプリの使い方</v-btn></Link>
 
                     <h2 class="mt-10">
                         <v-icon>mdi-square</v-icon>
