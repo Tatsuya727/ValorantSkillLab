@@ -48,16 +48,18 @@ describe('NavBar.vue', () => {
         const sideMenuLinks = sideMenu.findAll('a');
 
         expect(sideMenuLinks[0].attributes('href')).toBe('mocked-route-for-about');
-        expect(sideMenuLinks[1].attributes('href')).toBe('mocked-route-for-spots.create');
-        expect(sideMenuLinks[2].attributes('href')).toBe('mocked-route-for-sharespots.index');
-        expect(sideMenuLinks[3].attributes('href')).toBe('mocked-route-for-categories.index');
-        expect(sideMenuLinks[4].attributes('href')).toBe('mocked-route-for-spots.index');
+        expect(sideMenuLinks[1].attributes('href')).toBe('mocked-route-for-howto');
+        expect(sideMenuLinks[2].attributes('href')).toBe('mocked-route-for-spots.create');
+        expect(sideMenuLinks[3].attributes('href')).toBe('mocked-route-for-sharespots.index');
+        expect(sideMenuLinks[4].attributes('href')).toBe('mocked-route-for-categories.index');
+        expect(sideMenuLinks[5].attributes('href')).toBe('mocked-route-for-spots.index');
 
         expect(sideMenuLinks[0].text()).toBe('このアプリについて');
-        expect(sideMenuLinks[1].text()).toBe('作成する');
-        expect(sideMenuLinks[2].text()).toBe('すべての投稿');
-        expect(sideMenuLinks[3].text()).toBe('カテゴリー');
-        expect(sideMenuLinks[4].text()).toBe('全て');
+        expect(sideMenuLinks[1].text()).toBe('アプリの使い方');
+        expect(sideMenuLinks[2].text()).toBe('作成する');
+        expect(sideMenuLinks[3].text()).toBe('すべての投稿');
+        expect(sideMenuLinks[4].text()).toBe('カテゴリー');
+        expect(sideMenuLinks[5].text()).toBe('全て');
     });
 });
 
