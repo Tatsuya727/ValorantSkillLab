@@ -16,7 +16,6 @@ const props = defineProps({
         type: Array,
         required: false,
     },
-    flash: Object,
 });
 
 // spotの作成者がログインユーザーであるかどうか
@@ -84,10 +83,6 @@ const togglePublic = (spotId) => {
         }
     );
 };
-
-const snackbar = ref(false);
-
-const timeout = ref(5000);
 </script>
 <template>
     <v-menu>
@@ -163,13 +158,4 @@ const timeout = ref(5000);
             </v-card-actions>
         </v-card>
     </v-dialog>
-
-    <!-- フラッシュメッセージ -->
-    <div class="text-center">
-        <v-snackbar v-model="snackbar" :timeout="timeout" color="white" elevation="24">
-            <div v-if="flash">
-                {{ flash.message }}
-            </div>
-        </v-snackbar>
-    </div>
 </template>

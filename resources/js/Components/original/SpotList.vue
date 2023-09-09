@@ -51,7 +51,6 @@ const props = defineProps({
         type: String,
         required: false,
     },
-    flash: Object,
 });
 
 const { isMobile } = useMobileDetection();
@@ -124,7 +123,7 @@ const setHorizontal = () => {
                 <!-- 情報 -->
                 <div class="p-4 bg-neutral-800 flex-1">
                     <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
-                        <SpotMenu :currentUser="currentUser" :spot="spot" :userCategories="userCategories" :flash="flash" />
+                        <SpotMenu :currentUser="currentUser" :spot="spot" :userCategories="userCategories" />
                     </div>
                     <div class="mb-4 pt-3 pl-2">
                         <Link :href="spot.show_url" class="flex-1">

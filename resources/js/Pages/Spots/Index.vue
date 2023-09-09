@@ -2,6 +2,7 @@
 import NavBar from '@/Components/original/NavBar.vue';
 import SpotHeader from '@/Components/original/SpotHeader.vue';
 import SpotList from '@/Components/original/SpotList.vue';
+import FlashMessage from '@/Components/original/FlashMessage.vue';
 import { defineProps, ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
 
@@ -108,6 +109,7 @@ const pageTitle = props.liked ? 'いいねした投稿' : props.selectedCategory
                     />
                 </div>
             </v-container>
+            <FlashMessage :flash="flash" />
         </v-main>
     </v-app>
 </template>

@@ -358,6 +358,13 @@ class SpotController extends Controller
         $spot->is_public = !$spot->is_public;
         $spot->save();
 
+        // 「公開に設定しました。」か「非公開に設定しました。」のメッセージを表示
+        if ($spot->is_public) {
+            session()->flash('message', '公開に設定しました。');
+        } else {
+            session()->flash('message', '非公開に設定しました。');
+        }
+        
         return redirect()->back();
     }
 }
