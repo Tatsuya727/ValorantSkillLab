@@ -69,10 +69,10 @@ const dialogs = Array(props.spot.images.length)
                                     v-bind="props"
                                     loading="lazy"
                                 ></v-img>
-                                <div v-if="image.description" class="border border-white p-2 text-white max-w-full break-words" style="max-width: 465px">
+                                <div v-if="image.description" class="border border-white p-2 text-rose-500 max-w-full break-words" style="max-width: 465px">
                                     {{ image.description }}
                                 </div>
-                                <div v-else class="border border-white p-2 text-white max-w-full break-words" style="max-width: 465px">説明なし</div>
+                                <div v-else class="border border-white p-2 text-grey max-w-full break-words" style="max-width: 465px">説明なし</div>
                             </template>
 
                             <v-card>
