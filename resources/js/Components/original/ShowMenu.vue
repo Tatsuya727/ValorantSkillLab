@@ -98,7 +98,9 @@ const publicDialog = ref(false);
     <div v-else class="text-right m-10 pt-10 text-grey user-name">
         作成者: <span class="text-blue">{{ spot.user.name }}</span>
     </div>
-    <LikeButton class="text-right mr-5 mt-5 text-lg" :spot="spot" />
+    <div class="flex justify-end mr-5 mt-5 text-lg">
+        <LikeButton :spot="spot" />
+    </div>
 
     <!-- 公開設定のダイアログ -->
     <v-dialog v-model="publicDialog" width="auto" class="public-dialog">
