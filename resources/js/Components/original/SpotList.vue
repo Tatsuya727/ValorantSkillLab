@@ -168,9 +168,10 @@ const setHorizontal = () => {
                             />
                         </div>
                         <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
+                            <!-- 作成日 -->
                             <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
                             <!-- ユーザーネーム -->
-                            <div class="text-green mr-2 user-name">{{ spot.user.name }}</div>
+                            <div class="text-violet-500 mr-2 user-name">{{ spot.user.name }}</div>
                         </div>
                     </div>
                 </div>
@@ -191,6 +192,8 @@ const setHorizontal = () => {
                     <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
                         <SpotMenu :currentUser="currentUser" :spot="spot" :userCategories="userCategories" :flash="flash" />
                     </div>
+                    <div v-if="spot.is_public" class="text-green text-right mr-4">公開</div>
+                    <div v-else-if="!spot.is_public" class="text-teal-400 text-right mr-4">非公開</div>
                     <div>
                         <v-tooltip :text="spot.title" location="top">
                             <template v-slot:activator="{ props }">
@@ -235,9 +238,10 @@ const setHorizontal = () => {
                             />
                         </div>
                         <div class="absolute bottom-0 right-0 mb-2 mr-2 flex justify-between">
+                            <!-- 作成日 -->
                             <div class="text-gray-400 mx-3 text-sm">{{ dayjs(spot.created_at).format('YYYY年MM月DD日') }}</div>
                             <!-- ユーザーネーム -->
-                            <div class="text-green mr-2 user-name">{{ spot.user.name }}</div>
+                            <div class="text-violet-500 mr-2 user-name">{{ spot.user.name }}</div>
                         </div>
                     </div>
                 </div>
