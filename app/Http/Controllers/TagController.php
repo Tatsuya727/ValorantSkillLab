@@ -18,6 +18,8 @@ class TagController extends Controller
             'name' => $request->name,
         ]);
 
+        session()->flash('message', $request->name . ' を作成しました。');
+        
         return redirect()->route('spots.create');
     }
 }
