@@ -13,7 +13,6 @@ const props = defineProps({
         type: Array,
         required: false,
     },
-    flash: Object,
 });
 
 const saveDialog = ref(false);
@@ -42,10 +41,6 @@ const saveSpot = () => {
         }
     );
 };
-
-const snackbar = ref(false);
-
-const timeout = ref(5000);
 
 const deleteSpot = (id) => {
     Inertia.delete(route('spots.destroy', { spot: id }));
@@ -153,13 +148,4 @@ const publicDialog = ref(false);
             </v-card-actions>
         </v-card>
     </v-dialog>
-
-    <!-- フラッシュメッセージ -->
-    <div class="text-center">
-        <v-snackbar v-model="snackbar" :timeout="timeout" color="white" elevation="24">
-            <div v-if="flash">
-                {{ flash.message }}
-            </div>
-        </v-snackbar>
-    </div>
 </template>

@@ -1,6 +1,7 @@
 <script setup>
 import NavBar from '@/Components/original/NavBar.vue';
 import ShowSpot from '@/Components/original/ShowSpot.vue';
+import FlashMessage from '@/Components/original/FlashMessage.vue';
 import { Head } from '@inertiajs/inertia-vue3';
 
 // import draggable from 'vuedraggable';
@@ -25,7 +26,8 @@ const pageTitle = props.spot.title;
     <v-app id="inspire">
         <NavBar :pageTitle="pageTitle" />
         <v-main class="bg-zinc-900">
-            <ShowSpot :spot="spot" :userCategories="userCategories" :flash="flash" :routeName="'spots.index'" />
+            <ShowSpot :spot="spot" :userCategories="userCategories" :routeName="'spots.index'" />
+            <FlashMessage :flash="flash" />
         </v-main>
     </v-app>
 </template>

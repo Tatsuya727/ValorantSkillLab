@@ -17,7 +17,6 @@ const props = defineProps({
         type: String,
         required: true,
     },
-    flash: Object,
 });
 
 const { isMobile } = useMobileDetection();
@@ -37,7 +36,7 @@ const dialogs = Array(props.spot.images.length)
 </script>
 <template>
     <div class="bg-neutral-700 mt-10 mx-5 pb-20 rounded">
-        <ShowMenu :spot="spot" :userCategories="userCategories" :flash="flash" />
+        <ShowMenu :spot="spot" :userCategories="userCategories" />
         <v-row justify="center">
             <v-col cols="12">
                 <div class="text-center">

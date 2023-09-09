@@ -4,6 +4,7 @@ import { Inertia } from '@inertiajs/inertia';
 import NavBar from '@/Components/original/NavBar.vue';
 import StoreCategory from '@/Components/original/StoreCategory.vue';
 import StoreTag from '@/Components/original/StoreTag.vue';
+import FlashMessage from '@/Components/original/FlashMessage.vue';
 import { computed, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 
@@ -28,6 +29,7 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    flash: Object,
 });
 
 const form = reactive({
@@ -326,6 +328,7 @@ const pageTitle = '作成する';
                     作成
                 </button>
             </v-form>
+            <FlashMessage :flash="flash" />
         </v-main>
     </v-app>
 </template>
