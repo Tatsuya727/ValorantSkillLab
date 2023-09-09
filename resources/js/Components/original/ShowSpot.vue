@@ -78,7 +78,7 @@ const dialogs = Array(props.spot.images.length)
                             <v-card>
                                 <v-card-text>
                                     <div class="my-3 text-center">
-                                        <div v-if="image.description" class="border p-2 text-gray-500 img-description">{{ image.description }}</div>
+                                        <div v-if="image.description" class="border p-2 text-green-500 img-description">{{ image.description }}</div>
                                         <div v-else class="border p-2 text-gray-500 no-img-description">説明なし</div>
                                         <v-img :width="1000" :src="image.image_path" alt="画像" class="w-full h-1/2"></v-img>
                                     </div>
