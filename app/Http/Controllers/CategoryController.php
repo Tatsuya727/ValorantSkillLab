@@ -51,6 +51,8 @@ class CategoryController extends Controller
             'user_id' => $request->user()->id,
         ]);
 
+        session()->flash('message', $request->name . ' を作成しました。');
+        
         return back();
     }
 
@@ -84,7 +86,9 @@ class CategoryController extends Controller
         // カテゴリーを削除
         $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'カテゴリーを削除しました。');
+        session()->flash('message', $category->name . ' を削除しました。');
+
+        return redirect()->route('categories.index');
     }
 
 }

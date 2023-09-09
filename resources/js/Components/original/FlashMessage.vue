@@ -1,11 +1,18 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
-const { flash } = defineProps({
+const props = defineProps({
     flash: Object,
 });
 
-const snackbar = ref(flash && flash.message ? true : false);
+// props.flashが変更されたらsnackbarを表示
+watch(
+    () => props.flash,
+    () => {
+        snackbar.value = true;
+    }
+);
+const snackbar = ref(false);
 
 const timeout = ref(5000);
 </script>

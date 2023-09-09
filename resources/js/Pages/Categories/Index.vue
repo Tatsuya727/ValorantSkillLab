@@ -4,6 +4,7 @@ import { Inertia } from '@inertiajs/inertia';
 import NavBar from '@/Components/original/NavBar.vue';
 import SpotHeader from '@/Components/original/SpotHeader.vue';
 import CategoryMenu from '@/Components/original/CategoryMenu.vue';
+import FlashMessage from '@/Components/original/FlashMessage.vue';
 import { Head } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -31,6 +32,7 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    flash: Object,
 });
 
 const selectedCategory = ref(null);
@@ -127,6 +129,7 @@ const pageTitle = 'マイページ';
                     </v-row>
                 </div>
             </v-container>
+            <FlashMessage :flash="flash" />
         </v-main>
     </v-app>
 </template>
