@@ -101,7 +101,7 @@ const dialogs = Array(props.spot.images.length)
                             @click="dialog === true"
                             loading="lazy"
                         ></v-img>
-                        <div v-if="image.description" class="border border-white p-2 text-white max-w-full break-words" style="max-width: 350px">
+                        <div v-if="image.description" class="border border-white p-2 text-yellow-300 max-w-full break-words" style="max-width: 350px">
                             {{ image.description }}
                         </div>
                         <div v-else class="border border-white p-2 text-white max-w-full break-words" style="max-width: 350px">説明なし</div>
