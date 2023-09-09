@@ -33,10 +33,7 @@ const saveSpot = () => {
         {
             preserveState: true,
             onSuccess: () => {
-                if (props.flash.message === '保存しました') {
-                    saveDialog.value = false;
-                    snackbar.value = true;
-                }
+                saveDialog.value = false;
             },
         }
     );
