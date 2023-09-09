@@ -43,6 +43,8 @@ const deleteSpot = () => {
 
 const saveDialog = ref(false);
 
+const publicDialog = ref(false);
+
 // spotオブジェクトから保存されているカテゴリーのリストを取得
 const savedCategories = props.spot.categories || [];
 
@@ -68,6 +70,21 @@ const saveSpot = () => {
     );
 };
 
+const togglePublic = (spotId) => {
+    Inertia.post(
+        `/spots/${spotId}/toggle-public`,
+        {},
+        {
+            onSuccess: () => {
+                publicDialog.value = false;
+            },
+            onError: (error) => {
+                console.log(error);
+            },
+        }
+    );
+};
+
 const snackbar = ref(false);
 
 const timeout = ref(5000);
@@ -80,6 +97,9 @@ const timeout = ref(5000);
         <v-list>
             <v-list-item>
                 <v-list-item-title @click="saveDialog = true" class="cursor-pointer open-update-dialog"><v-icon class="mr-2">mdi-content-save-all</v-icon>保存する</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+                <v-list-item-title @click="publicDialog = true" class="cursor-pointer open-update-dialog"><v-icon class="mr-2">mdi-eye-off-outline</v-icon>公開設定</v-list-item-title>
             </v-list-item>
             <v-list-item v-if="isMySpot">
                 <v-list-item-title @click="setDeleteSpotId(spot.id)" class="cursor-pointer open-delete-dialog"><v-icon>mdi-trash-can-outline</v-icon>削除する</v-list-item-title>
@@ -120,6 +140,26 @@ const timeout = ref(5000);
             </v-card-actions>
             <v-card-actions>
                 <v-btn variant="outlined" color="primary" block @click="deleteSpotDialog = false" class="cancel-delete-dialog">キャンセル</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+    <!-- 公開設定のダイアログ -->
+    <v-dialog v-model="publicDialog" width="auto" class="public-dialog">
+        <v-card>
+            <v-card-text class="font-bold">公開設定を変更しますか？</v-card-text>
+            <v-card-text class="font-bold">
+                現在は
+                <span :class="{ 'text-red': true, 'font-bold': true }">{{ spot.is_public ? '公開中' : '非公開' }}</span>
+                です。
+            </v-card-text>
+            <v-card-actions>
+                <v-btn :variant="'outlined'" :color="'success'" block @click="togglePublic(spot.id)">
+                    {{ spot.is_public ? '非公開にする' : '公開にする' }}
+                </v-btn>
+            </v-card-actions>
+            <v-card-actions>
+                <v-btn variant="outlined" color="primary" block @click="publicDialog = false">キャンセル</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>

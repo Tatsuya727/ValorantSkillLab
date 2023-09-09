@@ -192,8 +192,8 @@ const setHorizontal = () => {
                     <div class="absolute top-50 right-0 mr-2 flex cursor-pointer">
                         <SpotMenu :currentUser="currentUser" :spot="spot" :userCategories="userCategories" :flash="flash" />
                     </div>
-                    <div v-if="spot.is_public" class="text-green text-right mr-4">公開</div>
-                    <div v-else-if="!spot.is_public" class="text-teal-400 text-right mr-4">非公開</div>
+                    <div v-if="spot.is_public" class="text-green text-right mr-4">公開中</div>
+                    <div v-else-if="!spot.is_public" class="text-teal-400 text-right mr-4">非公開中</div>
                     <div>
                         <v-tooltip :text="spot.title" location="top">
                             <template v-slot:activator="{ props }">

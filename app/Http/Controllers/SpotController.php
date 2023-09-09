@@ -358,6 +358,6 @@ class SpotController extends Controller
         $spot->is_public = !$spot->is_public;
         $spot->save();
 
-        return redirect()->route('spots.show', ['spot' => $spot->id]);
+        return redirect()->back();
     }
 }
