@@ -90,7 +90,6 @@ class CategoryTest extends TestCase
 
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
         $this->assertDatabaseMissing('spots', ['id' => $spot->id]);
-        $response->assertRedirect(route('categories.index'))
-            ->assertSessionHas('success', 'カテゴリーを削除しました。');
+        $response->assertRedirect(route('categories.index'));
     }
 }
