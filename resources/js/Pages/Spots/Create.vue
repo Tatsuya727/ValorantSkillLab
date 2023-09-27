@@ -290,7 +290,12 @@ const pageTitle = '作成する';
                 <!-- <v-alert color="warning" icon="$warning" title="注意" text="アップロードできる画像の最大サイズは8MBです。"></v-alert> -->
 
                 <!-- 画像 -->
-                <button type="button" @click="addImageForm" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">画像を追加</button>
+                <button type="button" @click="addImageForm" class="mt-4 mx-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">画像を追加</button>
+                <v-tooltip text="「結果」の方に設置したスキルやスキルがどこに落ちるかなどがわかる画像を選び、「ポジション」の方にどこからスキルを使うかがわかる画像を選んでください。">
+                    <template v-slot:activator="{ props }">
+                        <v-btn v-bind="props">画像の選び方</v-btn>
+                    </template>
+                </v-tooltip>
                 <p class="text-red-500 mt-2">注: アップロードできる画像の最大サイズは2MBです。</p>
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div v-for="(image, index) in form.images" :key="index" class="w-full md:w-1/2 px-3 mb-6 md:mb-0">

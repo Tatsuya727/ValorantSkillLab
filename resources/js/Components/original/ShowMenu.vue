@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 import LikeButton from '@/Components/original/LikeButton.vue';
+import StoreCategory from '@/Components/original/StoreCategory.vue';
 
 const props = defineProps({
     spot: {
@@ -130,7 +131,12 @@ const publicDialog = ref(false);
     <!-- 保存ボタンの確認ダイアログ -->
     <v-dialog v-model="saveDialog" max-width="400px" class="save-dialog">
         <v-card>
-            <v-card-title class="headline">保存先</v-card-title>
+            <div class="flex justify-between">
+                <v-card-title class="headline">保存先</v-card-title>
+                <v-card-title>
+                    <StoreCategory />
+                </v-card-title>
+            </div>
             <v-card-text>
                 <v-divider></v-divider>
                 <template v-for="category in props.userCategories" :key="category.id">
