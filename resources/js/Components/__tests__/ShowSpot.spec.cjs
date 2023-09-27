@@ -29,7 +29,7 @@ describe('ShowSpot.vue', () => {
     it('スポットのタイトルと説明が正しく表示される', () => {
         console.log(wrapper.html());
         expect(wrapper.find('h1.font-bold.text-white.break-all').text()).toBe('テストタイトル');
-        expect(wrapper.find('h1.text-white.my-2.break-all').text()).toBe('テスト説明');
+        expect(wrapper.find('h3.text-white.my-4.break-all').text()).toBe('テスト説明');
     });
 
     it('スポットのタグが正しく表示される', () => {
