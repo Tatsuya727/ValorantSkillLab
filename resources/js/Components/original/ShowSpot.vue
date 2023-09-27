@@ -40,9 +40,9 @@ const dialogs = Array(props.spot.images.length)
         <v-row justify="center">
             <!-- タイトルと説明とタグ -->
             <v-col cols="10">
-                <div class="text-center">
+                <div class="text-center mt-5 mx-5">
                     <h1 class="font-bold text-white break-all">{{ spot.title }}</h1>
-                    <h1 class="text-white my-2 break-all">{{ spot.description }}</h1>
+                    <h3 class="text-white my-4 break-all">{{ spot.description }}</h3>
                     <!-- tagsのnameをすべて表示 -->
                     <div class="flex justify-center my-3">
                         <div v-for="(tag, index) in spot.tags" :key="index">
