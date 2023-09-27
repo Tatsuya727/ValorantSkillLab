@@ -36,9 +36,10 @@ const dialogs = Array(props.spot.images.length)
 </script>
 <template>
     <div class="bg-neutral-700 mt-10 mx-5 pb-20 rounded">
-        <ShowMenu :spot="spot" :userCategories="userCategories" />
+        <ShowMenu v-if="isMobile" :spot="spot" :userCategories="userCategories" />
         <v-row justify="center">
-            <v-col cols="12">
+            <!-- タイトルと説明とタグ -->
+            <v-col cols="10">
                 <div class="text-center">
                     <h1 class="font-bold text-white break-all">{{ spot.title }}</h1>
                     <h1 class="text-white my-2 break-all">{{ spot.description }}</h1>
@@ -51,6 +52,9 @@ const dialogs = Array(props.spot.images.length)
                         </div>
                     </div>
                 </div>
+            </v-col>
+            <v-col v-if="!isMobile" cols="2">
+                <ShowMenu :spot="spot" :userCategories="userCategories" />
             </v-col>
             <v-divider></v-divider>
             <!-- デスクトップ -->
