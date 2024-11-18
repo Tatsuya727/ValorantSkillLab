@@ -41,15 +41,6 @@ const pageTitle = 'このアプリについて';
 
                     <h2 class="mt-10">
                         <v-icon>mdi-square</v-icon>
-                        <span>ご意見やご要望について</span>
-                    </h2>
-                    <div class="ml-3 mt-5">ご意見やご要望がありましたら、以下のX(Twitter)のDMまでお願いします。</div>
-                    <a href="https://twitter.com/ryuu0727" target="_blank" class="m-5">
-                        <v-btn class="text-black bg-blue"> <v-icon>mdi-twitter</v-icon>Twitter </v-btn>
-                    </a>
-
-                    <h2 class="mt-10">
-                        <v-icon>mdi-square</v-icon>
                         <span>注意事項</span>
                     </h2>
                     <div class="ml-3 mt-5">本アプリはChromeで開発しているため、他のブラウザーで意図したとおりに表示されない可能性があります。ご了承ください。</div>
